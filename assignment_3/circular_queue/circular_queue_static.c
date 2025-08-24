@@ -4,14 +4,15 @@
 int queue[MAX_SIZE];
 int front = -1;
 int rear = -1;
-int size = 0;  
+int size = 0;
 
 int isEmpty() {
     return front == -1;
 }
 
 int isFull() {
-    return rear == size - 1;
+    if (isEmpty()) return 0;
+    return (rear + 1) % size == front % size;
 }
 
 void enqueue(int data) {
@@ -20,10 +21,11 @@ void enqueue(int data) {
         return;
     }
     if (isEmpty()) {
-        front = 0; 
+        front = 0;
+        rear = -1;
     }
     rear++;
-    queue[rear] = data;
+    queue[rear % size] = data;
     printf("Enqueued: %d\n", data);
 }
 
@@ -32,17 +34,12 @@ void dequeue() {
         printf("Queue Underflow - cannot dequeue\n");
         return;
     }
-    printf("Dequeued: %d\n", queue[front]);
+    printf("Dequeued: %d\n", queue[front % size]);
     if (front == rear) {
         front = -1;
         rear = -1;
-    } 
-    else {
-        for (int i = front; i < rear; i++) {
-            queue[i] = queue[i + 1];
-        }
-        rear--;  
-        front = 0;
+    } else {
+        front++;
     }
 }
 
@@ -53,7 +50,7 @@ void display() {
     }
     printf("Queue contents: Front -> ");
     for (int i = front; i <= rear; i++) {
-        printf("%d ", queue[i]);
+        printf("%d ", queue[i % size]);
     }
     printf("<- Rear\n");
 }
@@ -63,8 +60,8 @@ void peek() {
         printf("Queue is empty - cannot peek\n");
         return;
     }
-    printf("Front: %d\n", queue[front]);
-    printf("Rear: %d\n", queue[rear]);
+    printf("Front: %d\n", queue[front % size]);
+    printf("Rear: %d\n", queue[rear % size]);
 }
 
 int main() {
@@ -76,9 +73,9 @@ int main() {
         return 1;
     }
     while (1) {
-        printf("\n=== Queue Operations ===\n");
-        printf("1. Enqueue (Insert)\n");
-        printf("2. Dequeue (Remove with left shift)\n");
+        printf("\n=== Circular Queue Operations ===\n");
+        printf("1. Enqueue(Insert)\n");
+        printf("2. Dequeue(Remove)\n");
         printf("3. Display\n");
         printf("4. Peek\n");
         printf("5. Exit\n");
