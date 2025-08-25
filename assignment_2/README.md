@@ -12,13 +12,9 @@
 
 A **Stack** is a linear data structure that follows the **LIFO (Last In, First Out)** principle. This means that the last element added to the stack is the first one to be removed. Think of it like a stack of plates - you can only add or remove plates from the top.
 
-```
-    │   │
-    │ 3 │ ← Top (Last In, First Out)
-    │ 2 │
-    │ 1 │
-    └───┘
-```
+<div align="center">
+  <img src="stack.png" alt="Stack Data Structure Illustration" />
+</div>
 
 ## Stack Operations
 
@@ -135,7 +131,7 @@ There are several ways to implement a stack in C:
 
 This repository contains **three different implementations** of stack data structure, all maintaining identical user interfaces while using different internal data structures:
 
----
+> Expand to view detailed information about each implementation method.
 
 <details>
 <summary><strong>🔹 Array-Based Stack Implementation</strong></summary>
@@ -260,10 +256,10 @@ int main() {
 
 </details>
 
----
-
 <details>
-<summary><strong>🔹 Structure-Based Stack Implementation</strong></summary>### Overview
+<summary><strong>🔹 Structure-Based Stack Implementation</strong></summary>
+
+### Overview
 This implementation uses a **custom structure** with typedef to encapsulate stack data. It demonstrates object-oriented principles in C and provides better code organization.
 
 ### Key Features
@@ -398,8 +394,6 @@ int main() {
 ```
 
 </details>
-
----
 
 <details>
 <summary><strong>🔹 Linked List-Based Stack Implementation</strong></summary>
