@@ -1,69 +1,73 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Queue {
+struct QueueStruct {
     int *data;
     int front;
     int rear;
     int capacity;
 };
 
-int isEmpty(struct Queue *q) {
-    return q->front == -1;
+typedef struct QueueStruct Queue;
+
+Queue queue;
+
+int isEmpty() {
+    return queue.front == -1;
 }
 
-int isFull(struct Queue *q) {
-    if (isEmpty(q)) return 0;
-    return (q->rear + 1) % q->capacity == q->front % q->capacity;
+int isFull() {
+    if (isEmpty()) return 0;
+    return (queue.rear + 1) % queue.capacity == queue.front % queue.capacity;
 }
 
-void enqueue(struct Queue *q, int data) {
-    if (isFull(q)) {
+void enqueue(int data) {
+    if (isFull()) {
         printf("Queue Overflow - cannot enqueue %d\n", data);
         return;
     }
-    if (isEmpty(q)) {
-        q->front = 0;
-        q->rear = -1;
+    if (isEmpty()) {
+        queue.front = 0;
+        queue.rear = -1;
     }
-    q->rear++;
-    q->data[q->rear % q->capacity] = data;
+    queue.rear++;
+    queue.data[queue.rear % queue.capacity] = data;
     printf("Enqueued: %d\n", data);
 }
 
-void dequeue(struct Queue *q) {
-    if (isEmpty(q)) {
+void dequeue() {
+    if (isEmpty()) {
         printf("Queue Underflow - cannot dequeue\n");
         return;
     }
-    printf("Dequeued: %d\n", q->data[q->front % q->capacity]);
-    if (q->front == q->rear) {
-        q->front = -1;
-        q->rear = -1;
+    printf("Dequeued: %d\n", queue.data[queue.front % queue.capacity]);
+    if (queue.front == queue.rear) {
+        queue.front = -1;
+        queue.rear = -1;
     } else {
-        q->front++;
+        queue.front++;
     }
 }
 
-void display(struct Queue *q) {
-    if (isEmpty(q)) {
+void display() {
+    if (isEmpty()) {
         printf("Queue is empty\n");
         return;
     }
     printf("Queue contents: Front -> ");
-    for (int i = q->front; i <= q->rear; i++) {
-        printf("%d ", q->data[i % q->capacity]);
+    for (int i = queue.front; i <= queue.rear; i++) {
+        printf("%d ", queue.data[i % queue.capacity]);
     }
     printf("<- Rear\n");
 }
 
-void peek(struct Queue *q) {
-    if (isEmpty(q)) {
+void peek() {
+    if (isEmpty()) {
         printf("Queue is empty - cannot peek\n");
         return;
     }
-    printf("Front: %d\n", q->data[q->front % q->capacity]);
-    printf("Rear: %d\n", q->data[q->rear % q->capacity]);
+    printf("Front: %d\n", queue.data[queue.front % queue.capacity]);
+    printf("Rear: %d\n", queue.data[queue.rear % queue.capacity]);
 }
 
 int main() {
@@ -77,22 +81,15 @@ int main() {
         return 1;
     }
     
-    struct Queue *queue = (struct Queue*)malloc(sizeof(struct Queue));
-    if (queue == NULL) {
-        printf("Memory allocation failed for queue structure\n");
-        return 1;
-    }
-    
-    queue->data = (int*)malloc(capacity * sizeof(int));
-    if (queue->data == NULL) {
+    queue.data = (int*)malloc(capacity * sizeof(int));
+    if (queue.data == NULL) {
         printf("Memory allocation failed for queue data\n");
-        free(queue);
         return 1;
     }
     
-    queue->front = -1;
-    queue->rear = -1;
-    queue->capacity = capacity;
+    queue.front = -1;
+    queue.rear = -1;
+    queue.capacity = capacity;
     
     while (1) {
         printf("\n=== Circular Queue Operations ===\n");
@@ -115,20 +112,19 @@ int main() {
             case 1:
                 printf("Enter element to enqueue: ");
                 scanf("%d", &data);
-                enqueue(queue, data);
+                enqueue(data);
                 break;
             case 2:
-                dequeue(queue);
+                dequeue();
                 break;
             case 3:
-                display(queue);
+                display();
                 break;
             case 4:
-                peek(queue);
+                peek();
                 break;
             case 5:
-                free(queue->data);
-                free(queue);
+                free(queue.data);
                 return 0;
         }
     }
