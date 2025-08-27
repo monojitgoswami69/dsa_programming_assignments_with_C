@@ -155,7 +155,7 @@ Queue data structures offer specific benefits and limitations that influence the
 
 Queue implementations can be categorized into two primary types: **Linear Queues** and **Circular Queues**. Linear queues represent the foundational approach with inherent limitations, while circular queues provide the optimal solution through mathematical innovation.
 
-### Linear Queue
+## Linear Queue
 
 Linear queues represent the foundational implementation of FIFO principles using straightforward array indexing with front and rear pointers. This implementation prioritizes conceptual simplicity while revealing inherent space utilization challenges.
 
@@ -176,11 +176,11 @@ Linear queues exhibit progressive space wastage as front elements are removed. D
 **The Core Problem:**
 The fundamental limitation of linear queues lies in their inability to reuse dequeued positions. Once elements are removed from the front, those array positions become permanently inaccessible, resulting in progressive capacity reduction despite the physical availability of memory space.
 
-#### Solution Approaches to Linear Queue Limitations
+## Solution Approaches to Linear Queue Limitations
 
 The space wastage problem in linear queues can be addressed through two distinct approaches, each with different performance and complexity trade-offs:
 
-##### Modified Linear Queue Approach
+### Modified Linear Queue Approach
 
 This approach addresses space wastage through element shifting strategies that reclaim front positions after dequeue operations. The method eliminates space wastage at the cost of increased computational complexity.
 
@@ -203,39 +203,76 @@ The shifting mechanism introduces significant overhead for large queues or high 
 - Applications with heavily skewed enqueue-to-dequeue ratios
 - Small queue sizes where shifting overhead remains negligible
 
-##### Circular Queue Approach (Optimal Solution)
+## Circular Queue Approach (Optimal Solution)
 
-The circular queue approach provides the optimal solution to both space utilization and performance challenges through mathematical wraparound logic. This implementation employs modulo arithmetic to create a conceptually infinite array within finite memory bounds.
+The circular queue approach provides the optimal solution to both space utilization and performance challenges through mathematical wraparound logic. This implementation employs modulo arithmetic to create a conceptually infinite array within finite memory bounds, representing one of the most elegant solutions in data structure design.
 
-**Core Innovation:**
-Circular queues treat the array as a circular buffer where the rear pointer wraps to the beginning when reaching the array end, provided space is available. This eliminates both space wastage and shifting overhead through elegant mathematical operations.
+### Core Innovation and Mathematical Foundation
 
-**Modulo Arithmetic Application:**
-- Rear advancement: `rear = (rear + 1) % array_size`
-- Front advancement: `front = (front + 1) % array_size`
-- Wraparound logic prevents index overflow while maintaining continuous operation
+Circular queues treat the array as a circular buffer where the rear pointer wraps to the beginning when reaching the array end, provided space is available. This eliminates both space wastage and shifting overhead through elegant mathematical operations that fundamentally redefine how we conceptualize array boundaries.
 
-**Performance Characteristics:**
-- Enqueue operations: O(1) constant time
-- Dequeue operations: O(1) constant time  
-- Space efficiency: 100% utilization with no wasted positions
-- Memory overhead: Minimal additional storage for count tracking
+**Mathematical Transformation:**
+Instead of viewing arrays as linear structures with fixed endpoints, circular queues employ modulo arithmetic to create a continuous, cyclical address space. The linear array with fixed start and end points is transformed into a continuous cycle where the last position connects back to the first position.
+
+### Modulo Arithmetic Application
+
+The mathematical foundation relies on modulo operations that enable seamless wraparound. The core operations use modulo arithmetic where rear and front pointers advance circularly using `(pointer + 1) % MAX_SIZE` calculations.
+
+**Wraparound Logic:**
+When the rear pointer reaches the maximum array size, modulo arithmetic automatically wraps it back to position 0, creating the circular behavior. Similarly, the front pointer wraps around when advancing past the last array position.
+
+### State Management and Boundary Conditions
+
+Circular queues require sophisticated state tracking to distinguish between empty and full conditions since both states can have `front == rear`.
+
+**Empty vs Full Disambiguation:**
+
+1. **Count-Based Approach** (Recommended): Uses an additional counter variable to track the current number of elements in the queue, making state determination straightforward.
+
+2. **Sacrificial Slot Approach**: Keeps one slot always empty to distinguish between empty and full states, sacrificing one position for simpler logic.
+
+
+### Performance Analysis and Complexity
+
+**Time Complexity:**
+- **Enqueue**: O(1) - Constant time insertion with modulo calculation
+- **Dequeue**: O(1) - Constant time removal with modulo calculation
+- **Peek/Front**: O(1) - Direct access to front element
+- **isEmpty/isFull**: O(1) - Simple state checks
+
+**Space Complexity:**
+- **Storage**: O(n) where n is the maximum queue capacity
+- **Auxiliary Space**: O(1) - Only requires front, rear, and count variables
+- **Space Efficiency**: 100% utilization of allocated array space
+
+**Performance Advantages:**
+- **No Element Shifting**: Unlike modified linear queues, no O(n) shifting operations
+- **Predictable Performance**: All operations maintain constant time complexity
+- **Cache Efficiency**: Sequential memory access patterns optimize cache performance
+- **Memory Locality**: Circular access patterns maintain spatial locality benefits
+
+### Comparison with Alternative Approaches
+
+| Aspect | Linear Queue | Modified Linear | Circular Queue |
+|--------|-------------|----------------|----------------|
+| **Space Efficiency** | Poor (degrades over time) | Excellent (100%) | Excellent (100%) |
+| **Time Complexity** | O(1) enqueue/dequeue | O(1) enqueue, O(n) dequeue | O(1) enqueue/dequeue |
+| **Implementation Complexity** | Simple | Moderate | Moderate |
+| **Memory Overhead** | Minimal | Minimal | Minimal |
+| **Production Suitability** | Educational only | Limited use cases | Industry standard |
+
+### Mathematical Elegance and Design Philosophy
+
+Circular queues exemplify how mathematical insight can fundamentally transform computational limitations. Rather than accepting trade-offs or implementing workarounds, the circular approach eliminates the underlying problem through conceptual innovation.
+
+**Design Philosophy Principles:**
+1. **Mathematical Foundation**: Modulo arithmetic provides elegant wraparound logic
+2. **Zero-Waste Principle**: Every allocated memory position remains perpetually usable
+3. **Constant Performance**: All operations maintain O(1) complexity regardless of usage patterns
+4. **Scalability**: Solution effectiveness remains consistent across different queue sizes
 
 **Technical Advantages:**
-Circular queues achieve optimal performance by eliminating the fundamental limitations of both linear queue space wastage and modified linear queue performance penalties. The mathematical elegance of modulo operations provides both space efficiency and constant-time operations.
-
-### Circular Queue
-
-Circular queues represent the definitive solution to queue implementation challenges, providing optimal space utilization and performance characteristics. This approach has become the standard for production queue implementations due to its mathematical elegance and practical efficiency.
-
-**Production Applications:**
-- High-performance computing systems requiring optimal queue operations
-- Operating system buffers and kernel-level data structures
-- Network packet processing in routers and communication devices
-- Real-time systems where predictable performance is critical
-
-**Why Circular Queues Are Optimal:**
-Circular queues solve the fundamental trade-off between space efficiency and time complexity that plagues other approaches. They achieve 100% space utilization while maintaining O(1) operation complexity, making them the preferred choice for production systems.
+Circular queues achieve optimal performance by eliminating the fundamental limitations of both linear queue space wastage and modified linear queue performance penalties. The mathematical elegance of modulo operations provides both space efficiency and constant-time operations, making circular queues the definitive solution for production queue implementations.
 
 ## Implementation Methods in C
 
@@ -244,11 +281,6 @@ Queue implementations in C can be categorized by their memory management strateg
 ### Static Array Implementation
 
 Static arrays provide the most direct implementation approach using compile-time memory allocation on the program stack. This method prioritizes execution speed and simplicity over flexibility.
-
-```c
-#define MAX_SIZE 100
-int queue[MAX_SIZE];  // Compile-time allocation
-```
 
 **Technical Characteristics:**
 - Memory allocation occurs at compile time on the stack
@@ -271,10 +303,6 @@ int queue[MAX_SIZE];  // Compile-time allocation
 
 Dynamic arrays utilize heap allocation to provide runtime flexibility in queue sizing. This approach trades some performance for increased adaptability and memory efficiency.
 
-```c
-int *queue = malloc(size * sizeof(int));  // Runtime allocation
-```
-
 **Implementation Benefits:**
 - Queue size determined at runtime based on application requirements
 - Memory allocation matches actual usage needs
@@ -296,13 +324,6 @@ int *queue = malloc(size * sizeof(int));  // Runtime allocation
 
 Structure-based implementations encapsulate queue data and operations within custom data types, providing enhanced code organization and support for multiple queue instances. This approach combines the benefits of data abstraction with flexible implementation choices.
 
-```c
-typedef struct {
-    int *data;
-    int front, rear, size;
-} Queue;
-```
-
 **Organizational Benefits:**
 - Encapsulation of related data elements within a single entity
 - Support for multiple independent queue instances
@@ -323,13 +344,6 @@ typedef struct {
 ### Linked List Implementation
 
 Linked list implementations provide dynamic memory allocation with no inherent size limitations. Each queue element exists as an independent node with pointer-based connectivity.
-
-```c
-typedef struct Node {
-    int data;
-    struct Node* next;
-} Node;
-```
 
 **Dynamic Characteristics:**
 - Memory allocation grows and shrinks with actual queue usage
@@ -359,14 +373,7 @@ The choice of implementation method depends on specific application requirements
 
 ## Implementations in this Repository
 
-This repository presents seven strategically selected queue implementations that demonstrate the evolution of data structure design from basic concepts to optimal solutions. The implementations are organized to show linear queues with their inherent problems, followed by the two solution approaches: modified linear queues (element shifting) and circular queues (modulo arithmetic).
-
-**Implementation Organization:** 
-- **Linear Queue Implementations** (2 implementations): Demonstrate the fundamental space wastage problem
-- **Modified Linear Queue Implementations** (2 implementations): Show the element shifting solution approach
-- **Circular Queue Implementations** (3 implementations): Present the optimal mathematical solution
-
-**Implementation Strategy:** Linear and modified linear queue implementations focus on array-based approaches because the space utilization challenges are specific to fixed-size arrays. Circular queues include all implementation types (array, struct, and linked list) as they represent complete, production-ready solutions.
+Linear and modified linear queue implementations focus on array-based approaches because the space utilization challenges are specific to fixed-size arrays. Circular queues include all implementation types (array, struct, and linked list) as they represent complete, production-ready solutions.
 
 ---
 
@@ -397,40 +404,14 @@ This implementation employs a static array with global front and rear pointer va
 
 The following sequence demonstrates the progressive space degradation inherent in linear queue operations:
 
-1. **Initial State**: 
-   ```c
-   int queue[5] = {0};  // Array capacity: 5 elements
-   int front = -1;      // Queue empty indicator
-   int rear = -1;       // No elements present
-   ```
-
-2. **Element Insertion**:
-   ```c
-   // After enqueuing elements 10, 20, 30
-   rear = 2; front = 0;
-   queue = [10, 20, 30, _, _]  // Positions 3-4 available
-   ```
-
-3. **Dequeue Operation Impact**:
-   ```c
-   // After dequeuing element 10
-   front = 1; rear = 2;
-   queue = [XX, 20, 30, _, _]  // Position 0 becomes inaccessible
-   ```
-
-4. **Space Wastage Progression**: Position 0 becomes permanently unusable for future operations.
+1. **Initial State**: Array capacity of 5 elements with empty queue indicators
+2. **Element Insertion**: After enqueuing elements 10, 20, 30, positions 3-4 remain available
+3. **Dequeue Operation Impact**: After dequeuing element 10, position 0 becomes inaccessible
+4. **Space Wastage Progression**: Position 0 becomes permanently unusable for future operations
 
 ### Phantom Capacity Exhaustion
 
-Linear queues exhibit a critical flaw where apparent capacity exhaustion occurs despite available array positions:
-
-```c
-// After multiple enqueue/dequeue cycles
-queue = [XX, XX, XX, 40, 50]
-front = 3; rear = 4;
-```
-
-Subsequent enqueue attempts fail because `rear == MAX_SIZE - 1`, even though positions 0-2 remain available but inaccessible due to implementation constraints.
+Linear queues exhibit a critical flaw where apparent capacity exhaustion occurs despite available array positions. After multiple enqueue/dequeue cycles, the queue array shows positions 0-2 as inaccessible while positions 3-4 contain current elements. Subsequent enqueue attempts fail because the rear pointer reaches maximum capacity, even though earlier positions remain available but inaccessible due to implementation constraints.
 
 ### Performance Analysis
 
@@ -459,6 +440,111 @@ Subsequent enqueue attempts fail because `rear == MAX_SIZE - 1`, even though pos
 
 This implementation serves as an excellent educational foundation, clearly demonstrating both the fundamental principles of queue operations and the limitations that drive the development of more sophisticated solutions. The simplicity of the approach makes it ideal for understanding basic concepts before progressing to optimized implementations.
 
+### Source Code
+```c
+#include <stdio.h>
+#define MAX_SIZE 100
+
+int queue[MAX_SIZE];
+int front = -1;
+int rear = -1;
+int size = 0;  
+
+int isEmpty() {
+    return front == -1;
+}
+
+int isFull() {
+    return rear == size - 1;
+}
+
+void enqueue(int data) {
+    if (isFull()) {
+        printf("Queue Overflow - cannot enqueue %d\n", data);
+        return;
+    }
+    if (isEmpty()) {
+        front = 0; 
+    }
+    rear++;
+    queue[rear] = data;
+    printf("Enqueued: %d\n", data);
+}
+
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue Underflow - cannot dequeue\n");
+        return;
+    }
+    printf("Dequeued: %d\n", queue[front]);
+    if (front == rear) {
+        front = -1;
+        rear = -1;
+    } 
+    else {
+        front++;
+    }
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue contents: Front -> ");
+    for (int i = front; i <= rear; i++) {
+        printf("%d ", queue[i]);
+    }
+    printf("<- Rear\n");
+}
+
+void peek() {
+    if (isEmpty()) {
+        printf("Queue is empty - cannot peek\n");
+        return;
+    }
+    printf("Front: %d\n", queue[front]);
+    printf("Rear: %d\n", queue[rear]);
+}
+
+int main() {
+    int choice, data;
+    printf("Enter queue size (max %d): ", MAX_SIZE);
+    scanf("%d", &size);
+    if (size <= 0 || size > MAX_SIZE) {
+        printf("Invalid queue size. Must be between 1 and %d.\n", MAX_SIZE);
+        return 1;
+    }
+    while (1) {
+        printf("\n=== Queue Operations ===\n");
+        printf("1. Enqueue(Insert)\n");
+        printf("2. Dequeue(Remove)\n");
+        printf("3. Display\n");
+        printf("4. Peek\n");
+        printf("5. Exit\n");
+        printf("Selection: ");
+        scanf("%d", &choice);
+        printf("\n");
+        while (choice < 1 || choice > 5) {
+            printf("Invalid selection\n");
+            printf("Selection: ");
+            scanf("%d", &choice);
+        }
+        switch (choice) {
+            case 1:
+                printf("Enter element to enqueue: ");
+                scanf("%d", &data);
+                enqueue(data);
+                break;
+            case 2: dequeue(); break;
+            case 3: display(); break;
+            case 4: peek(); break;
+            case 5: return 0;
+        }
+    }
+}
+```
+
 </details>
 
 <details>
@@ -469,14 +555,7 @@ This implementation serves as an excellent educational foundation, clearly demon
 The struct-based linear queue implementation encapsulates queue data within a custom structure while maintaining the same fundamental operational characteristics as the array-based approach. This design emphasizes code organization and multi-instance capability without addressing the underlying space utilization challenges.
 
 **Structural Design:**
-```c
-typedef struct {
-    int *data;      // Dynamically allocated array pointer
-    int front;      // Front element index
-    int rear;       // Rear element index  
-    int maxSize;    // Maximum queue capacity
-} Queue;
-```
+The implementation uses a Queue structure containing a dynamically allocated array pointer, front and rear element indices, and maximum queue capacity.
 
 **Implementation Benefits:**
 - Enhanced code organization through data encapsulation
@@ -486,30 +565,11 @@ typedef struct {
 
 ### Memory Management Strategy
 
-The struct-based approach employs dynamic memory allocation to provide runtime flexibility while maintaining the linear queue operational model:
-
-```c
-Queue* createQueue(int capacity) {
-    Queue* q = malloc(sizeof(Queue));
-    q->data = malloc(capacity * sizeof(int));
-    q->front = -1;
-    q->rear = -1;
-    q->maxSize = capacity;
-    return q;
-}
-```
+The struct-based approach employs dynamic memory allocation to provide runtime flexibility while maintaining the linear queue operational model through proper queue creation with memory allocation for both the queue structure and internal data array.
 
 ### Multi-Instance Capability
 
-This implementation enables simultaneous management of multiple queue instances with independent capacities and states:
-
-```c
-Queue* customerQueue = createQueue(50);
-Queue* orderQueue = createQueue(100);
-Queue* priorityQueue = createQueue(25);
-```
-
-Each queue maintains its own space wastage pattern and operational state, demonstrating how structural organization can coexist with algorithmic limitations.
+This implementation enables simultaneous management of multiple queue instances with independent capacities and states. Different queues can be created for customers, orders, and priority handling, each maintaining its own space wastage pattern and operational state, demonstrating how structural organization can coexist with algorithmic limitations.
 
 ### Performance Analysis
 
@@ -537,6 +597,148 @@ Each queue maintains its own space wastage pattern and operational state, demons
 ### Educational Value
 
 This implementation demonstrates how software engineering practices (encapsulation, modularity, professional structure) can improve code quality and maintainability even when underlying algorithms remain suboptimal. It serves as an important bridge between basic concepts and production-quality implementations.
+
+### Source Code
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct QueueStruct {
+    int *data;
+    int front;
+    int rear;
+    int size;
+    int capacity;
+};
+
+typedef struct QueueStruct Queue;
+
+Queue queue;
+
+int isEmpty() {
+    return queue.size == 0;
+}
+
+int isFull() {
+    return queue.size == queue.capacity;
+}
+
+void enqueue(int data) {
+    if (isFull()) {
+        printf("Queue Overflow - cannot enqueue %d\n", data);
+        return;
+    }
+    if (isEmpty()) {
+        queue.front = 0;
+        queue.rear = -1;
+    }
+    queue.rear++;
+    queue.data[queue.rear] = data;
+    queue.size++;
+    printf("Enqueued: %d\n", data);
+}
+
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue Underflow - cannot dequeue\n");
+        return;
+    }
+    printf("Dequeued: %d\n", queue.data[queue.front]);
+    queue.front++;
+    queue.size--;
+    
+    if (queue.size == 0) {
+        queue.front = -1;
+        queue.rear = -1;
+    }
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue contents: Front -> ");
+    for (int i = queue.front; i <= queue.rear; i++) {
+        printf("%d ", queue.data[i]);
+    }
+    printf("<- Rear\n");
+}
+
+void peek() {
+    if (isEmpty()) {
+        printf("Queue is empty - cannot peek\n");
+        return;
+    }
+    printf("Front: %d\n", queue.data[queue.front]);
+    printf("Rear: %d\n", queue.data[queue.rear]);
+}
+
+int main() {
+    int capacity, choice, data;
+    
+    printf("Enter queue capacity: ");
+    scanf("%d", &capacity);
+    
+    if (capacity <= 0) {
+        printf("Invalid queue capacity\n");
+        return 1;
+    }
+    
+    queue.data = (int*)malloc(capacity * sizeof(int));
+    if (queue.data == NULL) {
+        printf("Memory allocation failed for queue data\n");
+        return 1;
+    }
+    
+    queue.front = -1;
+    queue.rear = -1;
+    queue.size = 0;
+    queue.capacity = capacity;
+    
+    printf("Queue with capacity %d created successfully!\n", capacity);
+    
+    while (1) {
+        printf("\n=== Queue Operations ===\n");
+        printf("1. Enqueue(Insert)\n");
+        printf("2. Dequeue(Remove)\n");
+        printf("3. Display\n");
+        printf("4. Peek\n");
+        printf("5. Exit\n");
+        printf("Selection: ");
+        scanf("%d", &choice);
+        printf("\n");
+        
+        while (choice < 1 || choice > 5) {
+            printf("Invalid selection\n");
+            printf("Selection: ");
+            scanf("%d", &choice);
+        }
+        
+        switch (choice) {
+            case 1:
+                printf("Enter element to enqueue: ");
+                scanf("%d", &data);
+                enqueue(data);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                peek();
+                break;
+            case 5:
+                free(queue.data);
+                return 0;
+        }
+    }
+    
+    return 0;
+}
+```
 
 </details>
 
@@ -571,33 +773,9 @@ This implementation addresses linear queue space limitations through systematic 
 
 The following sequence demonstrates how element shifting eliminates space wastage:
 
-1. **Initial Full State**:
-   ```c
-   queue = [10, 20, 30, 40, 50]
-   rear = 4  // All positions occupied
-   ```
-
-2. **Dequeue with Shifting**:
-   ```c
-   // Remove element 10 and shift remaining elements
-   int value = queue[0];  // value = 10
-   
-   // Shift all remaining elements left
-   for (int i = 0; i < rear; i++) {
-       queue[i] = queue[i + 1];
-   }
-   rear--;
-   
-   // Result: [20, 30, 40, 50, __]
-   // Position 4 now available for new enqueue
-   ```
-
-3. **Space Reclamation**:
-   ```c
-   enqueue(60);
-   // Result: [20, 30, 40, 50, 60]
-   // 100% space utilization achieved
-   ```
+1. **Initial Full State**: Queue contains elements [10, 20, 30, 40, 50] with rear index at position 4, all positions occupied
+2. **Dequeue with Shifting**: Remove element 10 from front position, shift all remaining elements left by one position, update rear pointer to reflect new positions. Result: [20, 30, 40, 50, __] with position 4 now available
+3. **Space Reclamation**: Enqueue operation can now use position 4. Final result: [20, 30, 40, 50, 60] achieving 100% space utilization
 
 ### Performance Impact Analysis
 
@@ -641,6 +819,115 @@ For a queue with n elements, each dequeue operation requires (n-1) element movem
 
 This approach demonstrates that solving one algorithmic problem may introduce another. While element shifting successfully eliminates space wastage, it creates performance problems that make the solution impractical for most applications. This implementation serves as an important stepping stone in understanding why more sophisticated solutions like circular queues become necessary.
 
+### Source Code
+```c
+#include <stdio.h>
+#define MAX_SIZE 100
+
+int queue[MAX_SIZE];
+int front = -1;
+int rear = -1;
+int size = 0;  
+
+int isEmpty() {
+    return front == -1;
+}
+
+int isFull() {
+    return rear == size - 1;
+}
+
+void enqueue(int data) {
+    if (isFull()) {
+        printf("Queue Overflow - cannot enqueue %d\n", data);
+        return;
+    }
+    if (isEmpty()) {
+        front = 0; 
+    }
+    rear++;
+    queue[rear] = data;
+    printf("Enqueued: %d\n", data);
+}
+
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue Underflow - cannot dequeue\n");
+        return;
+    }
+    printf("Dequeued: %d\n", queue[front]);
+    if (front == rear) {
+        front = -1;
+        rear = -1;
+    } 
+    else {
+        for (int i = front; i < rear; i++) {
+            queue[i] = queue[i + 1];
+        }
+        rear--;  
+        front = 0;
+    }
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue contents: Front -> ");
+    for (int i = front; i <= rear; i++) {
+        printf("%d ", queue[i]);
+    }
+    printf("<- Rear\n");
+}
+
+void peek() {
+    if (isEmpty()) {
+        printf("Queue is empty - cannot peek\n");
+        return;
+    }
+    printf("Front: %d\n", queue[front]);
+    printf("Rear: %d\n", queue[rear]);
+}
+
+int main() {
+    int choice, data;
+    printf("Enter queue size (max %d): ", MAX_SIZE);
+    scanf("%d", &size);
+    if (size <= 0 || size > MAX_SIZE) {
+        printf("Invalid queue size. Must be between 1 and %d.\n", MAX_SIZE);
+        return 1;
+    }
+    while (1) {
+        printf("\n=== Queue Operations ===\n");
+        printf("1. Enqueue (Insert)\n");
+        printf("2. Dequeue (Remove with left shift)\n");
+        printf("3. Display\n");
+        printf("4. Peek\n");
+        printf("5. Exit\n");
+        printf("Selection: ");
+        scanf("%d", &choice);
+        printf("\n");
+        while (choice < 1 || choice > 5) {
+            printf("Invalid selection\n");
+            printf("Selection: ");
+            scanf("%d", &choice);
+        }
+        switch (choice) {
+            case 1:
+                printf("Enter element to enqueue: ");
+                scanf("%d", &data);
+                enqueue(data);
+                break;
+            case 2: dequeue(); break;
+            case 3: display(); break;
+            case 4: peek(); break;
+            case 5: return 0;
+        }
+    }
+}
+```
+
 </details>
 
 <details>
@@ -651,67 +938,29 @@ This approach demonstrates that solving one algorithmic problem may introduce an
 The struct-based modified linear queue implementation combines professional code organization with the element shifting solution approach. This design provides enhanced code structure and multi-instance capability while maintaining the same space-time trade-off characteristics as the array-based version.
 
 **Enhanced Structure Design:**
-```c
-typedef struct {
-    int *data;          // Dynamically allocated array
-    int rear;           // Index of the last element (no front needed!)
-    int maxSize;        // Maximum capacity
-    int currentSize;    // Current number of elements
-} ModifiedQueue;
-```
-
-**Structural Simplification:** The absence of a front pointer reflects the shifting strategy where elements always occupy positions starting from index 0, simplifying the logical model while maintaining the shifting overhead.
+The modified queue structure includes a dynamically allocated array, rear pointer, maximum size, and current size counter. The absence of a front pointer reflects the shifting strategy where elements always occupy positions starting from index 0.
 
 ### Professional Implementation Features
 
-This implementation demonstrates how professional software engineering practices can be applied even to algorithmically suboptimal solutions:
-
-```c
-ModifiedQueue* createModifiedQueue(int capacity) {
-    ModifiedQueue* mq = malloc(sizeof(ModifiedQueue));
-    mq->data = malloc(capacity * sizeof(int));
-    mq->rear = -1;
-    mq->maxSize = capacity;
-    mq->currentSize = 0;
-    return mq;
-}
-```
+This implementation demonstrates how professional software engineering practices can be applied even to algorithmically suboptimal solutions through proper memory management, error handling, and clean interface design.
 
 ### Multi-Instance Management
 
-The struct-based approach enables sophisticated queue management scenarios:
-
-```c
-// Different queues with appropriate sizing for different purposes
-ModifiedQueue* networkBuffer = createModifiedQueue(1024);
-ModifiedQueue* printQueue = createModifiedQueue(50);
-ModifiedQueue* eventQueue = createModifiedQueue(200);
-```
+The struct-based approach enables sophisticated queue management scenarios with different queues sized appropriately for different purposes:
+- Network buffers with large capacities (1024+ elements)
+- Print queues with moderate sizes (50-100 elements)  
+- Event queues with small, responsive sizes (200 elements)
 
 Each queue independently manages its shifting operations and space utilization, demonstrating how structural organization scales with system complexity.
 
 ### Operational Implementation
 
 The shifting mechanism receives professional implementation with proper error handling and state management:
-
-```c
-int dequeue(ModifiedQueue* mq) {
-    if (mq->currentSize == 0) {
-        return -1;  // Queue empty
-    }
-    
-    int frontData = mq->data[0];  // Always at index 0
-    
-    // Professional shifting with bounds checking
-    for (int i = 0; i < mq->rear; i++) {
-        mq->data[i] = mq->data[i + 1];
-    }
-    
-    mq->rear--;
-    mq->currentSize--;
-    return frontData;
-}
-```
+- Empty queue detection before dequeue operations
+- Element retrieval from front position (always index 0)
+- Professional shifting with bounds checking using loop iterations
+- Proper pointer and counter updates after shifting
+- Return of dequeued data with error codes for failure cases
 
 ### Performance Analysis
 
@@ -744,6 +993,151 @@ int dequeue(ModifiedQueue* mq) {
 
 This implementation demonstrates that professional software engineering practices remain valuable even when applied to algorithmically suboptimal solutions. While the struct-based organization improves code quality, maintainability, and usability, it cannot overcome the fundamental performance limitations inherent in the shifting approach. This serves as an important lesson in distinguishing between code quality and algorithmic efficiency.
 
+### Source Code
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct QueueStruct {
+    int *data;
+    int front;
+    int rear;
+    int size;
+    int capacity;
+};
+
+typedef struct QueueStruct Queue;
+
+Queue queue;
+
+int isEmpty() {
+    return queue.size == 0;
+}
+
+int isFull() {
+    return queue.size == queue.capacity;
+}
+
+void enqueue(int data) {
+    if (isFull()) {
+        printf("Queue Overflow - cannot enqueue %d\n", data);
+        return;
+    }
+    if (isEmpty()) {
+        queue.front = 0;
+        queue.rear = -1;
+    }
+    queue.rear++;
+    queue.data[queue.rear] = data;
+    queue.size++;
+    printf("Enqueued: %d\n", data);
+}
+
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue Underflow - cannot dequeue\n");
+        return;
+    }
+    printf("Dequeued: %d\n", queue.data[queue.front]);
+    queue.size--;
+    
+    if (queue.size == 0) {
+        queue.front = -1;
+        queue.rear = -1;
+    } else {
+        for (int i = queue.front; i < queue.rear; i++) {
+            queue.data[i] = queue.data[i + 1];
+        }
+        queue.rear--;
+        queue.front = 0;
+    }
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue contents: Front -> ");
+    for (int i = queue.front; i <= queue.rear; i++) {
+        printf("%d ", queue.data[i]);
+    }
+    printf("<- Rear\n");
+}
+
+void peek() {
+    if (isEmpty()) {
+        printf("Queue is empty - cannot peek\n");
+        return;
+    }
+    printf("Front: %d\n", queue.data[queue.front]);
+    printf("Rear: %d\n", queue.data[queue.rear]);
+}
+
+int main() {
+    int capacity, choice, data;
+    
+    printf("Enter queue capacity: ");
+    scanf("%d", &capacity);
+    
+    if (capacity <= 0) {
+        printf("Invalid queue capacity\n");
+        return 1;
+    }
+    
+    queue.data = (int*)malloc(capacity * sizeof(int));
+    if (queue.data == NULL) {
+        printf("Memory allocation failed for queue data\n");
+        return 1;
+    }
+    
+    queue.front = -1;
+    queue.rear = -1;
+    queue.size = 0;
+    queue.capacity = capacity;
+    
+    while (1) {
+        printf("\n=== Queue Operations ===\n");
+        printf("1. Enqueue (Insert)\n");
+        printf("2. Dequeue (Remove with left shift)\n");
+        printf("3. Display\n");
+        printf("4. Peek\n");
+        printf("5. Exit\n");
+        printf("Selection: ");
+        scanf("%d", &choice);
+        printf("\n");
+        
+        while (choice < 1 || choice > 5) {
+            printf("Invalid selection\n");
+            printf("Selection: ");
+            scanf("%d", &choice);
+        }
+        
+        switch (choice) {
+            case 1:
+                printf("Enter element to enqueue: ");
+                scanf("%d", &data);
+                enqueue(data);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                peek();
+                break;
+            case 5:
+                free(queue.data);
+                return 0;
+        }
+    }
+    
+    return 0;
+}
+```
+
 </details>
 
 ---
@@ -774,65 +1168,42 @@ Each implementation type maintains the core circular queue advantages while addr
 The array-based circular queue implementation represents the mathematical solution to linear queue limitations through modulo arithmetic operations. This approach achieves optimal space utilization and performance characteristics by treating fixed-size arrays as conceptually infinite circular buffers.
 
 **Core Mathematical Innovation:**
-Circular queues employ modulo arithmetic to enable pointer wraparound, creating a logical circle within linear memory:
-
-```c
-rear = (rear + 1) % MAX_SIZE;   // Rear advances circularly
-front = (front + 1) % MAX_SIZE; // Front advances circularly
-```
+Circular queues employ modulo arithmetic to enable pointer wraparound, creating a logical circle within linear memory through rear and front pointer advancement using modulo operations.
 
 ### Operational Sequence Analysis
 
 The following sequence demonstrates circular wraparound functionality:
 
 1. **Initial Setup**:
-   ```c
-   int queue[5] = {0};
-   int front = -1;
-   int rear = -1;
-   int count = 0;  // Essential for distinguishing empty/full states
-   ```
+   - Initialize integer array with specified capacity
+   - Set front and rear pointers to -1 (empty state)
+   - Initialize count to 0 for state tracking
 
 2. **Fill to Capacity**:
-   ```c
-   // After enqueueing 10, 20, 30, 40, 50
-   queue = [10, 20, 30, 40, 50]
-   front = 0, rear = 4, count = 5
-   ```
+   - After enqueueing elements 10, 20, 30, 40, 50
+   - Queue state: [10, 20, 30, 40, 50]
+   - Front pointer at 0, rear at 4, count equals 5
 
 3. **Dequeue Operations**:
-   ```c
-   dequeue();  // Remove 10
-   dequeue();  // Remove 20
-   // State: queue = [XX, XX, 30, 40, 50]
-   // front = 2, rear = 4, count = 3
-   ```
+   - Remove elements 10 and 20 from front
+   - Logical state: [XX, XX, 30, 40, 50]
+   - Front advances to 2, rear remains 4, count becomes 3
 
 4. **Wraparound Enqueue**:
-   ```c
-   enqueue(60);
-   // rear = (4 + 1) % 5 = 0  ← Mathematical wraparound
-   queue = [60, XX, 30, 40, 50]
-   front = 2, rear = 0, count = 4
-   ```
+   - Enqueue element 60 using modulo arithmetic
+   - Rear advances: (4 + 1) % 5 = 0 (mathematical wraparound)
+   - Final state: [60, XX, 30, 40, 50]
+   - Front at 2, rear at 0, count equals 4
 
 ### Mathematical Foundation
 
-The modulo operation `(index + 1) % array_size` provides the mathematical basis for circular behavior:
-
-- When `index < array_size - 1`: Normal increment behavior
-- When `index == array_size - 1`: Wraps to 0, creating circular effect
+The modulo operation provides the mathematical basis for circular behavior:
+- When index < array_size - 1: Normal increment behavior
+- When index == array_size - 1: Wraps to 0, creating circular effect
 
 ### State Management
 
-Circular queues require careful state tracking to distinguish between empty and full conditions:
-
-```c
-bool isEmpty() { return count == 0; }
-bool isFull() { return count == MAX_SIZE; }
-```
-
-The count variable becomes essential because pointer positions alone cannot differentiate between empty and full states in circular implementations.
+Circular queues require careful state tracking to distinguish between empty and full conditions using count variables, since pointer positions alone cannot differentiate between empty and full states in circular implementations.
 
 ### Performance Analysis
 
@@ -861,6 +1232,112 @@ The count variable becomes essential because pointer positions alone cannot diff
 
 Circular queues demonstrate how mathematical insight can fundamentally transform algorithmic limitations. Rather than accepting trade-offs or introducing workarounds, the circular approach eliminates the problem entirely through conceptual innovation. This implementation represents the gold standard for queue implementations in production systems.
 
+### Source Code
+```c
+#include <stdio.h>
+#define MAX_SIZE 100
+
+int queue[MAX_SIZE];
+int front = -1;
+int rear = -1;
+int size = 0;
+
+int isEmpty() {
+    return front == -1;
+}
+
+int isFull() {
+    if (isEmpty()) return 0;
+    return (rear + 1) % size == front % size;
+}
+
+void enqueue(int data) {
+    if (isFull()) {
+        printf("Queue Overflow - cannot enqueue %d\n", data);
+        return;
+    }
+    if (isEmpty()) {
+        front = 0;
+        rear = -1;
+    }
+    rear++;
+    queue[rear % size] = data;
+    printf("Enqueued: %d\n", data);
+}
+
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue Underflow - cannot dequeue\n");
+        return;
+    }
+    printf("Dequeued: %d\n", queue[front % size]);
+    if (front == rear) {
+        front = -1;
+        rear = -1;
+    } else {
+        front++;
+    }
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue contents: Front -> ");
+    for (int i = front; i <= rear; i++) {
+        printf("%d ", queue[i % size]);
+    }
+    printf("<- Rear\n");
+}
+
+void peek() {
+    if (isEmpty()) {
+        printf("Queue is empty - cannot peek\n");
+        return;
+    }
+    printf("Front: %d\n", queue[front % size]);
+    printf("Rear: %d\n", queue[rear % size]);
+}
+
+int main() {
+    int choice, data;
+    printf("Enter queue size (max %d): ", MAX_SIZE);
+    scanf("%d", &size);
+    if (size <= 0 || size > MAX_SIZE) {
+        printf("Invalid queue size. Must be between 1 and %d.\n", MAX_SIZE);
+        return 1;
+    }
+    while (1) {
+        printf("\n=== Circular Queue Operations ===\n");
+        printf("1. Enqueue(Insert)\n");
+        printf("2. Dequeue(Remove)\n");
+        printf("3. Display\n");
+        printf("4. Peek\n");
+        printf("5. Exit\n");
+        printf("Selection: ");
+        scanf("%d", &choice);
+        printf("\n");
+        while (choice < 1 || choice > 5) {
+            printf("Invalid selection\n");
+            printf("Selection: ");
+            scanf("%d", &choice);
+        }
+        switch (choice) {
+            case 1:
+                printf("Enter element to enqueue: ");
+                scanf("%d", &data);
+                enqueue(data);
+                break;
+            case 2: dequeue(); break;
+            case 3: display(); break;
+            case 4: peek(); break;
+            case 5: return 0;
+        }
+    }
+}
+```
+
 </details>
 
 <details>
@@ -871,94 +1348,41 @@ Circular queues demonstrate how mathematical insight can fundamentally transform
 The struct-based circular queue implementation combines the mathematical optimality of modulo arithmetic with professional software engineering practices. This approach provides the optimal performance characteristics of circular queues within a well-organized, maintainable code structure suitable for production applications.
 
 **Enhanced Structure Design:**
-```c
-typedef struct {
-    int *data;          // Dynamically allocated circular array
-    int front;          // Front pointer for dequeue operations
-    int rear;           // Rear pointer for enqueue operations
-    int maxSize;        // Maximum capacity of this queue instance
-    int count;          // Current number of elements
-} CircularQueue;
-```
-
-This structure acts as a complete queue management system, encapsulating all necessary data and state information for independent circular queue operation.
+The circular queue structure includes a dynamically allocated circular array, front and rear pointers for operations, maximum capacity, and current element count. This structure acts as a complete queue management system, encapsulating all necessary data and state information for independent circular queue operation.
 
 ### Professional Implementation Features
 
-The struct-based approach enables sophisticated queue management capabilities:
-
-```c
-CircularQueue* createCircularQueue(int capacity) {
-    CircularQueue* cq = malloc(sizeof(CircularQueue));
-    cq->data = malloc(capacity * sizeof(int));
-    cq->front = -1;
-    cq->rear = -1;
-    cq->maxSize = capacity;
-    cq->count = 0;
-    return cq;
-}
-```
+The struct-based approach enables sophisticated queue management capabilities through proper memory allocation, initialization of all structure members, and professional error handling patterns.
 
 ### Multi-Instance Management
 
 This implementation enables complex applications with multiple independent circular queues:
+- Network buffers with large capacities for high-throughput operations
+- Audio buffers with optimized sizes for multimedia processing
+- Event queues with smaller, responsive capacities for real-time processing
 
-```c
-// Different circular queues for different system components
-CircularQueue* networkBuffer = createCircularQueue(1024);
-CircularQueue* audioBuffer = createCircularQueue(4096);
-CircularQueue* eventQueue = createCircularQueue(256);
-
-// Each maintains optimal performance independently
-```
+Each queue maintains optimal performance independently without interference.
 
 ### Encapsulated Operations
 
 The circular logic receives professional implementation with clean interfaces:
 
-```c
-bool enqueue(CircularQueue* cq, int data) {
-    if (cq->count == cq->maxSize) {
-        return false;  // Queue full
-    }
-    
-    if (cq->front == -1) cq->front = 0;  // First element
-    
-    cq->rear = (cq->rear + 1) % cq->maxSize;  // Circular advancement
-    cq->data[cq->rear] = data;
-    cq->count++;
-    return true;
-}
+**Enqueue Operations:**
+- Check capacity limits before insertion
+- Handle first element special case
+- Apply modulo arithmetic for circular rear advancement
+- Update count and return operation status
 
-int dequeue(CircularQueue* cq) {
-    if (cq->count == 0) {
-        return -1;  // Queue empty
-    }
-    
-    int data = cq->data[cq->front];
-    cq->front = (cq->front + 1) % cq->maxSize;  // Circular advancement
-    cq->count--;
-    
-    if (cq->count == 0) {  // Reset when empty
-        cq->front = cq->rear = -1;
-    }
-    
-    return data;
-}
-```
+**Dequeue Operations:**  
+- Verify queue state before removal
+- Retrieve data from front position
+- Apply modulo arithmetic for circular front advancement
+- Reset pointers when queue becomes empty
+- Return dequeued data with proper error handling
 
 ### Memory Management Excellence
 
-Professional memory management ensures robust operation:
-
-```c
-void destroyCircularQueue(CircularQueue* cq) {
-    if (cq) {
-        free(cq->data);
-        free(cq);
-    }
-}
-```
+Professional memory management ensures robust operation through proper allocation validation, structured deallocation of both data array and queue structure, and null pointer safety checks.
 
 ### Performance Analysis
 
@@ -1003,6 +1427,143 @@ void printQueueStatistics(CircularQueue* cq);
 
 This implementation represents the synthesis of mathematical optimality and software engineering excellence. It demonstrates how the best algorithmic solutions can be made even more valuable through professional implementation practices, making them suitable for production deployment in complex systems.
 
+### Source Code
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct QueueStruct {
+    int *data;
+    int front;
+    int rear;
+    int capacity;
+};
+
+typedef struct QueueStruct Queue;
+
+Queue queue;
+
+int isEmpty() {
+    return queue.front == -1;
+}
+
+int isFull() {
+    if (isEmpty()) return 0;
+    return (queue.rear + 1) % queue.capacity == queue.front % queue.capacity;
+}
+
+void enqueue(int data) {
+    if (isFull()) {
+        printf("Queue Overflow - cannot enqueue %d\n", data);
+        return;
+    }
+    if (isEmpty()) {
+        queue.front = 0;
+        queue.rear = -1;
+    }
+    queue.rear++;
+    queue.data[queue.rear % queue.capacity] = data;
+    printf("Enqueued: %d\n", data);
+}
+
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue Underflow - cannot dequeue\n");
+        return;
+    }
+    printf("Dequeued: %d\n", queue.data[queue.front % queue.capacity]);
+    if (queue.front == queue.rear) {
+        queue.front = -1;
+        queue.rear = -1;
+    } else {
+        queue.front++;
+    }
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue contents: Front -> ");
+    for (int i = queue.front; i <= queue.rear; i++) {
+        printf("%d ", queue.data[i % queue.capacity]);
+    }
+    printf("<- Rear\n");
+}
+
+void peek() {
+    if (isEmpty()) {
+        printf("Queue is empty - cannot peek\n");
+        return;
+    }
+    printf("Front: %d\n", queue.data[queue.front % queue.capacity]);
+    printf("Rear: %d\n", queue.data[queue.rear % queue.capacity]);
+}
+
+int main() {
+    int capacity, choice, data;
+    
+    printf("Enter queue capacity: ");
+    scanf("%d", &capacity);
+    
+    if (capacity <= 0) {
+        printf("Invalid queue capacity\n");
+        return 1;
+    }
+    
+    queue.data = (int*)malloc(capacity * sizeof(int));
+    if (queue.data == NULL) {
+        printf("Memory allocation failed for queue data\n");
+        return 1;
+    }
+    
+    queue.front = -1;
+    queue.rear = -1;
+    queue.capacity = capacity;
+    
+    while (1) {
+        printf("\n=== Circular Queue Operations ===\n");
+        printf("1. Enqueue(Insert)\n");
+        printf("2. Dequeue(Remove)\n");
+        printf("3. Display\n");
+        printf("4. Peek\n");
+        printf("5. Exit\n");
+        printf("Selection: ");
+        scanf("%d", &choice);
+        printf("\n");
+        
+        while (choice < 1 || choice > 5) {
+            printf("Invalid selection\n");
+            printf("Selection: ");
+            scanf("%d", &choice);
+        }
+        
+        switch (choice) {
+            case 1:
+                printf("Enter element to enqueue: ");
+                scanf("%d", &data);
+                enqueue(data);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                peek();
+                break;
+            case 5:
+                free(queue.data);
+                return 0;
+        }
+    }
+    
+    return 0;
+}
+```
+
 </details>
 
 <details>
@@ -1013,105 +1574,25 @@ This implementation represents the synthesis of mathematical optimality and soft
 The linked list circular queue implementation creates true circular topology in memory through dynamic node allocation and pointer-based connectivity. This approach combines the unlimited growth potential of linked lists with circular queue principles, providing the most flexible implementation variant.
 
 **Unique Structural Design:**
-```c
-typedef struct Node {
-    int data;
-    struct Node* next;  // Points to next node in circle
-} Node;
+The implementation uses specialized data structures where Node contains data and next pointer for circular connectivity, while CircularLinkedQueue maintains only a rear pointer since in a true circle, rear->next always points to the front, eliminating the need for separate front pointer management.
 
-typedef struct {
-    Node* rear;         // Points to last node (front is rear->next!)
-    int count;          // Track number of elements
-    int maxSize;        // Optional: capacity limit (0 = unlimited)
-} CircularLinkedQueue;
-```
-
-**Key Innovation:** Only the rear pointer is maintained because in a true circle, `rear->next` always points to the front, eliminating the need for separate front pointer management.
+**Key Innovation:** Only the rear pointer is maintained because in a true circle, the rear's next pointer always points to the front, eliminating the need for separate front pointer management.
 
 ### True Circular Topology
 
-This implementation creates actual circular structures in memory:
-
-```c
-// Single element circle
-Node* node = malloc(sizeof(Node));
-node->data = 10;
-node->next = node;  // Points to itself - perfect circle!
-```
+This implementation creates actual circular structures in memory where each node connects to the next, with the last node connecting back to the first. For a single element, the node points to itself creating a perfect circle.
 
 ### Dynamic Circular Operations
 
-The circular linked list grows and shrinks while maintaining circular topology:
-
-```c
-void enqueue(CircularLinkedQueue* clq, int data) {
-    Node* newNode = malloc(sizeof(Node));
-    newNode->data = data;
-    
-    if (clq->rear == NULL) {
-        // First node creates self-pointing circle
-        newNode->next = newNode;
-        clq->rear = newNode;
-    } else {
-        // Insert into existing circle
-        newNode->next = clq->rear->next;  // Point to current front
-        clq->rear->next = newNode;        // Link previous rear to new node
-        clq->rear = newNode;              // Update rear pointer
-    }
-    
-    clq->count++;
-}
-
-int dequeue(CircularLinkedQueue* clq) {
-    if (clq->count == 0) return -1;
-    
-    Node* front = clq->rear->next;  // Front is always rear->next
-    int data = front->data;
-    
-    if (clq->count == 1) {
-        // Last element - break the circle
-        free(front);
-        clq->rear = NULL;
-    } else {
-        // Remove front, maintain circle
-        clq->rear->next = front->next;
-        free(front);
-    }
-    
-    clq->count--;
-    return data;
-}
-```
+The circular linked list grows and shrinks while maintaining circular topology. Enqueue operations handle first node creation (self-pointing circle) and insertion into existing circles by updating pointer linkages. Dequeue operations manage front removal while preserving circular connections and handle the special case of removing the last element.
 
 ### Circular Traversal Capability
 
-One unique feature is infinite circular traversal:
-
-```c
-void traverseCircle(CircularLinkedQueue* clq, int cycles) {
-    if (clq->count == 0) return;
-    
-    Node* current = clq->rear->next;  // Start at front
-    int totalElements = cycles * clq->count;
-    
-    for (int i = 0; i < totalElements; i++) {
-        printf("%d ", current->data);
-        current = current->next;  // Automatically wraps around
-    }
-}
-```
+One unique feature is infinite circular traversal where starting from the front (rear->next), the implementation can traverse multiple complete cycles through the queue elements, automatically wrapping around due to the circular pointer structure.
 
 ### Flexible Capacity Management
 
-This implementation can operate as bounded or unbounded queue:
-
-```c
-// Unbounded circular queue
-CircularLinkedQueue unlimitedQueue = {NULL, 0, 0};
-
-// Bounded circular queue
-CircularLinkedQueue boundedQueue = {NULL, 0, 100};
-```
+This implementation can operate as bounded or unbounded queue by setting capacity limits, providing flexibility for different application requirements.
 
 ### Performance Analysis
 
@@ -1141,22 +1622,189 @@ CircularLinkedQueue boundedQueue = {NULL, 0, 100};
 
 ### Advanced Features
 
-This implementation enables sophisticated circular queue operations:
-
-```c
-// Circular merge operation
-void mergeCircularQueues(CircularLinkedQueue* dest, CircularLinkedQueue* src);
-
-// Circular split operation  
-CircularLinkedQueue* splitCircularQueue(CircularLinkedQueue* source, int position);
-
-// Circular rotation
-void rotateQueue(CircularLinkedQueue* clq, int positions);
-```
+This implementation enables sophisticated circular queue operations including circular merge operations, circular split operations, and circular rotation capabilities that take advantage of the dynamic linked structure.
 
 ### Implementation Insight
 
 The linked list circular queue represents the ultimate flexibility in queue implementation. It demonstrates how circular queue principles can be applied beyond fixed arrays to create truly dynamic, circular data structures. While it may not be the optimal choice for high-performance scenarios, it provides unmatched flexibility for applications requiring dynamic circular behavior.
+
+### Source Code
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct NodeStruct {
+    int data;
+    struct NodeStruct *next;
+};
+
+struct QueueStruct {
+    struct NodeStruct *rear;
+    int size;
+    int capacity;
+};
+
+typedef struct NodeStruct Node;
+typedef struct QueueStruct Queue;
+
+Queue queue;
+
+int isEmpty() {
+    return queue.rear == NULL;
+}
+
+int isFull() {
+    return queue.size == queue.capacity;
+}
+
+void enqueue(int data) {
+    if (isFull()) {
+        printf("Queue Overflow - cannot enqueue %d\n", data);
+        return;
+    }
+    
+    Node *newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed - cannot enqueue %d\n", data);
+        return;
+    }
+    
+    newNode->data = data;
+    
+    if (isEmpty()) {
+        newNode->next = newNode;
+        queue.rear = newNode;
+    } else {
+        newNode->next = queue.rear->next;
+        queue.rear->next = newNode;
+        queue.rear = newNode;
+    }
+    
+    queue.size++;
+    printf("Enqueued: %d\n", data);
+}
+
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue Underflow - cannot dequeue\n");
+        return;
+    }
+    
+    Node *front = queue.rear->next;
+    printf("Dequeued: %d\n", front->data);
+    
+    if (queue.size == 1) {
+        free(front);
+        queue.rear = NULL;
+    } else {
+        queue.rear->next = front->next;
+        free(front);
+    }
+    
+    queue.size--;
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+    
+    printf("Queue contents: Front -> ");
+    Node *current = queue.rear->next;
+    
+    do {
+        printf("%d ", current->data);
+        current = current->next;
+    } while (current != queue.rear->next);
+    
+    printf("<- Rear\n");
+}
+
+void peek() {
+    if (isEmpty()) {
+        printf("Queue is empty - cannot peek\n");
+        return;
+    }
+    printf("Front: %d\n", queue.rear->next->data);
+    printf("Rear: %d\n", queue.rear->data);
+}
+
+void freeQueue() {
+    if (isEmpty()) return;
+    
+    Node *current = queue.rear->next;
+    Node *temp;
+    
+    do {
+        temp = current;
+        current = current->next;
+        free(temp);
+    } while (current != queue.rear->next);
+    
+    queue.rear = NULL;
+    queue.size = 0;
+}
+
+int main() {
+    int capacity, choice, data;
+    
+    printf("Enter queue capacity: ");
+    scanf("%d", &capacity);
+    
+    if (capacity <= 0) {
+        printf("Invalid queue capacity\n");
+        return 1;
+    }
+    
+    queue.rear = NULL;
+    queue.size = 0;
+    queue.capacity = capacity;
+    
+    printf("Circular Queue with Linked List (capacity %d) created successfully!\n", capacity);
+    
+    while (1) {
+        printf("\n=== Circular Queue Operations ===\n");
+        printf("1. Enqueue(Insert)\n");
+        printf("2. Dequeue(Remove)\n");
+        printf("3. Display\n");
+        printf("4. Peek\n");
+        printf("5. Exit\n");
+        printf("Selection: ");
+        scanf("%d", &choice);
+        printf("\n");
+        
+        while (choice < 1 || choice > 5) {
+            printf("Invalid selection\n");
+            printf("Selection: ");
+            scanf("%d", &choice);
+        }
+        
+        switch (choice) {
+            case 1:
+                printf("Enter element to enqueue: ");
+                scanf("%d", &data);
+                enqueue(data);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                peek();
+                break;
+            case 5:
+                freeQueue();
+                printf("Queue freed successfully!\n");
+                return 0;
+        }
+    }
+    
+    return 0;
+}
+```
 
 </details>
 
@@ -1176,11 +1824,6 @@ The linked list circular queue represents the ultimate flexibility in queue impl
 
 ## Implementation Selection Guide
 
-### Educational Progression
-1. **Linear Queues**: Understand FIFO principles and identify core space utilization problems
-2. **Modified Linear Queues**: Explore the element shifting solution approach and its performance implications
-3. **Circular Queues**: Master the optimal mathematical solution using modulo arithmetic
-
 ### Production Implementation Decisions
 - **Circular Array**: High-performance systems with predetermined maximum capacity requirements
 - **Circular Struct**: Professional applications needing multiple queue instances with runtime configuration
@@ -1194,21 +1837,8 @@ The linked list circular queue represents the ultimate flexibility in queue impl
 
 ## Conclusion
 
-This repository demonstrates the systematic approach to solving fundamental data structure challenges through progressive solution development and mathematical innovation.
+This repository demonstrates the systematic approach to solving the fundamental queue data structure challenge through progressive solution development and mathematical improvement
 
-**The Problem-Solution Journey:**
 1. **Linear Queues** establish the foundational FIFO principles while exposing critical space utilization limitations
 2. **Modified Linear Queue Approach** represents the first solution attempt using element shifting, trading performance for space efficiency
-3. **Circular Queue Approach** provides the optimal solution through mathematical innovation, achieving both space efficiency and performance optimization
-
-**Key Technical Insight:** The evolution from linear to circular queues illustrates how mathematical abstraction (modulo arithmetic) can fundamentally transform algorithmic constraints. Rather than accepting limitations or compromising performance, the circular approach redefines the problem space itself.
-
-**Production Implementation Guidelines:** Circular queues represent the industry standard for queue implementations due to their optimal performance characteristics and reliable behavior under all operational conditions.
-
-**Educational Framework:** This progression demonstrates the iterative nature of algorithmic development - from identifying fundamental problems, through exploring direct solutions, to achieving elegant innovations that resolve multiple constraints simultaneously.
-
-**Implementation Selection Criteria:** The optimal data structure selection depends on balancing space requirements, time complexity constraints, and implementation complexity within specific application contexts.
-
----
-
-*Efficient algorithms emerge from understanding problems deeply and thinking creatively about solutions.*
+3. **Circular Queue Approach** provides the optimal solution through mathematical innovation, achieving both space efficiency and performance optimization with modulo arithmetic
