@@ -1,7 +1,6 @@
 # Arrays in C - Complete Guide
 
 ## Table of Contents
-- [Overview](#overview)
 - [What is an Array?](#what-is-an-array)
 - [Array Fundamentals](#array-fundamentals)
 - [Array Declaration and Initialization](#array-declaration-and-initialization)
@@ -13,10 +12,6 @@
 - [Applications](#applications)
 - [When to Use Arrays](#when-to-use-arrays)
 - [Best Practices](#best-practices)
-
-## Overview
-
-This repository contains **two different implementations** of fundamental array operations in C programming language, demonstrating both **static** and **dynamic** memory allocation approaches. Both implementations provide identical user interfaces while showcasing different memory management strategies.
 
 ## What is an Array?
 
@@ -38,12 +33,12 @@ Think of an array as a **row of mailboxes** in an apartment building:
 
 An array A of size n can be mathematically represented as:
 ```
-A = {a₀, a₁, a₂, ..., aₙ₋₁}
+A = {a[0], a[1], a[2], ..., a[n-1]}
 ```
 Where:
 - **A** is the array name
 - **n** is the size of the array
-- **aᵢ** represents the element at index i
+- **a[i]** represents the element at index i
 - **0 ≤ i < n** (zero-based indexing in C)
 
 ### Key Characteristics
@@ -203,56 +198,7 @@ int value = arr[index];
 
 **Why O(1)?** The memory address can be calculated directly using the formula above, regardless of array size.
 
-#### 2. **Linear Search Implementation**
-```c
-int linearSearch(int arr[], int n, int target) {
-    int comparisons = 0;
-    for(int i = 0; i < n; i++) {
-        comparisons++;
-        if(arr[i] == target) {
-            printf("Found at index %d with %d comparisons\n", i, comparisons);
-            return i;
-        }
-    }
-    printf("Not found after %d comparisons\n", comparisons);
-    return -1;
-}
-```
-
-**Performance Characteristics:**
-- **Best Case**: O(1) - element is at first position
-- **Average Case**: O(n/2) - element is in the middle
-- **Worst Case**: O(n) - element is at last position or not found
-
-#### 3. **Binary Search Implementation**
-```c
-int binarySearch(int arr[], int n, int target) {
-    int left = 0, right = n - 1, comparisons = 0;
-    
-    while(left <= right) {
-        int mid = left + (right - left) / 2;  // Prevents overflow
-        comparisons++;
-        
-        if(arr[mid] == target) {
-            printf("Found at index %d with %d comparisons\n", mid, comparisons);
-            return mid;
-        }
-        
-        if(arr[mid] < target) {
-            left = mid + 1;
-        } else {
-            right = mid - 1;
-        }
-    }
-    printf("Not found after %d comparisons\n", comparisons);
-    return -1;
-}
-```
-
-**Prerequisites**: Array must be sorted
-**Performance**: O(log n) for all cases
-
-#### 4. **Array Insertion**
+#### 2. **Array Insertion**
 ```c
 // Insert element at specific position
 int insertElement(int arr[], int *n, int pos, int value, int capacity) {
@@ -282,7 +228,7 @@ int insertElement(int arr[], int *n, int pos, int value, int capacity) {
 - **Average Case**: O(n/2) - insertion in middle
 - **Worst Case**: O(n) - insertion at beginning
 
-#### 5. **Array Deletion**
+#### 3. **Array Deletion**
 ```c
 // Delete element at specific position
 int deleteElement(int arr[], int *n, int pos) {
@@ -303,92 +249,6 @@ int deleteElement(int arr[], int *n, int pos) {
     
     (*n)--;
     return 1;
-}
-```
-
-### Advanced Operations
-
-#### 1. **Array Rotation**
-```c
-// Left rotate array by d positions
-void leftRotate(int arr[], int n, int d) {
-    d = d % n;  // Handle cases where d > n
-    
-    // Reverse first d elements
-    reverse(arr, 0, d - 1);
-    // Reverse remaining elements
-    reverse(arr, d, n - 1);
-    // Reverse entire array
-    reverse(arr, 0, n - 1);
-}
-
-void reverse(int arr[], int start, int end) {
-    while(start < end) {
-        int temp = arr[start];
-        arr[start] = arr[end];
-        arr[end] = temp;
-        start++;
-        end--;
-    }
-}
-```
-
-#### 2. **Array Merging**
-```c
-// Merge two sorted arrays
-void mergeSortedArrays(int arr1[], int n1, int arr2[], int n2, int result[]) {
-    int i = 0, j = 0, k = 0;
-    
-    while(i < n1 && j < n2) {
-        if(arr1[i] <= arr2[j]) {
-            result[k++] = arr1[i++];
-        } else {
-            result[k++] = arr2[j++];
-        }
-    }
-    
-    // Copy remaining elements
-    while(i < n1) result[k++] = arr1[i++];
-    while(j < n2) result[k++] = arr2[j++];
-}
-```
-
-#### 3. **Finding Maximum and Minimum**
-```c
-void findMinMax(int arr[], int n, int *min, int *max) {
-    if(n <= 0) return;
-    
-    *min = *max = arr[0];
-    
-    for(int i = 1; i < n; i++) {
-        if(arr[i] < *min) *min = arr[i];
-        if(arr[i] > *max) *max = arr[i];
-    }
-}
-
-// Optimized version with fewer comparisons
-void findMinMaxOptimized(int arr[], int n, int *min, int *max) {
-    int i;
-    
-    if(n % 2 == 0) {
-        *min = (arr[0] < arr[1]) ? arr[0] : arr[1];
-        *max = (arr[0] > arr[1]) ? arr[0] : arr[1];
-        i = 2;
-    } else {
-        *min = *max = arr[0];
-        i = 1;
-    }
-    
-    while(i < n - 1) {
-        if(arr[i] < arr[i + 1]) {
-            if(arr[i] < *min) *min = arr[i];
-            if(arr[i + 1] > *max) *max = arr[i + 1];
-        } else {
-            if(arr[i + 1] < *min) *min = arr[i + 1];
-            if(arr[i] > *max) *max = arr[i];
-        }
-        i += 2;
-    }
 }
 ```
 
