@@ -85,13 +85,17 @@ void searchElement(int element){
         printf("Array is empty. Please read array first.\n");
         return;
     }
+    int comparisons = 0;
     for (int i = 0; i < n; i++){
+        comparisons++;
         if (arr[i] == element){
             printf("Element found at position: %d\n", i + 1);
+            printf("Linear Search - Number of comparisons: %d\n", comparisons);
             return;
         }
     }
     printf("Element not found\n");
+    printf("Linear Search - Number of comparisons: %d\n", comparisons);
 }
 
 void sortArray(){
@@ -128,11 +132,14 @@ void binarySearchElement(int element){
     for (int i = 0; i < n; i++) printf("%d ", arr[i]);
     printf("\n");
     
+    int comparisons = 0;
     int left = 0, right = n - 1;
     while (left <= right){
         int mid = left + (right - left) / 2;
+        comparisons++;
         if (arr[mid] == element){
             printf("Element found at position: %d (in sorted array)\n", mid + 1);
+            printf("Binary Search - Number of comparisons: %d\n", comparisons);
             return;
         }
         if (arr[mid] < element){
@@ -142,6 +149,7 @@ void binarySearchElement(int element){
         }
     }
     printf("Element not found\n");
+    printf("Binary Search - Number of comparisons: %d\n", comparisons);
 }
 
 int main(){
@@ -160,12 +168,6 @@ int main(){
         printf("9. quit\n");
         printf("Selection: ");
         scanf("%d", &choice);
-        
-        if (choice == 9) return 0;
-        if (!(choice > 0 && choice <= 9)){
-            printf("Invalid input\n");
-            continue;
-        }
         
         switch(choice){
             case 1: {
@@ -215,6 +217,13 @@ int main(){
                 printf("Enter the element to search: ");
                 scanf("%d", &element);
                 binarySearchElement(element);
+                break;
+            }
+            case 9: {
+                return 0;
+            }
+            default: {
+                printf("Invalid input\n");
                 break;
             }
         }
