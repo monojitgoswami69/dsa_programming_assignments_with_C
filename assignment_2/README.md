@@ -6,9 +6,23 @@
 - [Uses of Stack](#uses-of-stack)
 - [Advantages and Disadvantages](#advantages-and-disadvantages)
 - [Methods to Implement Stack in C](#methods-to-implement-stack-in-c)
-- [Implementations in this Repository](#implementations-in-this-repository)
-
-## What is a Stack?
+- [Implementations in this Repository](#implementations-in-th    while (1) {
+        printf("\nSelect operation to perform:\n");
+        printf("1. View stack\n2. Push\n3. Pop\n4. Peek\n5. Exit\nSelection: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1: viewStack(); break;
+            case 2: push(); break;
+            case 3: pop(); break;
+            case 4: peek(); break;
+            case 5: 
+                free(stack.arr);
+                return 0;
+            default:
+                printf("Invalid selection\n");
+                break;
+        }
+    } What is a Stack?
 
 A **Stack** is a linear data structure that follows the **LIFO (Last In, First Out)** principle. This means that the last element added to the stack is the first one to be removed. Think of it like a stack of plates - you can only add or remove plates from the top.
 
@@ -237,10 +251,6 @@ int main() {
         printf("\nSelect operation to perform:\n");
         printf("1. View stack\n2. Push\n3. Pop\n4. Peek\n5. Exit\nSelection: ");
         scanf("%d", &choice);
-        while (choice <= 0 || choice >= 6) {
-            printf("Invalid selection\nSelection: ");
-            scanf("%d", &choice);
-        }
         switch (choice) {
             case 1: viewStack(); break;
             case 2: push(); break;
@@ -249,6 +259,9 @@ int main() {
             case 5: 
                 free(stack);
                 return 0;
+            default:
+                printf("Invalid selection\n");
+                break;
         }
     }
 }
@@ -515,10 +528,6 @@ int main() {
         printf("\nSelect operation to perform:\n");
         printf("1. View stack\n2. Push\n3. Pop\n4. Peek\n5. Exit\nSelection: ");
         scanf("%d", &choice);
-        while (choice <= 0 || choice >= 6) {
-            printf("Invalid selection\nSelection: ");
-            scanf("%d", &choice);
-        }
         switch (choice) {
             case 1: viewStack(); break;
             case 2: push(); break;
@@ -531,6 +540,9 @@ int main() {
                     free(temp);
                 }
                 return 0;
+            default:
+                printf("Invalid selection\n");
+                break;
         }
     }
 }

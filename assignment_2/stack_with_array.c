@@ -71,10 +71,6 @@ int main() {
         printf("\nSelect operation to perform:\n");
         printf("1. View stack\n2. Push\n3. Pop\n4. Peek\n5. Exit\nSelection: ");
         scanf("%d", &choice);
-        while (choice <= 0 || choice >= 6) {
-            printf("Invalid selection\nSelection: ");
-            scanf("%d", &choice);
-        }
         switch (choice) {
             case 1: viewStack(); break;
             case 2: push(); break;
@@ -83,6 +79,9 @@ int main() {
             case 5: 
                 free(stack);
                 return 0;
+            default:
+                printf("Invalid selection\n");
+                break;
         }
     }
 }
