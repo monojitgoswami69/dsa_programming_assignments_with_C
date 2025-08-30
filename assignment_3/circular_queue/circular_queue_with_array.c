@@ -82,11 +82,7 @@ int main() {
         printf("Selection: ");
         scanf("%d", &choice);
         printf("\n");
-        while (choice < 1 || choice > 5) {
-            printf("Invalid selection\n");
-            printf("Selection: ");
-            scanf("%d", &choice);
-        }
+        
         switch (choice) {
             case 1:
                 printf("Enter element to enqueue: ");
@@ -97,6 +93,9 @@ int main() {
             case 3: display(); break;
             case 4: peek(); break;
             case 5: return 0;
+            default:
+                printf("Invalid selection\n");
+                break;
         }
     }
 }

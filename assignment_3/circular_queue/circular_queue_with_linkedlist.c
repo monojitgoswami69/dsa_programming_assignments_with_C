@@ -68,7 +68,6 @@ void dequeue() {
         queue.rear->next = front->next;
         free(front);
     }
-    
     queue.size--;
 }
 
@@ -98,22 +97,6 @@ void peek() {
     printf("Rear: %d\n", queue.rear->data);
 }
 
-void freeQueue() {
-    if (isEmpty()) return;
-    
-    Node *current = queue.rear->next;
-    Node *temp;
-    
-    do {
-        temp = current;
-        current = current->next;
-        free(temp);
-    } while (current != queue.rear->next);
-    
-    queue.rear = NULL;
-    queue.size = 0;
-}
-
 int main() {
     int capacity, choice, data;
     
@@ -129,8 +112,6 @@ int main() {
     queue.size = 0;
     queue.capacity = capacity;
     
-    printf("Circular Queue with Linked List (capacity %d) created successfully!\n", capacity);
-    
     while (1) {
         printf("\n=== Circular Queue Operations ===\n");
         printf("1. Enqueue(Insert)\n");
@@ -141,12 +122,6 @@ int main() {
         printf("Selection: ");
         scanf("%d", &choice);
         printf("\n");
-        
-        while (choice < 1 || choice > 5) {
-            printf("Invalid selection\n");
-            printf("Selection: ");
-            scanf("%d", &choice);
-        }
         
         switch (choice) {
             case 1:
@@ -164,9 +139,24 @@ int main() {
                 peek();
                 break;
             case 5:
-                freeQueue();
-                printf("Queue freed successfully!\n");
+                if (!isEmpty()) {
+                    Node *current = queue.rear->next;
+                    Node *temp;
+                    int count = queue.size;
+                    
+                    for (int i = 0; i < count; i++) {
+                        temp = current;
+                        current = current->next;
+                        free(temp);
+                    }
+                    
+                    queue.rear = NULL;
+                    queue.size = 0;
+                }
                 return 0;
+            default:
+                printf("Invalid selection\n");
+                break;
         }
     }
     

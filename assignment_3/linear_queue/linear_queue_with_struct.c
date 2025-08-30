@@ -94,8 +94,6 @@ int main() {
     queue.size = 0;
     queue.capacity = capacity;
     
-    printf("Queue with capacity %d created successfully!\n", capacity);
-    
     while (1) {
         printf("\n=== Queue Operations ===\n");
         printf("1. Enqueue(Insert)\n");
@@ -106,12 +104,6 @@ int main() {
         printf("Selection: ");
         scanf("%d", &choice);
         printf("\n");
-        
-        while (choice < 1 || choice > 5) {
-            printf("Invalid selection\n");
-            printf("Selection: ");
-            scanf("%d", &choice);
-        }
         
         switch (choice) {
             case 1:
@@ -131,6 +123,9 @@ int main() {
             case 5:
                 free(queue.data);
                 return 0;
+            default:
+                printf("Invalid selection\n");
+                break;
         }
     }
     
