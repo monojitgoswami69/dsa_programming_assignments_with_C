@@ -2,10 +2,10 @@
 
 ## Table of Contents
 - [What is a Queue?](#what-is-a-queue)
+- [Types of Queue](#types-of-queue)
 - [Queue Operations](#queue-operations)
 - [Memory Management Approaches](#memory-management-approaches)
 - [Implementations in this Repository](#implementations-in-this-repository)
-- [Performance Analysis](#performance-analysis)
 - [Applications](#applications)
 - [When to Use Queues](#when-to-use-queues)
 - [Best Practices](#best-practices)
@@ -31,10 +31,14 @@ A **Queue** is a linear data structure that follows the **FIFO (First In, First 
 
 ```
 Queue Memory (Front to Rear):
-Front →                                    ← Rear
-[ 10 ] [ 20 ] [ 30 ] [  ] [  ]
-  ↑                         ↑
-Index 0                   Index 3
+
+Index:    0     1     2     3     4
+        +-----+-----+-----+-----+-----+
+Queue:  | 10  | 20  | 30  |     |     |
+        +-----+-----+-----+-----+-----+
+          ↑           ↑
+        Front       Rear
+       (Index 0)   (Index 2)
 ```
 
 ## Types of Queue
@@ -55,7 +59,6 @@ A **Linear Queue** is the simplest form of queue implementation using a static a
 
 **Initial State:**
 ```
-Linear Queue Memory Layout:
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  |     |     |     |     |     |
@@ -66,13 +69,12 @@ Queue:  |     |     |     |     |     |
 
 **After Enqueue Operations (10, 20, 30):**
 ```
-Linear Queue Memory Layout:
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  | 10  | 20  | 30  |     |     |
         +-----+-----+-----+-----+-----+
-        ↑                 ↑
-      Front             Rear
+          ↑            ↑
+        Front         Rear
 ```
 
 #### **Fundamental problem with Linear Queue**
@@ -86,13 +88,12 @@ Mathematical State:
 - Elements in queue = rear - front + 1 = 2 - 0 + 1 = 3
 - Available space = size - (rear + 1) = 5 - (2 + 1) = 2
 
-Visual State:
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  | 10  | 20  | 30  |     |     |
         +-----+-----+-----+-----+-----+
-        ↑                 ↑
-      Front             Rear
+          ↑            ↑
+        Front         Rear
 ```
 
 **Step 2: Dequeue 2 elements (remove 10, 20)**
@@ -105,18 +106,18 @@ Mathematical State After 2nd Dequeue:
 - front = 2, rear = 2  
 - Elements in queue = 2 - 2 + 1 = 1
 
-Visual State:
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  | XX  | XX  | 30  |     |     |
         +-----+-----+-----+-----+-----+
-                      ↑     ↑
-                    Front  Rear
+                       ↑     
+                   Front/Rear
 ```
 
 **Step 3: Attempt to Enqueue 2 more elements (40, 50)**
+
+**Enqueue 40:**
 ```
-Enqueue 40:
 - Check: rear + 1 < size → 2 + 1 < 5 → 3 < 5 ✓ (Success)
 - rear = rear + 1 = 2 + 1 = 3
 - queue[3] = 40
@@ -125,18 +126,16 @@ Mathematical State:
 - front = 2, rear = 3
 - Elements in queue = 3 - 2 + 1 = 2
 
-Visual State:
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  | XX  | XX  | 30  | 40  |     |
         +-----+-----+-----+-----+-----+
-                      ↑           ↑
-                    Front       Rear
+                      ↑      ↑
+                    Front   Rear
 ```
 
-**Step 4: Enqueue 50 (Last available slot)**
+**Enqueue 50:**
 ```
-Enqueue 50:
 - Check: rear + 1 < size → 3 + 1 < 5 → 4 < 5 ✓ (Success)
 - rear = rear + 1 = 3 + 1 = 4
 - queue[4] = 50
@@ -146,16 +145,15 @@ Mathematical State:
 - Elements in queue = 4 - 2 + 1 = 3
 - Available space = 0
 
-Visual State:
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  | XX  | XX  | 30  | 40  | 50  |
         +-----+-----+-----+-----+-----+
-                      ↑               ↑
-                    Front           Rear
+                       ↑           ↑
+                     Front        Rear
 ```
 
-**Step 5: Attempt to Enqueue 60 (FALSE OVERFLOW CONDITION)**
+**Step 4: Attempt to Enqueue 60 (FALSE OVERFLOW CONDITION)**
 ```
 Enqueue 60:
 - Check: rear + 1 < size → 4 + 1 < 5 → 5 < 5 ✗ (FAIL - Queue Full!)
@@ -166,14 +164,14 @@ Mathematical Analysis:
 - Utilization = 3/5 = 60% (40% space wasted!)
 - False overflow occurs despite having only 3/5 positions used
 
-Visual State - FALSE OVERFLOW:
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  | XX  | XX  | 30  | 40  | 50  |
         +-----+-----+-----+-----+-----+
-                      ↑               ↑
-                    Front           Rear
-        [ERROR: Queue reports "FULL" but only 60% utilized!]
+                        ↑           ↑
+                      Front       Rear
+
+[ERROR: Queue reports "FULL" but only 60% utilized!]
 ```
 
 #### **The Space Wastage Problem**
@@ -232,13 +230,12 @@ Mathematical State:
 - Elements in queue = rear - front + 1 = 3 - 0 + 1 = 4
 - Total enqueue operations = 4
 
-Visual State:
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  | 10  | 20  | 30  | 40  |     |
         +-----+-----+-----+-----+-----+
-        ↑                       ↑
-      Front                   Rear
+          ↑                 ↑
+        Front              Rear
 ```
 
 **Step 3: Dequeue 1st element (remove 10) + Shift Left**
@@ -261,14 +258,14 @@ Mathematical State After Shift:
 - Elements in queue = 2 - 0 + 1 = 3
 - Total shift operations performed = 3
 
-Visual State:
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  | 20  | 30  | 40  |     |     |
         +-----+-----+-----+-----+-----+
-        ↑                 ↑
-      Front             Rear
-        [All elements shifted left - No space wastage]
+          ↑           ↑
+        Front        Rear
+                   
+[All elements shifted left - No space wastage]
 ```
 
 **Step 4: Dequeue 2nd element (remove 20) + Shift Left**
@@ -290,13 +287,12 @@ Mathematical State:
 - Elements in queue = 1 - 0 + 1 = 2
 - Total shift operations performed = 3 + 2 = 5
 
-Visual State:
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  | 30  | 40  |     |     |     |
         +-----+-----+-----+-----+-----+
-        ↑           ↑
-      Front       Rear
+          ↑     ↑
+        Front Rear
 ```
 
 **Step 5: Enqueue 3 more elements (50, 60, 70)**
@@ -318,46 +314,16 @@ Mathematical State:
 - Elements in queue = 4 - 0 + 1 = 5 (Queue Full!)
 - Available space = 0
 
-Visual State:
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  | 30  | 40  | 50  | 60  | 70  |
         +-----+-----+-----+-----+-----+
-        ↑                           ↑
-      Front                       Rear
-        [Queue Full - 100% space utilization achieved!]
+          ↑                       ↑
+        Front                   Rear
+
+[Queue Full - 100% space utilization achieved!]
 ```
 
-**Step 6: Dequeue 1 element (remove 30) + Shift Left**
-```
-Mathematical Dequeue Process:
-1. Remove element at front: queue[0] = 30 (removed)
-2. Shift all 4 remaining elements left:
-   - queue[0] = queue[1] = 40
-   - queue[1] = queue[2] = 50
-   - queue[2] = queue[3] = 60
-   - queue[3] = queue[4] = 70
-3. Update pointers: rear = rear - 1 = 4 - 1 = 3
-
-Shift Cost Analysis:
-- Elements to shift = 4 elements
-- Shift operations = 4
-- Time complexity = O(4) = O(n)
-
-Mathematical State:
-- front = 0, rear = 3
-- Elements in queue = 3 - 0 + 1 = 4
-- Total shift operations = 5 + 4 = 9
-
-Visual State:
-Index:    0     1     2     3     4
-        +-----+-----+-----+-----+-----+
-Queue:  | 40  | 50  | 60  | 70  |     |
-        +-----+-----+-----+-----+-----+
-        ↑                       ↑
-      Front                   Rear
-        [Space available again for enqueue operations]
-```
 
 #### **Performance Analysis - Modified Linear Queue**
 
@@ -379,23 +345,33 @@ Average dequeue time = O(n) where n = average queue size
 - Space utilization = 100% (optimal)
 
 **Trade-off Analysis:**
-✅ **Advantages:**
+
+**Advantages:**
 - **Perfect Space Utilization**: 100% space efficiency, no wastage
 - **No False Overflow**: Queue can always use full capacity
 - **Predictable Behavior**: front always starts at index 0
 
-❌ **Disadvantages:**
+**Disadvantages:**
 - **Time Complexity Degradation**: Dequeue becomes O(n) instead of O(1)
 - **Performance Impact**: Each dequeue requires n-1 shift operations
 - **Scalability Issues**: Performance degrades linearly with queue size
 - **CPU Intensive**: High computational cost for frequent dequeue operations
 
-**Mathematical Performance Comparison:**
+**Performance Comparison Summary:**
+
+| Queue Type | Enqueue | Dequeue | Space Efficiency | Trade-off |
+|------------|---------|---------|------------------|-----------|
+| **Standard Linear** | O(1) | O(1) | 100-0% (degrades with dequeues) | Fast operations, space wastage |
+| **Modified Linear** | O(1) | O(n) | 100% (optimal) | Perfect space, slow dequeue |
+
+**Space Efficiency Analysis:**
 ```
-Operation Performance:
-- Standard Linear Queue: Enqueue O(1), Dequeue O(1), Space Efficiency ~60%
-- Modified Linear Queue: Enqueue O(1), Dequeue O(n), Space Efficiency 100%
-- Trade-off: Gained 40% space efficiency but lost O(n-1) time per dequeue
+Formula: Space Efficiency = ((rear - front + 1) / size) × 100%
+
+Linear Queue Efficiency Range:
+• Best Case:  100% (no dequeues performed)
+• Worst Case: ~0%  (dequeued all but one element)  
+• Average:    Depends on dequeue/enqueue operation ratio
 ```
 
 #### Solution 2: **Circular Queue Approach**
@@ -418,42 +394,92 @@ A **Circular Queue** treats the array as a circular structure where the rear can
 
 **Initial State:**
 ```
-Circular Queue Memory Layout:
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  |     |     |     |     |     |
         +-----+-----+-----+-----+-----+
-         ↑
+        ↑
     Front/Rear = -1 (Empty)
 ```
 
-**After Multiple Operations:**
+#### **Circular Queue Step-by-Step Demonstration**
+
+Let's trace through an example with **Queue Size = 5** to show how circular queues solve the space wastage problem:
+
+**Step 1: Enqueue 5 elements (10, 20, 30, 40, 50)**
 ```
-Step 1 - Enqueue(10, 20, 30, 40, 50):
+Mathematical State:
+- front = 0, rear = 4
+- Elements in queue = 5 (Queue Full!)
+- Space utilization = 5/5 = 100%
+
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  | 10  | 20  | 30  | 40  | 50  |
         +-----+-----+-----+-----+-----+
-        ↑                           ↑
-      Front                       Rear
+          ↑                       ↑
+        Front                   Rear
+```
 
-Step 2 - Dequeue twice (remove 10, 20):
+**Step 2: Dequeue 2 elements (remove 10, 20)**
+```
+Mathematical State After Dequeues:
+- front = 2, rear = 4
+- Elements in queue = 3 (30, 40, 50)
+- Available space = 2 positions (indices 0, 1)
+
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  |     |     | 30  | 40  | 50  |
         +-----+-----+-----+-----+-----+
-                      ↑           ↑
-                    Front       Rear
+                      ↑             ↑
+                    Front         Rear
+```
 
-Step 3 - Enqueue(60, 70) [Wraparound occurs]:
+**Step 3: Enqueue 2 elements (60, 70) with Wraparound**
+
+**Enqueue 60:**
+```
+Check Condition:
+- Check: ((rear + 1) % size) != front → ((4 + 1) % 5) != 2 → 0 != 2 ✓
+- rear = (rear + 1) % size = (4 + 1) % 5 = 0
+- queue[0] = 60
+
+Mathematical State After Enqueue 60:
+- front = 2, rear = 0 (wrapped around!)
+- Elements in queue = 4 (30, 40, 50, 60)
+- Space utilization = 4/5 = 80%
+
+Index:    0     1     2     3     4
+        +-----+-----+-----+-----+-----+
+Queue:  | 60  |     | 30  | 40  | 50  |
+        +-----+-----+-----+-----+-----+
+          ↑            ↑           
+         Rear        Front        
+
+[First wraparound successful - rear wrapped to index 0]
+```
+
+**Enqueue 70:**
+```
+Check Condition:
+- Check: ((rear + 1) % size) != front → ((0 + 1) % 5) != 2 → 1 != 2 ✓  
+- rear = (rear + 1) % size = (0 + 1) % 5 = 1
+- queue[1] = 70
+
+Mathematical State After Enqueue 70:
+- front = 2, rear = 1 (both wrapped around!)
+- Elements in queue = 5 (Queue Full again!)
+- Space utilization = 5/5 = 100%
+
 Index:    0     1     2     3     4
         +-----+-----+-----+-----+-----+
 Queue:  | 60  | 70  | 30  | 40  | 50  |
         +-----+-----+-----+-----+-----+
-        ↑     ↑     ↑           
-       Rear  Next   Front       
-              Rear
-        [Rear wrapped around - No space wastage!]
+                ↑      ↑           
+               Rear  Front        
+
+[Perfect wraparound complete - 100% space utilization maintained!]
 ```
 
 #### **Key Circular Queue Operations**
@@ -497,20 +523,30 @@ isFull = ((rear + 1) % size == front);
 
 ### Operation Examples
 
+**Quick Reference:**
 ```
-Initial Queue: []
+Basic Queue Operations:
 enqueue(10): [10]           // front = 0, rear = 0
 enqueue(20): [10, 20]       // front = 0, rear = 1  
 enqueue(30): [10, 20, 30]   // front = 0, rear = 2
 front(): returns 10         // Queue unchanged
-dequeue(): returns 10       // Queue: [20, 30]
-dequeue(): returns 20       // Queue: [30]
+dequeue(): returns 10       // Queue: [20, 30], front = 1
+dequeue(): returns 20       // Queue: [30], front = 2
 ```
 
 ### Detailed Operation Analysis
 
+> **Note**: For comprehensive operation demonstrations with mathematical analysis and visual examples, refer to the detailed queue type comparisons above. This section provides the technical implementation details and complexity analysis.
+
 #### 1. **Enqueue Operation**
+
+**Implementation varies by queue type:**
+- **Linear Queue**: Simple rear increment, may cause false overflow
+- **Circular Queue**: Uses modulo arithmetic for wraparound 
+- **Modified Linear**: Same as linear, but requires shifting on dequeue
+
 ```c
+// Linear Queue
 void enqueue(int element) {
     if (isFull()) {
         printf("Queue Overflow\n");
@@ -522,31 +558,69 @@ void enqueue(int element) {
     rear++;
     queue[rear] = element;
 }
+
+// Circular Queue  
+void enqueue(int element) {
+    if (isFull()) {
+        printf("Queue Overflow\n");
+        return;
+    }
+    if (isEmpty()) {
+        front = 0;
+    }
+    rear = (rear + 1) % size;
+    queue[rear] = element;
+}
 ```
 
 **Process:**
 1. **Check Capacity**: Verify if queue has space for new element
-2. **Handle Empty Case**: Set front pointer if queue was empty
-3. **Increment Rear**: Move rear pointer to next available position
+2. **Handle Empty Case**: Set front pointer if queue was empty  
+3. **Update Rear**: Move rear pointer (linear increment or circular wraparound)
 4. **Insert Element**: Place new element at the rear position
 
-**Time Complexity**: O(1) - Direct array access
+**Key Differences:**
+- **Linear**: `rear++` may lead to space wastage 
+- **Circular**: `rear = (rear + 1) % size` enables space reuse 
+
+**Time Complexity**: O(1) - Direct array access for all queue types
 **Space Complexity**: O(1) - No additional space required
 
 #### 2. **Dequeue Operation**
+
+**Implementation varies significantly by queue type:**
+- **Linear/Circular**: Simple pointer advancement  
+- **Modified Linear**: Requires element shifting 
+
 ```c
+// Linear & Circular Queue
 int dequeue() {
     if (isEmpty()) {
         printf("Queue Underflow\n");
-        return -1;  // Error value
+        return -1;
     }
     int element = queue[front];
     if (front == rear) {
         front = -1;
         rear = -1;
     } else {
-        front++;
+        front++;  // Linear: front++, Circular: front = (front + 1) % size
     }
+    return element;
+}
+
+// Modified Linear Queue (with shifting)
+int dequeue() {
+    if (isEmpty()) {
+        printf("Queue Underflow\n");
+        return -1;
+    }
+    int element = queue[front];
+    // Shift all elements left by one position
+    for (int i = front; i < rear; i++) {
+        queue[i] = queue[i + 1];
+    }
+    rear--;
     return element;
 }
 ```
@@ -554,10 +628,18 @@ int dequeue() {
 **Process:**
 1. **Check Availability**: Verify queue is not empty
 2. **Retrieve Element**: Get value at current front position
-3. **Update Pointers**: Advance front pointer or reset if empty
+3. **Update Structure**: 
+   - **Linear/Circular**: Advance front pointer
+   - **Modified Linear**: Shift all remaining elements left
 4. **Return Value**: Provide dequeued element to caller
 
-**Time Complexity**: O(1) - Direct array access (Linear/Circular)
+**Performance Impact:**
+- **Linear/Circular**: O(1) - Single pointer update
+- **Modified Linear**: O(n) - Must shift n-1 elements 
+
+**Time Complexity**: 
+- O(1) for Linear/Circular queues
+- O(n) for Modified Linear queues due to shifting overhead
 **Space Complexity**: O(1) - No additional space needed
 
 #### 3. **Front/Peek Operation**
@@ -619,40 +701,72 @@ int isFull() {
 
 ## Memory Management Approaches
 
-### 1. **Linear Queue Implementation**
-- **Memory**: Array with front/rear pointers
-- **Advantages**: Simple implementation, O(1) operations
-- **Disadvantages**: Space wastage due to unusable front positions
+### 1. **Array-Based Implementation**
+- **Memory**: Static or dynamic arrays with index-based access
+- **Storage**: Contiguous memory allocation for queue elements
+- **Pointer Management**: Front and rear indices to track queue boundaries
+- **Variants**: Can implement linear or circular queue logic
+- **Advantages**: 
+  - Fast O(1) access time due to cache locality
+  - Simple memory layout and pointer arithmetic
+  - Predictable memory usage
+- **Disadvantages**: 
+  - Fixed size (for static arrays)
+  - Potential space wastage (linear queues)
+  - Memory allocation overhead (dynamic arrays)
 
-### 2. **Circular Queue Implementation**
-- **Memory**: Array with wraparound using modulo arithmetic
-- **Advantages**: No space wastage, O(1) operations
-- **Disadvantages**: Slightly more complex implementation
+### 2. **Structure-Based Implementation**
+- **Memory**: Encapsulated data within custom structures using typedef
+- **Organization**: Combines queue data, pointers, and metadata in single structure
+- **Access Pattern**: Dot notation for member access (e.g., `queue.front`, `queue.rear`)
+- **Modularity**: Better code organization and reusability
+- **Advantages**:
+  - Clean code organization and encapsulation
+  - Easy to pass queue as parameter to functions
+  - Supports multiple queue instances
+  - Better maintainability and debugging
+- **Disadvantages**:
+  - Slight memory overhead for structure metadata
+  - Additional complexity in structure design
 
 ### 3. **Linked List Implementation**
-- **Memory**: Dynamic node allocation
-- **Advantages**: No size limits, no space wastage
-- **Disadvantages**: Pointer overhead, non-contiguous memory
-
-### 4. **Structure-Based Implementation**
-- **Memory**: Organized data encapsulation
-- **Advantages**: Better code organization, reusable design
-- **Disadvantages**: Slight overhead for structure management
+- **Memory**: Dynamic node allocation with pointer-based connections
+- **Storage**: Non-contiguous memory with each node containing data and next pointer
+- **Growth**: Dynamic size expansion limited only by available memory
+- **Pointer Management**: Front and rear pointers to first and last nodes
+- **Advantages**:
+  - No size limitations or memory wastage
+  - Efficient memory utilization (allocate only what's needed)
+  - No false overflow conditions
+  - Flexible memory management
+- **Disadvantages**:
+  - Additional memory overhead for storing pointers
+  - Potential memory fragmentation
+  - Cache performance may be lower due to non-contiguous storage
+  - More complex memory management (malloc/free)
 
 ## Implementations in this Repository
 
-> Expand to view detailed information about each implementation approach.
+This repository contains comprehensive queue implementations organized into three main categories, each demonstrating different queue behaviors and implementation approaches.
+
+### 🔹 **1. Linear Queue Implementations**
 
 <details>
-<summary><strong>🔹 Linear Queue Implementation (Array-Based)</strong></summary>
+<summary><strong>🔸 Array-Based Linear Queue</strong></summary>
 
 ### Overview
-Uses a static array with global front and rear pointers for queue management.
+Traditional linear queue implementation using global arrays and simple pointer management.
 
 ### Key Features
 - Global variables: `int queue[MAX_SIZE]`, `int front`, `int rear`
-- Fixed maximum capacity
-- Simple array indexing for element access
+- Fixed maximum capacity with simple bounds checking
+- Direct array indexing for element access
+- Demonstrates the classic space wastage problem
+
+### Characteristics
+- **Time Complexity**: O(1) for all operations
+- **Space Efficiency**: Degrades with dequeue operations (can waste up to size-1 positions)
+- **Use Case**: Educational purposes to understand basic queue concepts and limitations
 
 ### Source Code
 ```c
@@ -761,15 +875,21 @@ int main() {
 </details>
 
 <details>
-<summary><strong>🔹 Structure-Based Queue Implementation</strong></summary>
+<summary><strong>🔸 Structure-Based Linear Queue</strong></summary>
 
 ### Overview
-Uses a custom structure with typedef for better code organization.
+Enhanced linear queue using custom structures for better code organization and encapsulation.
 
 ### Key Features
-- Structure encapsulation: `struct QueueStruct`
-- Global structure instance: `Queue queue`
-- Dot notation for member access
+- Structure encapsulation: `struct QueueStruct` with typedef
+- Organized data members: `data[]`, `front`, `rear`, `size`, `capacity`
+- Dot notation access for clean code structure
+- Dynamic memory allocation for queue data
+
+### Characteristics
+- **Time Complexity**: O(1) for all operations
+- **Organization**: Better code modularity and reusability
+- **Use Case**: Learning structured programming and data encapsulation
 
 ### Source Code
 ```c
@@ -910,16 +1030,318 @@ int main() {
 
 </details>
 
+---
+
+### 🔹 **2. Modified Linear Queue Implementations**
+
 <details>
-<summary><strong>🔹 Circular Queue Implementation (Array-Based)</strong></summary>
+<summary><strong>🔸 Array-Based Modified Linear Queue</strong></summary>
 
 ### Overview
-Uses modulo arithmetic to implement circular behavior for optimal space utilization.
+Linear queue with element shifting to eliminate space wastage at the cost of performance.
 
 ### Key Features
-- Circular array with wraparound using modulo operations
-- No space wastage from dequeued positions
-- Optimal O(1) operations with perfect space efficiency
+- Traditional array structure with shifting mechanism
+- Elements shift left on every dequeue operation
+- Achieves 100% space utilization through movement
+- Demonstrates trade-off between space and time efficiency
+
+### Characteristics
+- **Time Complexity**: Enqueue O(1), Dequeue O(n) due to shifting
+- **Space Efficiency**: 100% - no wasted positions
+- **Use Case**: Educational demonstration of space-time trade-offs
+
+### Source Code
+```c
+#include <stdio.h>
+#define MAX_SIZE 100
+
+int queue[MAX_SIZE];
+int front = -1;
+int rear = -1;
+int size = 0;  
+
+int isEmpty() {
+    return front == -1;
+}
+
+int isFull() {
+    return rear == size - 1;
+}
+
+void enqueue(int data) {
+    if (isFull()) {
+        printf("Queue Overflow - cannot enqueue %d\n", data);
+        return;
+    }
+    if (isEmpty()) {
+        front = 0; 
+    }
+    rear++;
+    queue[rear] = data;
+    printf("Enqueued: %d\n", data);
+}
+
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue Underflow - cannot dequeue\n");
+        return;
+    }
+    printf("Dequeued: %d\n", queue[front]);
+    if (front == rear) {
+        front = -1;
+        rear = -1;
+    } 
+    else {
+        for (int i = front; i < rear; i++) {
+            queue[i] = queue[i + 1];
+        }
+        rear--;  
+        front = 0;
+    }
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue contents: Front -> ");
+    for (int i = front; i <= rear; i++) {
+        printf("%d ", queue[i]);
+    }
+    printf("<- Rear\n");
+}
+
+void peek() {
+    if (isEmpty()) {
+        printf("Queue is empty - cannot peek\n");
+        return;
+    }
+    printf("Front: %d\n", queue[front]);
+    printf("Rear: %d\n", queue[rear]);
+}
+
+int main() {
+    int choice, data;
+    printf("Enter queue size (max %d): ", MAX_SIZE);
+    scanf("%d", &size);
+    if (size <= 0 || size > MAX_SIZE) {
+        printf("Invalid queue size. Must be between 1 and %d.\n", MAX_SIZE);
+        return 1;
+    }
+    while (1) {
+        printf("\n=== Queue Operations ===\n");
+        printf("1. Enqueue (Insert)\n");
+        printf("2. Dequeue (Remove with left shift)\n");
+        printf("3. Display\n");
+        printf("4. Peek\n");
+        printf("5. Exit\n");
+        printf("Selection: ");
+        scanf("%d", &choice);
+        printf("\n");
+        
+        switch (choice) {
+            case 1:
+                printf("Enter element to enqueue: ");
+                scanf("%d", &data);
+                enqueue(data);
+                break;
+            case 2: dequeue(); break;
+            case 3: display(); break;
+            case 4: peek(); break;
+            case 5: return 0;
+            default:
+                printf("Invalid selection\n");
+                break;
+        }
+    }
+}
+```
+
+</details>
+
+<details>
+<summary><strong>🔸 Structure-Based Modified Linear Queue</strong></summary>
+
+### Overview
+Structured implementation of modified linear queue with organized shifting operations.
+
+### Key Features
+- Structure-based design with integrated shifting logic
+- Clean separation of shifting operations within methods
+- Organized approach to element movement and management
+- Better code readability for complex shifting operations
+
+### Characteristics
+- **Time Complexity**: Enqueue O(1), Dequeue O(n) with organized shifting
+- **Space Efficiency**: 100% with structured code management
+- **Use Case**: Learning how to implement complex operations in organized manner
+
+### Source Code
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct QueueStruct {
+    int *data;
+    int front;
+    int rear;
+    int size;
+    int capacity;
+};
+
+typedef struct QueueStruct Queue;
+
+Queue queue;
+
+int isEmpty() {
+    return queue.size == 0;
+}
+
+int isFull() {
+    return queue.size == queue.capacity;
+}
+
+void enqueue(int data) {
+    if (isFull()) {
+        printf("Queue Overflow - cannot enqueue %d\n", data);
+        return;
+    }
+    if (isEmpty()) {
+        queue.front = 0;
+        queue.rear = -1;
+    }
+    queue.rear++;
+    queue.data[queue.rear] = data;
+    queue.size++;
+    printf("Enqueued: %d\n", data);
+}
+
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue Underflow - cannot dequeue\n");
+        return;
+    }
+    printf("Dequeued: %d\n", queue.data[queue.front]);
+    queue.size--;
+    
+    if (queue.size == 0) {
+        queue.front = -1;
+        queue.rear = -1;
+    } else {
+        for (int i = queue.front; i < queue.rear; i++) {
+            queue.data[i] = queue.data[i + 1];
+        }
+        queue.rear--;
+        queue.front = 0;
+    }
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue contents: Front -> ");
+    for (int i = queue.front; i <= queue.rear; i++) {
+        printf("%d ", queue.data[i]);
+    }
+    printf("<- Rear\n");
+}
+
+void peek() {
+    if (isEmpty()) {
+        printf("Queue is empty - cannot peek\n");
+        return;
+    }
+    printf("Front: %d\n", queue.data[queue.front]);
+    printf("Rear: %d\n", queue.data[queue.rear]);
+}
+
+int main() {
+    int capacity, choice, data;
+    
+    printf("Enter queue capacity: ");
+    scanf("%d", &capacity);
+    
+    if (capacity <= 0) {
+        printf("Invalid queue capacity\n");
+        return 1;
+    }
+    
+    queue.data = (int*)malloc(capacity * sizeof(int));
+    if (queue.data == NULL) {
+        printf("Memory allocation failed for queue data\n");
+        return 1;
+    }
+    
+    queue.front = -1;
+    queue.rear = -1;
+    queue.size = 0;
+    queue.capacity = capacity;
+    
+    while (1) {
+        printf("\n=== Queue Operations ===\n");
+        printf("1. Enqueue (Insert)\n");
+        printf("2. Dequeue (Remove with left shift)\n");
+        printf("3. Display\n");
+        printf("4. Peek\n");
+        printf("5. Exit\n");
+        printf("Selection: ");
+        scanf("%d", &choice);
+        printf("\n");
+        
+        switch (choice) {
+            case 1:
+                printf("Enter element to enqueue: ");
+                scanf("%d", &data);
+                enqueue(data);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                peek();
+                break;
+            case 5:
+                free(queue.data);
+                return 0;
+            default:
+                printf("Invalid selection\n");
+                break;
+        }
+    }
+    
+    return 0;
+}
+```
+
+</details>
+
+---
+
+### 🔹 **3. Circular Queue Implementations**
+
+<details>
+<summary><strong>🔸 Array-Based Circular Queue</strong></summary>
+
+### Overview
+Optimal queue implementation using modulo arithmetic to achieve perfect space utilization.
+
+### Key Features
+- Circular array with wraparound using `(index) % size`
+- No space wastage - all positions can be reused
+- Efficient O(1) operations with optimal memory usage
+- Advanced pointer management with circular logic
+
+### Characteristics
+- **Time Complexity**: O(1) for all operations
+- **Space Efficiency**: 100% - no wasted memory
+- **Use Case**: Production systems requiring optimal performance
 
 ### Source Code
 ```c
@@ -1029,15 +1451,174 @@ int main() {
 </details>
 
 <details>
-<summary><strong>🔹 Linked List-Based Queue Implementation</strong></summary>
+<summary><strong>🔸 Structure-Based Circular Queue</strong></summary>
 
 ### Overview
-Uses a linked list structure for dynamic memory allocation without size limitations.
+Combines circular queue efficiency with structured programming benefits.
 
 ### Key Features
-- Node structure with data and next pointer
-- Dynamic growth with no fixed size limits
-- Efficient memory usage with front and rear pointers
+- Structure-based organization with circular logic
+- Encapsulated circular operations within clean interface
+- Memory allocation flexibility with structured design
+- Best of both worlds: efficiency + organization
+
+### Characteristics
+- **Time Complexity**: O(1) for all operations  
+- **Space Efficiency**: 100% with organized code structure
+- **Use Case**: Large projects requiring both performance and maintainability
+
+### Source Code
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+struct QueueStruct {
+    int *data;
+    int front;
+    int rear;
+    int capacity;
+};
+
+typedef struct QueueStruct Queue;
+
+Queue queue;
+
+int isEmpty() {
+    return queue.front == -1;
+}
+
+int isFull() {
+    if (isEmpty()) return 0;
+    return (queue.rear + 1) % queue.capacity == queue.front % queue.capacity;
+}
+
+void enqueue(int data) {
+    if (isFull()) {
+        printf("Queue Overflow - cannot enqueue %d\n", data);
+        return;
+    }
+    if (isEmpty()) {
+        queue.front = 0;
+        queue.rear = -1;
+    }
+    queue.rear++;
+    queue.data[queue.rear % queue.capacity] = data;
+    printf("Enqueued: %d\n", data);
+}
+
+void dequeue() {
+    if (isEmpty()) {
+        printf("Queue Underflow - cannot dequeue\n");
+        return;
+    }
+    printf("Dequeued: %d\n", queue.data[queue.front % queue.capacity]);
+    if (queue.front == queue.rear) {
+        queue.front = -1;
+        queue.rear = -1;
+    } else {
+        queue.front++;
+    }
+}
+
+void display() {
+    if (isEmpty()) {
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue contents: Front -> ");
+    for (int i = queue.front; i <= queue.rear; i++) {
+        printf("%d ", queue.data[i % queue.capacity]);
+    }
+    printf("<- Rear\n");
+}
+
+void peek() {
+    if (isEmpty()) {
+        printf("Queue is empty - cannot peek\n");
+        return;
+    }
+    printf("Front: %d\n", queue.data[queue.front % queue.capacity]);
+    printf("Rear: %d\n", queue.data[queue.rear % queue.capacity]);
+}
+
+int main() {
+    int capacity, choice, data;
+    
+    printf("Enter queue capacity: ");
+    scanf("%d", &capacity);
+    
+    if (capacity <= 0) {
+        printf("Invalid queue capacity\n");
+        return 1;
+    }
+    
+    queue.data = (int*)malloc(capacity * sizeof(int));
+    if (queue.data == NULL) {
+        printf("Memory allocation failed for queue data\n");
+        return 1;
+    }
+    
+    queue.front = -1;
+    queue.rear = -1;
+    queue.capacity = capacity;
+    
+    while (1) {
+        printf("\n=== Circular Queue Operations ===\n");
+        printf("1. Enqueue(Insert)\n");
+        printf("2. Dequeue(Remove)\n");
+        printf("3. Display\n");
+        printf("4. Peek\n");
+        printf("5. Exit\n");
+        printf("Selection: ");
+        scanf("%d", &choice);
+        printf("\n");
+        
+        switch (choice) {
+            case 1:
+                printf("Enter element to enqueue: ");
+                scanf("%d", &data);
+                enqueue(data);
+                break;
+            case 2:
+                dequeue();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                peek();
+                break;
+            case 5:
+                free(queue.data);
+                return 0;
+            default:
+                printf("Invalid selection\n");
+                break;
+        }
+    }
+    
+    return 0;
+}
+```
+
+</details>
+
+<details>
+<summary><strong>🔸 Linked List-Based Circular Queue</strong></summary>
+
+### Overview
+Dynamic circular queue using linked list structure for unlimited growth potential.
+
+### Key Features
+- Node-based circular structure with `next` pointers
+- Dynamic memory allocation - no size limitations
+- Circular linked list with rear pointer management
+- Self-referencing nodes for circular behavior
+
+### Characteristics
+- **Time Complexity**: O(1) for all operations
+- **Space Efficiency**: 100% + dynamic growth capability
+- **Use Case**: Applications with unpredictable queue size requirements
 
 ### Source Code
 ```c
@@ -1209,16 +1790,7 @@ int main() {
 
 </details>
 
-## Performance Analysis
-
-### Time Complexity Comparison
-
-| Implementation | Enqueue | Dequeue | Front/Peek | Space Complexity |
-|----------------|---------|---------|------------|-------|
-| **Linear Array** | O(1) | O(1) | O(1) | O(n) with space wastage |
-| **Circular Array** | O(1) | O(1) | O(1) | O(n) optimal |
-| **Linked List** | O(1) | O(1) | O(1) | O(n) + pointer overhead |
-| **Structure-based** | O(1) | O(1) | O(1) | O(n) |
+---
 
 ### Memory Usage Analysis
 
