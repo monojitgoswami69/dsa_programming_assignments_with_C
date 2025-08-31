@@ -179,6 +179,8 @@ int isFull() {
 
 ## Implementations in this Repository
 
+> Expand to view detailed information about each implementation approach.
+
 <details>
 <summary><strong>🔹 Array-Based Stack Implementation</strong></summary>
 
