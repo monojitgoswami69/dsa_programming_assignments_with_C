@@ -1,3 +1,16 @@
+/*
+ASSIGNMENT 6:
+Problem Statement: Write a menu driven program in C to perform the following operations on single linked list.
+(a) insert a node at the beginning of the list.
+(b) insert a node at the end of the list.
+(c) insert a node at kth position of the list
+(d) delete a node from the beginning of the list.
+(e) delete a node at the end of the list.
+(f) display the whole list.
+(g) search an element x in the list.
+(h) reverse the list.
+*/
+
 #include<stdio.h>
 #include<stdlib.h>
 
