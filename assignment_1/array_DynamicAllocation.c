@@ -1,3 +1,13 @@
+/*
+ASSIGNMENT 1:
+Problem Statement: Write a menu driven program to perform the following operations on an array.
+(a) insert an element x at position k in the array.
+(b) remove an element x from the array.
+(c) search an element x from the array using linear search(check no. of comparison).
+(d) search an element x from the array using binary search(check no. of comparison).
+(e) display the array.
+*/
+
 #include<stdio.h>
 #include<stdlib.h>
 

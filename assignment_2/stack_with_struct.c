@@ -1,3 +1,14 @@
+/*
+ASSIGNMENT 2:
+Problem Statement: Write a menu driven program in C to implement a Stack using array and perform the following operations.
+(a) isFull() function to check whether the Stack is full or not.
+(b) isEmpty() function to check whether the Stack is empty or not.
+(c) peek() function to read the stack top element without deleting it.
+(d) push(item) function to insert an element item in the Stack.
+(e) pop() function to read and remove an element from the Stack.
+(f) display() function to display the entire stack.
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 

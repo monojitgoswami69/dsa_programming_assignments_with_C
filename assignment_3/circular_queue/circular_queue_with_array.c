@@ -1,3 +1,13 @@
+/*
+ASSIGNMENT 3:
+Problem Statement: Write a menu driven program in C to implement a Circular Queue using array and perform the following operations.
+(a) isFull() function to check whether the Circular Queue is full or not.
+(b) isEmpty() function to check whether the Circular Queue is empty or not.
+(c) insert(item) function to insert an element item in the Circular Queue.
+(d) delete() function to read and remove an element from the Circular Queue.
+(e) display() function to display the entire Circular Queue.
+*/
+
 #include <stdio.h>
 #define MAX_SIZE 100
 
