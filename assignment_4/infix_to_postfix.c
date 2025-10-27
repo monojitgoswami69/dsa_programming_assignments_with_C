@@ -1,3 +1,9 @@
+/*
+ASSIGNMENT 4:
+Problem Statement: Write a C program to Convert Infix to Postfix Expression using Stack.
+Assume that there are only four operators (*, /, +, -) in an infix expression and operand may be an alphabet or a digit.
+*/
+
 #include<stdio.h>
 #define MAX_SIZE 100
 

@@ -1,3 +1,9 @@
+/*
+ASSIGNMENT 5:
+Problem Statement: Write a C program to evaluate a given postfix expression.
+Assume that there are only four operators (*, /, +, -) in a postfix expression and operand is single digit only.
+*/
+
 #include<stdio.h>
 #include<stdlib.h>
 
