@@ -48,14 +48,6 @@ Assume that there are only four operators (*, /, +, -) in a postfix expression a
 - If empty, display "Stack Underflow"
 - Else: Return current top, then decrement: `return stack[top--]`
 
-**Key Points:**
-- Operands are single digits only (0-9)
-- Character to integer: Subtract ASCII value of '0' (48)
-- First pop gets second operand (b), second pop gets first operand (a)
-- Operation is always: a operator b (not b operator a)
-- For "52-": pop gives 2 (b), then 5 (a), result = 5-2 = 3
-- Stack holds intermediate results during evaluation
-
 ### Source Code
 
 ```c
