@@ -15,11 +15,9 @@
 
 ---
 
-> ### **Note** 
-> - All programs include problem statement, algorithm, source code, and sample outputs
-> - **You can write any one of the following implementations** for your lab work
+> **Note:** You can write **any one** of the following implementations for your lab work.
 
-<hr>
+---
 
 <a id="implementation1"></a>
 ## 1. Queue Implementation - Using Array
@@ -82,13 +80,6 @@ Write a menu driven program in C to implement a Queue using array and perform th
       * Display rear element: `queue[rear]`
 14. Repeat menu until user chooses to exit
 15. STOP
-
-**Key Points:**
-- `front = -1` AND `rear = -1` indicates empty queue
-- `rear = size - 1` indicates full queue
-- First insertion sets `front = 0`
-- When last element removed, reset `front = -1` and `rear = -1`
-- Elements are removed from front and added at rear (FIFO)
 
 ### Source Code
 
@@ -427,13 +418,6 @@ Write a menu driven program in C to implement a Queue using array encapsulated i
     - Terminate program
 17. Repeat menu until user chooses to exit
 18. STOP
-
-**Advantages of Structure Approach:**
-- Tracks size explicitly for accurate isEmpty/isFull checks
-- Encapsulates all queue data in one structure
-- Can create multiple queue instances easily
-- Clear separation between capacity (max) and size (current)
-- Better memory management with dynamic allocation
 
 ### Source Code
 

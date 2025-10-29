@@ -5,7 +5,6 @@
 - [Types of Queue](#types-of-queue)
 - [Queue Operations](#queue-operations)
 - [Memory Management Approaches](#memory-management-approaches)
-- [Implementations in this Repository](#implementations-in-this-repository)
 - [Applications](#applications)
 - [When to Use Queues](#when-to-use-queues)
 - [Best Practices](#best-practices)

@@ -7,11 +7,13 @@
 - [Array Operations](#array-operations)
 - [Memory Management Approaches](#memory-management-approaches)
 - [Static vs Dynamic Memory Allocation](#static-vs-dynamic-memory-allocation)
-- [Implementations in this Repository](#implementations-in-this-repository)
 - [Advanced Array Concepts](#advanced-array-concepts)
 - [Applications](#applications)
 - [When to Use Arrays](#when-to-use-arrays)
 - [Best Practices](#best-practices)
+
+
+okay so
 
 ## What is an Array?
 

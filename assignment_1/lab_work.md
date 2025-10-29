@@ -15,11 +15,9 @@
 
 ---
 
-> ### **Note** 
-> - All programs include problem statement, algorithm, source code, and sample outputs
-> - **You can write any one of the following implementations** for your lab work
+> **Note:** You can write **any one** of the following implementations for your lab work.
 
-<hr>
+---
 
 <a id="implementation1"></a>
 ## 1. Array Operations - Static Memory Allocation

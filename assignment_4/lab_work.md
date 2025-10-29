@@ -51,14 +51,6 @@ Assume that there are only four operators (*, /, +, -) in an infix expression an
 - Returns 1 for '+' and '-' (lowest)
 - Returns 0 for '(' (special case)
 
-**Key Points:**
-- Operands go directly to output
-- Operators wait on stack based on priority
-- Higher/equal priority operators pop first (except ^)
-- Parentheses override normal priority rules
-- Right associativity for ^ means pop only if stack top has HIGHER priority
-- Left associativity for +,-,*,/ means pop if stack top has HIGHER OR EQUAL priority
-
 ### Source Code
 
 ```c

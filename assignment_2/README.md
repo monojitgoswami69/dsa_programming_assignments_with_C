@@ -4,7 +4,6 @@
 - [What is a Stack?](#what-is-a-stack)
 - [Stack Operations](#stack-operations)
 - [Memory Management Approaches](#memory-management-approaches)
-- [Implementations in this Repository](#implementations-in-this-repository)
 - [Performance Analysis](#performance-analysis)
 - [Applications](#applications)
 - [When to Use Stacks](#when-to-use-stacks)

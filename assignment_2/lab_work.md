@@ -15,11 +15,9 @@
 
 ---
 
-> ### **Note** 
-> - All programs include problem statement, algorithm, source code, and sample outputs
-> - **You can write any one of the following implementations** for your lab work
+> **Note:** You can write **any one** of the following implementations for your lab work.
 
-<hr>
+---
 
 <a id="implementation1"></a>
 ## 1. Stack Implementation - Using Array
@@ -83,13 +81,6 @@ Write a menu driven program in C to implement a Stack using array and perform th
     - Terminate program
 16. Repeat menu until user chooses to exit
 17. STOP
-
-**Key Points:**
-- `top = -1` indicates empty stack
-- `top = size - 1` indicates full stack
-- Push increases top then inserts
-- Pop retrieves then decreases top
-- Peek only reads, doesn't modify top
 
 ### Source Code
 
@@ -403,12 +394,6 @@ Write a menu driven program in C to implement a Stack using array encapsulated i
     - Terminate program
 17. Repeat menu until user chooses to exit
 18. STOP
-
-**Advantages of Structure Approach:**
-- Encapsulation: All stack data in one structure
-- Multiple stacks: Can create multiple stack instances
-- Better organization: Clear relationship between arr, top, and size
-- Type safety: Single object to pass around
 
 ### Source Code
 

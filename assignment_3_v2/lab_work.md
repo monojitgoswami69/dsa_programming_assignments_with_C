@@ -15,12 +15,9 @@
 
 ---
 
-> ### **Note** 
-> - All programs include problem statement, algorithm, source code, and sample outputs
-> - **You can write any one of the following implementations** for your lab work
-> - **Circular Queue** solves the space wastage problem of linear queues by wrapping around
+> **Note:** You can write **any one** of the following implementations for your lab work.
 
-<hr>
+---
 
 <a id="implementation1"></a>
 ## 1. Circular Queue Implementation - Using Array
@@ -495,14 +492,6 @@ Write a menu driven program in C to implement a Circular Queue using array encap
 17. Repeat menu until user chooses to exit
 18. STOP
 
-**Advantages of Circular Queue with Structure:**
-- Dynamic memory allocation - size determined at runtime
-- Encapsulation - all queue data in single structure
-- Efficient wraparound using modulo operator
-- No space wastage - all positions can be reused
-- O(1) time complexity for all operations
-- Suitable for producer-consumer problems and buffer management
-
 ### Source Code
 
 ```c
@@ -800,12 +789,5 @@ Queue Overflow - cannot enqueue 65
 5. Exit
 Selection: 5
 ```
-
-**Advantages of Circular Queue over Linear Queue:**
-1. ✅ **No Space Wastage**: All array positions can be reused efficiently
-2. ✅ **Better Memory Utilization**: Maximum capacity always available
-3. ✅ **Efficient Operations**: O(1) time complexity maintained
-4. ✅ **No Shifting Required**: Unlike modified linear queue
-5. ✅ **Production Ready**: Suitable for real-world applications like CPU scheduling, buffer management
 
 <div align="right"><a href="#index">return to index</a></div><hr>
