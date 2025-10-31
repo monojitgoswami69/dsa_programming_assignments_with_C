@@ -41,14 +41,11 @@ void viewStack() {
     printf("\n");
 }
 
-void push() {
-    int x;
+void push(int x) {
     if (isFull()) {
         printf("Stack Overflow\n");
         return;
     }
-    printf("Enter element to push: ");
-    scanf("%d", &x);
     stack.top++;
     stack.arr[stack.top] = x;
     printf("Element %d pushed\n", x);
@@ -92,7 +89,13 @@ int main() {
         scanf("%d", &choice);
         switch (choice) {
             case 1: viewStack(); break;
-            case 2: push(); break;
+            case 2: {
+                int data;
+                printf("Enter element to push: ");
+                scanf("%d", &data);
+                push(data);
+                break;
+            }
             case 3: pop(); break;
             case 4: peek(); break;
             case 5: 

@@ -318,11 +318,4 @@ Merge Sort Tree (for [10, 7, 8, 9, 1, 5, 6, 2]):
                 [1,2,5,6,7,8,9,10]
 ```
 
-**Key Observations:**
-1. ✅ Both achieve O(n log n) complexity
-2. ✅ Merge Sort is more predictable (consistent comparisons)
-3. ✅ Quick Sort varies based on pivot selection
-4. ✅ Merge Sort requires O(n) extra space
-5. ✅ Quick Sort is in-place (O(log n) stack space)
-
 ---

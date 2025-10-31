@@ -358,11 +358,4 @@ Memory Layout:
 └─────┴─────┴──────┘   └─────┴─────┴──────┘   └──────┴─────┴──────┘   └─────┴─────┴──────┘
 ```
 
-**Key Features:**
-1. ✅ **Sorted Order**: Terms stored in descending order of exponents
-2. ✅ **No Zero Terms**: Zero coefficients are skipped
-3. ✅ **Like Terms Combined**: Same exponents are automatically merged
-4. ✅ **Efficient Storage**: Only non-zero terms stored
-5. ✅ **Clean Output**: Proper formatting with signs and special cases handled
-
 ---

@@ -45,11 +45,7 @@ void viewStack() {
     printf("\n");
 }
 
-void push() {
-    int x;
-    printf("Enter element to push: ");
-    scanf("%d", &x);
-    
+void push(int x) {
     stack newNode = (stack)malloc(sizeof(struct stack));
     if (newNode == NULL) {
         printf("Stack Overflow\n");
@@ -90,7 +86,13 @@ int main() {
         scanf("%d", &choice);
         switch (choice) {
             case 1: viewStack(); break;
-            case 2: push(); break;
+            case 2: {
+                int data;
+                printf("Enter element to push: ");
+                scanf("%d", &data);
+                push(data);
+                break;
+            }
             case 3: pop(); break;
             case 4: peek(); break;
             case 5: 

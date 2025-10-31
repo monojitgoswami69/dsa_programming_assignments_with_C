@@ -8,7 +8,6 @@
 - [Doubly Linked List](#doubly-linked-list)
 - [Operations and Complexity](#operations-and-complexity)
 - [Memory Management](#memory-management)
-- [Implementations in this Repository](#implementations-in-this-repository)
 - [Advantages and Disadvantages](#advantages-and-disadvantages)
 - [Applications](#applications)
 - [When to Use Different Types](#when-to-use-different-types)
@@ -510,30 +509,6 @@ sizeof(struct DNode) = sizeof(int) + 2 * sizeof(struct Node*)
 // Array
 sizeof(int[10]) = 10 * 4 = 40 bytes (no extra overhead)
 ```
-
-## Implementations in this Repository
-
-This repository contains two comprehensive implementations:
-
-### 1. **Circular Linked List** (`CircularLinkedList.c`)
-- Insert at position k
-- Delete from position k
-- Display list
-- Search element
-- Menu-driven interface
-
-### 2. **Doubly Linked List** (`DoublyLinkedList.c`)
-- Insert at position k
-- Delete from position k
-- Display list (forward direction)
-- Search element
-- Menu-driven interface
-
-Both implementations include:
-- ✅ Complete error handling
-- ✅ Memory management
-- ✅ Input validation
-- ✅ User-friendly menu system
 
 ## Advantages and Disadvantages
 

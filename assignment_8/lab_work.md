@@ -15,12 +15,9 @@
 
 ---
 
-> ### **Note** 
-> - All programs include problem statement, algorithm, source code, and sample outputs
-> - **You can write any one of the following implementations** for your lab work
-> - Linked list implementations eliminate fixed-size limitations
+> **Note:** You can write **any one** of the following implementations for your lab work.
 
-<hr>
+---
 
 <a id="implementation1"></a>
 ## 1. Stack Implementation using Linked List
@@ -41,7 +38,8 @@ Write a menu driven program in C to implement a stack using single linked list a
 3. Declare `top = NULL` (points to top of stack)
 4. For **isEmpty()**:
    - Return `top == NULL`
-5. For **push()**:
+5. For **push(value)**:
+   - Accept value parameter (passed from main)
    - Create newNode using `malloc()`
    - If allocation fails, display "Stack Overflow"
    - Set `newNode->data = value`
@@ -119,11 +117,7 @@ void viewStack() {
     printf("\n");
 }
 
-void push() {
-    int x;
-    printf("Enter element to push: ");
-    scanf("%d", &x);
-    
+void push(int x) {
     stack newNode = (stack)malloc(sizeof(struct stack));
     if (newNode == NULL) {
         printf("Stack Overflow\n");
@@ -164,7 +158,13 @@ int main() {
         scanf("%d", &choice);
         switch (choice) {
             case 1: viewStack(); break;
-            case 2: push(); break;
+            case 2: {
+                int data;
+                printf("Enter element to push: ");
+                scanf("%d", &data);
+                push(data);
+                break;
+            }
             case 3: pop(); break;
             case 4: peek(); break;
             case 5: 
@@ -377,8 +377,6 @@ Write a menu driven program in C to implement a queue using single linked list a
    - Display rear: `rear->data`
 11. On exit, free all nodes
 12. STOP
-
-**Key Concept:** Using circular linked list with rear pointer allows O(1) access to both front (rear->next) and rear.
 
 ### Source Code
 
@@ -745,12 +743,5 @@ Key:
 - rear->next gives front
 - Last node always points back to first (circular)
 ```
-
-**Advantages of this Implementation:**
-1. ✅ **O(1) Enqueue/Dequeue**: Both operations constant time
-2. ✅ **No False Overflow**: Unlike linear queue
-3. ✅ **Dynamic Size**: Grows as needed (up to capacity)
-4. ✅ **Efficient Space**: Uses only needed memory
-5. ✅ **Simple Front Access**: rear->next always gives front
 
 <div align="right"><a href="#index">return to index</a></div><hr>

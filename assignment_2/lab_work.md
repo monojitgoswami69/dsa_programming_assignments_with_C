@@ -49,11 +49,11 @@ Write a menu driven program in C to implement a Stack using array and perform th
     - Check condition: `top == size - 1`
     - If true, return 1 (stack is full)
     - Else, return 0 (stack has space)
-11. **For push() operation**:
+11. **For push(element) operation**:
+    - Accept element parameter (passed from main)
     - Call `isFull()` to check if stack is full
     - If full, display "Stack Overflow" and return
     - Else:
-      * Accept element from user
       * Increment top: `top++`
       * Insert element: `*(stack + top) = element`
       * Display success message
@@ -122,14 +122,11 @@ void viewStack() {
     printf("\n");
 }
 
-void push() {
-    int x;
+void push(int x) {
     if (isFull()) {
         printf("Stack Overflow\n");
         return;
     }
-    printf("Enter element to push: ");
-    scanf("%d", &x);
     top++;
     *(stack + top) = x;
     printf("Element %d pushed\n", x);
@@ -171,7 +168,13 @@ int main() {
         scanf("%d", &choice);
         switch (choice) {
             case 1: viewStack(); break;
-            case 2: push(); break;
+            case 2: {
+                int data;
+                printf("Enter element to push: ");
+                scanf("%d", &data);
+                push(data);
+                break;
+            }
             case 3: pop(); break;
             case 4: peek(); break;
             case 5: 
@@ -362,11 +365,11 @@ Write a menu driven program in C to implement a Stack using array encapsulated i
     - Check condition: `stack.top == stack.size - 1`
     - If true, return 1 (stack is full)
     - Else, return 0 (stack has space)
-12. **For push() operation**:
+12. **For push(element) operation**:
+    - Accept element parameter (passed from main)
     - Call `isFull()` to check stack status
     - If full, display "Stack Overflow" and return
     - Else:
-      * Accept element from user
       * Increment top: `stack.top++`
       * Insert element: `stack.arr[stack.top] = element`
       * Display success message
@@ -441,14 +444,11 @@ void viewStack() {
     printf("\n");
 }
 
-void push() {
-    int x;
+void push(int x) {
     if (isFull()) {
         printf("Stack Overflow\n");
         return;
     }
-    printf("Enter element to push: ");
-    scanf("%d", &x);
     stack.top++;
     stack.arr[stack.top] = x;
     printf("Element %d pushed\n", x);
@@ -492,7 +492,13 @@ int main() {
         scanf("%d", &choice);
         switch (choice) {
             case 1: viewStack(); break;
-            case 2: push(); break;
+            case 2: {
+                int data;
+                printf("Enter element to push: ");
+                scanf("%d", &data);
+                push(data);
+                break;
+            }
             case 3: pop(); break;
             case 4: peek(); break;
             case 5: 

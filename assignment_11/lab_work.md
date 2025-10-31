@@ -635,11 +635,4 @@ Go to: 80 → right is NULL
 Result: 80 (rightmost node)
 ```
 
-**Key Properties:**
-1. ✅ Inorder traversal gives sorted output
-2. ✅ Search, insert, delete: O(h) time
-3. ✅ Minimum is leftmost, maximum is rightmost
-4. ✅ All nodes in left subtree < root < all nodes in right subtree
-5. ✅ Height determines efficiency (balanced tree is best)
-
 ---

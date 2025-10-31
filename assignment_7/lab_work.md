@@ -15,12 +15,9 @@
 
 ---
 
-> ### **Note** 
-> - All programs include problem statement, algorithm, source code, and sample outputs
-> - **You can write any one of the following implementations** for your lab work
-> - Both implementations provide complete menu-driven operations
+> **Note:** You can write **any one** of the following implementations for your lab work.
 
-<hr>
+---
 
 <a id="implementation1"></a>
 ## 1. Circular Linked List Implementation
@@ -77,12 +74,6 @@ Write a menu driven program in C to perform the following operations on circular
    - Check each node's data
    - Return position if found
 9. STOP
-
-**Key Circular List Concepts:**
-- **Last Node → Head**: No NULL termination
-- **Traversal Condition**: `while (temp != head)` instead of `while (temp != NULL)`
-- **Finding Last Node**: Essential for beginning insertion/deletion
-- **Do-While Loop**: Ensures at least one iteration for non-empty list
 
 ### Source Code
 
@@ -458,13 +449,6 @@ Write a menu driven program in C to perform the following operations on doubly l
    - Traverse list checking each node's data
    - Return position if found
 9. STOP
-
-**Key Doubly List Concepts:**
-- **Bidirectional Links**: Each node has both prev and next pointers
-- **Easy Deletion**: No need to track previous node (already have it)
-- **Forward/Backward Traversal**: Can move in both directions
-- **Extra Memory**: Requires additional pointer per node
-- **Pointer Maintenance**: Must update both prev and next for operations
 
 ### Source Code
 

@@ -7,7 +7,6 @@
 - [Circular Queue with Linked List](#circular-queue-with-linked-list)
 - [Operations and Complexity](#operations-and-complexity)
 - [Memory Management](#memory-management)
-- [Implementations in this Repository](#implementations-in-this-repository)
 - [Advantages and Disadvantages](#advantages-and-disadvantages)
 - [Applications](#applications)
 - [Best Practices](#best-practices)
@@ -417,29 +416,6 @@ Example with int (4 bytes) and pointer (8 bytes):
 - Array: 10 * 4 = 40 bytes
 - Linked List: 10 * (4 + 8) = 120 bytes (3x more)
 ```
-
-## Implementations in this Repository
-
-### 1. **Stack with Linked List** (`stack_with_linkedlist.c`)
-- push() - Insert element at top
-- pop() - Remove element from top
-- peek() - View top element
-- isEmpty() - Check if empty
-- display() - Show entire stack
-
-### 2. **Circular Queue with Linked List** (`circular_queue_with_linkedlist.c`)
-- enqueue() - Insert at rear
-- dequeue() - Remove from front
-- display() - Show all elements
-- peek() - View front and rear
-- isFull() - Check capacity limit
-- isEmpty() - Check if empty
-
-Both implementations feature:
-- ✅ Menu-driven interface
-- ✅ Complete error handling
-- ✅ Memory management
-- ✅ Input validation
 
 ## Advantages and Disadvantages
 

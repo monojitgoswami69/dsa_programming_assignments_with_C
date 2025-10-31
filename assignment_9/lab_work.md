@@ -332,9 +332,4 @@ Sorted!
 | **Sorted [11,12,22,25,34,64]** | 5 | 15 | 5 | Bubble/Insertion |
 | **Reverse [64,34,25,22,12,11]** | 15 | 15 | 15 | Tie |
 
-**Key Observations:**
-- Selection Sort always makes same comparisons regardless of input
-- Bubble and Insertion Sort benefit from sorted/nearly-sorted data
-- Selection Sort has minimum swaps (best when memory writes expensive)
-
 ---
