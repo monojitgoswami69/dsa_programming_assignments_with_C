@@ -13,8 +13,6 @@
 - [Best Practices](#best-practices)
 
 
-okay so
-
 ## What is an Array?
 
 An **Array** is a collection of elements of the same data type stored in contiguous memory locations. Arrays are one of the most fundamental and widely-used data structures in computer science, serving as the foundation for many other data structures and algorithms.

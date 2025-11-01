@@ -75,21 +75,6 @@ void deleteElement(int element){
     printf("Element not found\n");
 }
 
-void deleteElementIndex(int position){
-    if (n == 0){
-        printf("Array is empty. Nothing to delete.\n");
-        return;
-    }
-    if (!(position <= n && position >= 1)){
-        printf("Position out of bounds\n");
-        return;
-    }
-    int deletedElement = arr[position - 1];
-    for (int j = position - 1; j < n - 1; j++) arr[j] = arr[j + 1];  
-    n--;
-    printf("Element %d at position %d deleted successfully.\n", deletedElement, position);
-}
-
 void searchElement(int element){
     if (n == 0){
         printf("Array is empty. Please read array first.\n");
@@ -109,10 +94,6 @@ void searchElement(int element){
 }
 
 void sortArray(){
-    if (n == 0){
-        printf("Array is empty. Please read array first.\n");
-        return;
-    }
     int swapped;
     for (int i = 0; i < n-1; i++){
         swapped = 0;
@@ -128,7 +109,6 @@ void sortArray(){
             break;
         }
     }
-    printf("Array sorted successfully\n");
 }
 
 void binarySearchElement(int element){
@@ -168,14 +148,12 @@ int main(){
     while (1){
         printf("\nEnter operation to perform-\n");
         printf("1. Read Array\n");
-        printf("2. Display Array\n");
-        printf("3. Insert element\n");
-        printf("4. Delete element\n");
-        printf("5. Delete element from position\n");
-        printf("6. Search element (Linear Search)\n");
-        printf("7. Sort Array\n");
-        printf("8. Search element (Binary Search)\n");
-        printf("9. quit\n");
+        printf("2. Insert element at position\n");
+        printf("3. Remove element\n");
+        printf("4. Search element (Linear Search)\n");
+        printf("5. Search element (Binary Search)\n");
+        printf("6. Display Array\n");
+        printf("7. Quit\n");
         printf("Selection: ");
         scanf("%d", &choice);
         
@@ -187,49 +165,38 @@ int main(){
                 readArray(size);
                 break;
             }
-            case 2: 
-                displayArray(); 
-                break;
-            case 3: {
+            case 2: {
                 int element, position;
                 printf("Enter element and position to insert: ");
                 scanf("%d %d", &element, &position);
                 insertElement(element, position);
                 break;
             }
-            case 4: {
+            case 3: {
                 int element;
                 printf("Enter element to remove: ");
                 scanf("%d", &element);
                 deleteElement(element);
                 break;
             }
-            case 5: {
-                int position;
-                printf("Enter the position of the element to delete: ");
-                scanf("%d", &position);
-                deleteElementIndex(position);
-                break;
-            }
-            case 6: {
+            case 4: {
                 int element;
                 printf("Enter the element to search: ");
                 scanf("%d", &element);
                 searchElement(element);
                 break;
             }
-            case 7: {
-                sortArray();
-                break;
-            }
-            case 8: {
+            case 5: {
                 int element;
                 printf("Enter the element to search: ");
                 scanf("%d", &element);
                 binarySearchElement(element);
                 break;
             }
-            case 9: {
+            case 6: 
+                displayArray(); 
+                break;
+            case 7: {
                 return 0;
             }
             default: {
