@@ -6,47 +6,19 @@ Assume that there are only four operators (*, /, +, -) in a postfix expression a
 
 ### Algorithm
 
+
 1. START
-2. Declare integer stack: `int stack[SIZE]` where SIZE = 100
-3. Initialize `top = -1` (empty stack)
-4. Accept postfix expression from user as string
-5. Initialize loop counter: `i = 0`
-6. **While postfix[i] != '\0' (not end of string)**:
-   - Read current character: `c = postfix[i]`
-   - Increment `i++`
-   - **Case 1: If c is operand** (digit '0' to '9'):
-     * Convert character to integer: `value = c - '0'`
-       - Example: '5' - '0' = 53 - 48 = 5
-     * Push integer value to stack: `push(value)`
-     * Stack now contains the numeric value
-   - **Case 2: If c is operator** (+, -, *, /):
-     * Pop second operand: `b = pop()`
-       - This is the right operand in the operation
-     * Pop first operand: `a = pop()`
-       - This is the left operand in the operation
-     * **Note**: Order matters for - and /
-     * Perform operation based on operator:
-       - If '+': Calculate `result = a + b`
-       - If '-': Calculate `result = a - b` (NOT b - a)
-       - If '*': Calculate `result = a * b`
-       - If '/': Calculate `result = a / b` (NOT b / a)
-     * Push result back to stack: `push(result)`
-     * Result becomes operand for next operation
-7. **After processing all characters**:
-   - Stack contains exactly one element (the final result)
-   - Pop final result: `finalResult = pop()`
-   - Display result
-8. STOP
-
-**Push Operation:**
-- Check if stack is full: `top == SIZE - 1`
-- If full, display "Stack Overflow"
-- Else: Increment top first, then insert: `stack[++top] = value`
-
-**Pop Operation:**
-- Check if stack is empty: `top == -1`
-- If empty, display "Stack Underflow"
-- Else: Return current top, then decrement: `return stack[top--]`
+2. Declare stack: `int stack[SIZE]`, initialize `top = -1`
+3. Read postfix expression from user into `postfix[]`
+4. For each character `c` in `postfix[]`:
+     - If `c` is operand (digit), convert to integer and push onto stack
+     - If `c` is operator (+, -, *, /):
+         * Pop two elements from stack: `b` and `a`
+         * Compute result of `a` operator `b`
+         * Push result back onto stack
+     - If `c` is invalid, display error and stop
+5. After processing all characters, pop and display the result from stack
+6. STOP
 
 ### Source Code
 

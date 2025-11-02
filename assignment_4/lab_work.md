@@ -6,50 +6,22 @@ Assume that there are only four operators (*, /, +, -) in an infix expression an
 
 ### Algorithm
 
-1. START
-2. Declare character stack: `char stack[MAX_SIZE]` where MAX_SIZE = 100
-3. Initialize `top = -1` (empty stack)
-4. Accept infix expression from user as string
-5. Initialize `postfix` string array and `index = 0` for postfix
-6. Initialize loop counter: `i = 0`
-7. **While infix[i] != '\0' (not end of string)**:
-   - Read current character: `key = infix[i]`
-   - Increment `i++`
-   - **Case 1: If key is operand** (digit 0-9 OR letter a-z OR letter A-Z):
-     * Add directly to postfix: `postfix[index++] = key`
-     * No stack operation needed
-   - **Case 2: If key is operator** (+, -, *, /, ^):
-     * **For exponentiation (^)** - Right associative:
-       - While `top != -1` AND `priority(stack[top]) > priority(key)`:
-         * Pop operator: `postfix[index++] = pop()`
-       - Push current operator: `push(key)`
-     * **For other operators** (+, -, *, /) - Left associative:
-       - While `top != -1` AND `priority(stack[top]) >= priority(key)`:
-         * Pop operator: `postfix[index++] = pop()`
-       - Push current operator: `push(key)`
-   - **Case 3: If key is '('**:
-     * Push to stack: `push('(')`
-     * Opening parenthesis has lowest priority but must be kept
-   - **Case 4: If key is ')'**:
-     * While `top != -1` AND `stack[top] != '('`:
-       - Pop operator: `postfix[index++] = pop()`
-     * If `top != -1` (found matching '('):
-       - Pop '(' from stack: `pop()`
-       - Do NOT add '(' to postfix
-   - **Case 5: Invalid character**:
-     * Display error and return
-8. **After processing all characters**:
-   - While `top != -1` (stack not empty):
-     * Pop remaining operators: `postfix[index++] = pop()`
-9. Add null terminator: `postfix[index] = '\0'`
-10. Display postfix expression
-11. STOP
 
-**Priority Function:**
-- Returns 3 for '^' (highest)
-- Returns 2 for '*' and '/'
-- Returns 1 for '+' and '-' (lowest)
-- Returns 0 for '(' (special case)
+1. START
+2. Declare stack: `char stack[MAX_SIZE]`, initialize `top = -1`
+3. Read infix expression from user into `infix[]`
+4. Initialize empty string `postfix[]` and index variable
+5. For each character `key` in `infix[]`:
+     - If `key` is operand (alphabet or digit), append to `postfix[]`
+     - If `key` is '(', push to stack
+     - If `key` is ')', pop and append from stack to `postfix[]` until '(' is found, then pop '('
+     - If `key` is operator (+, -, *, /, ^):
+         * While stack is not empty and operator at top has higher or equal priority (except '^' is right-associative), pop and append to `postfix[]`
+         * Push `key` to stack
+     - If `key` is invalid, display error and stop
+6. After processing all characters, pop and append remaining operators from stack to `postfix[]`
+7. Display `postfix[]` as the postfix expression
+8. STOP
 
 ### Source Code
 

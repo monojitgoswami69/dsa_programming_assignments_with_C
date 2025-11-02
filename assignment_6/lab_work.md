@@ -13,126 +13,41 @@ Write a menu driven program in C to perform the following operations on single l
 
 ### Algorithm
 
+
 1. START
-2. Define structure `Node` with two members:
-   - `int data` (stores node value)
-   - `struct Node *next` (pointer to next node in list)
-3. Initialize global pointer: `struct Node *head = NULL` (empty list)
-4. Display menu with 10 operations and accept user choice
-5. **For Insert at Beginning**:
-   - Allocate memory: `newNode = malloc(sizeof(struct Node))`
-   - Check if allocation successful (`newNode != NULL`)
-   - If successful:
-     * Set `newNode->data = value`
-     * Set `newNode->next = head` (point to current first node)
-     * Update `head = newNode` (make new node the first)
-   - Time Complexity: O(1)
-6. **For Insert at End**:
-   - Allocate memory: `newNode = malloc(sizeof(struct Node))`
-   - Check if allocation successful
-   - Set `newNode->data = value` and `newNode->next = NULL`
-   - If list is empty (`head == NULL`):
-     * Set `head = newNode`
-   - Else:
-     * Initialize `temp = head`
-     * Traverse to last node: `while (temp->next != NULL)` do `temp = temp->next`
-     * Set `temp->next = newNode` (link last node to new node)
-   - Time Complexity: O(n)
-7. **For Insert at Position k**:
-   - Validate: Check if `k <= 0`, display error and return
-   - If `k == 1`, call insert at beginning and return
-   - Allocate memory: `newNode = malloc(sizeof(struct Node))`
-   - Check if allocation successful
-   - Set `newNode->data = value`
-   - Initialize `temp = head`
-   - Traverse to (k-1)th node:
-     * For `i = 1` to `i = k-2`:
-       - If `temp == NULL`, position out of bounds
-       - Move: `temp = temp->next`
-   - If `temp == NULL`, display error and free newNode
-   - Else:
-     * Set `newNode->next = temp->next`
-     * Set `temp->next = newNode`
-   - Time Complexity: O(k)
-8. **For Delete from Beginning**:
-   - Check if list is empty (`head == NULL`)
-   - If empty, display error and return
-   - Store head: `temp = head`
-   - Update head: `head = head->next`
-   - Free old head: `free(temp)`
-   - Time Complexity: O(1)
-9. **For Delete from End**:
-   - Check if list is empty (`head == NULL`)
-   - If empty, display error and return
-   - If single node (`head->next == NULL`):
-     * Free head: `free(head)`
-     * Set `head = NULL`
-     * Return
-   - Initialize `temp = head`
-   - Traverse to second-last node:
-     * While `temp->next->next != NULL` do `temp = temp->next`
-   - Free last node: `free(temp->next)`
-   - Set `temp->next = NULL`
-   - Time Complexity: O(n)
-10. **For Delete from Position k**:
-    - Check if list is empty or `k <= 0`
-    - If `k == 1`, call delete from beginning and return
-    - Initialize `temp = head`
-    - Traverse to (k-1)th node:
-      * For `i = 1` to `i = k-2`:
-        - If `temp == NULL`, break
-        - Move: `temp = temp->next`
-    - Validate: Check if `temp == NULL` or `temp->next == NULL`
-    - If invalid, display error and return
-    - Store node to delete: `nodeToDelete = temp->next`
-    - Update link: `temp->next = nodeToDelete->next`
-    - Free node: `free(nodeToDelete)`
-    - Time Complexity: O(k)
-11. **For Display**:
-    - Check if list is empty (`head == NULL`)
-    - If empty, display "List is empty"
-    - Else:
-      * Initialize `temp = head`
-      * Display "List: "
-      * While `temp != NULL`:
-        - Print `temp->data`
-        - If `temp->next != NULL`, print " -> "
-        - Move: `temp = temp->next`
-      * Print newline
-    - Time Complexity: O(n)
-12. **For Search Element**:
-    - Check if list is empty
-    - Initialize `temp = head` and `position = 1`
-    - While `temp != NULL`:
-      * If `temp->data == searchValue`:
-        - Display "Value found at position: position"
-        - Return (exit function)
-      * Move: `temp = temp->next`
-      * Increment: `position++`
-    - If not found, display "Value not found in the list"
-    - Time Complexity: O(n)
-13. **For Reverse List**:
-    - Check if list is empty
-    - If empty, display error and return
-    - Initialize three pointers:
-      * `prev = NULL`
-      * `current = head`
-      * `next = NULL`
-    - While `current != NULL`:
-      * Store next: `next = current->next`
-      * Reverse link: `current->next = prev`
-      * Move prev: `prev = current`
-      * Move current: `current = next`
-    - Update head: `head = prev` (prev points to new first node)
-    - Display success message
-    - Time Complexity: O(n), Space Complexity: O(1)
-14. **For Exit (Cleanup)**:
-    - While `head != NULL`:
-      * Store current: `temp = head`
-      * Move head: `head = head->next`
-      * Free node: `free(temp)`
-    - Exit program: `exit(0)`
-15. Repeat menu until user chooses to exit
+2. Define structure `Node` with members: `int data`, `struct Node *next`
+3. Initialize head pointer: `struct Node *head = NULL`
+4. Display menu with operations and accept user choice
+5. **For insert at beginning:**
+    - Create new node, set data, point next to head, update head
+6. **For insert at end:**
+    - Create new node, set data, set next to NULL
+    - If list empty, set head to new node
+    - Else, traverse to last node and link new node
+7. **For insert at kth position:**
+    - Validate position
+    - If position 1, insert at beginning
+    - Else, traverse to (k-1)th node, insert new node
+8. **For delete from beginning:**
+    - If list empty, display message
+    - Else, update head to next node, free old head
+9. **For delete from end:**
+    - If list empty, display message
+    - If only one node, free head, set head to NULL
+    - Else, traverse to second last node, free last node, set next to NULL
+10. **For delete from kth position:**
+     - Validate position
+     - If position 1, delete from beginning
+     - Else, traverse to (k-1)th node, unlink and free kth node
+11. **For display:**
+     - Traverse from head, print each node's data
+12. **For search:**
+     - Traverse from head, compare data with target, display position if found
+13. **For reverse:**
+     - Use three pointers: prev, current, next
+     - Traverse list, reverse links, update head
+14. Repeat menu until user chooses to quit
+15. Free all nodes before exit
 16. STOP
 
 ### Source Code
@@ -455,264 +370,60 @@ Enter your choice: 2
 Enter value to insert at end: 10
 Inserted 10 at end
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 2
 Enter value to insert at end: 20
 Inserted 20 at end
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 2
 Enter value to insert at end: 30
 Inserted 30 at end
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 7
 List: 10 -> 20 -> 30
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 1
 Enter value to insert at beginning: 5
 Inserted 5 at beginning
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 7
 List: 5 -> 10 -> 20 -> 30
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 3
 Enter value to insert: 15
 Enter position (1-indexed): 3
 Inserted 15 at position 3
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 7
 List: 5 -> 10 -> 15 -> 20 -> 30
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 8
 Enter value to search: 20
 Value 20 found at position 4
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 4
 Deleted 5 from beginning
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 7
 List: 10 -> 15 -> 20 -> 30
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 5
 Deleted 30 from end
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 7
 List: 10 -> 15 -> 20
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 9
 List reversed successfully
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 7
 List: 20 -> 15 -> 10
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 6
 Enter position to delete (1-indexed): 2
 Deleted 15 from position 2
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 7
 List: 20 -> 10
 
-===== LINKED LIST MENU =====
-1. Insert at beginning
-2. Insert at end
-3. Insert at position k
-4. Delete from beginning
-5. Delete from end
-6. Delete from position k
-7. Display list
-8. Search for value
-9. Reverse list
-0. Quit
-============================
 Enter your choice: 0
 ```

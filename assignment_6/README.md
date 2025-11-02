@@ -3,8 +3,11 @@
 
 ## Table of Contents
 - [What is a Linked List?](#what-is-a-linked-list)
+- [Linked List Fundamentals](#linked-list-fundamentals)
 - [Types of Linked Lists](#types-of-linked-lists)
 - [Linked List Operations](#linked-list-operations)
+- [Circular Linked List](#circular-linked-list)
+- [Doubly Linked List](#doubly-linked-list)
 - [Memory Management](#memory-management)
 - [Array vs Linked List](#array-vs-linked-list)
 - [Advanced Linked List Concepts](#advanced-linked-list-concepts)
@@ -79,6 +82,45 @@ In this example with nodes containing integers:
 - Nodes can be **anywhere in memory** (not necessarily consecutive)
 - Traversal requires **following pointers**: head → node₁ → node₂ → ... → nodeₙ
 - **Last node** has next = NULL, indicating end of list
+
+## Linked List Fundamentals
+
+### Node Structure
+
+```c
+// Single Linked List Node
+struct Node {
+    int data;              // Data field
+    struct Node *next;     // Pointer to next node
+};
+
+// Doubly Linked List Node
+struct DNode {
+    int data;              // Data field
+    struct DNode *prev;    // Pointer to previous node
+    struct DNode *next;    // Pointer to next node
+};
+```
+
+### Memory Representation
+
+```
+For a single linked list with 3 nodes:
+
+Memory:  [1000: data=10, next=2000]  [2000: data=20, next=3000]  [3000: data=30, next=NULL]
+         ↑                            ↑                            ↑
+Address: 1000                         2000                         3000
+
+head → [1000]
+```
+
+### Why Linked Lists Matter
+
+1. **Dynamic Size**: No need to specify size beforehand
+2. **Efficient Insertion/Deletion**: O(1) when position is known
+3. **Memory Efficiency**: No wasted memory from unused array elements
+4. **Implementation Flexibility**: Base for other data structures (stacks, queues, graphs)
+5. **No Reallocation**: Unlike arrays, no need to copy entire structure when growing
 
 ## Types of Linked Lists
 
@@ -597,6 +639,317 @@ void display(struct Node *head) {
 
 **Space Complexity**: O(1) - No extra space (ignoring output buffer)
 
+## Circular Linked List
+
+### Structure and Properties
+
+In a circular linked list:
+- The last node points back to the first node instead of NULL
+- Forms a circular chain
+- Can maintain pointer to last node for O(1) insertion at both ends
+
+```c
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+// Circular list representation:
+// head->next->next->...->next == head
+```
+
+### Visual Representation
+
+```
+        head
+         ↓
+    [10 | •]────────┐
+         ↑          ↓
+    [40 | •]   [20 | •]
+         ↑          ↓
+         └────[30 | •]
+```
+
+### Key Operations
+
+#### **1. Insertion at Position k**
+
+```c
+void insertAtK(struct Node **head, int value, int k) {
+    struct Node *newNode = malloc(sizeof(struct Node));
+    newNode->data = value;
+    
+    // Empty list
+    if (*head == NULL) {
+        newNode->next = newNode;  // Point to itself
+        *head = newNode;
+        return;
+    }
+    
+    // Insert at beginning (k <= 1)
+    if (k <= 1) {
+        struct Node *last = *head;
+        while (last->next != *head)  // Find last node
+            last = last->next;
+        newNode->next = *head;
+        last->next = newNode;
+        *head = newNode;
+        return;
+    }
+    
+    // Insert at position k
+    struct Node *temp = *head;
+    for (int i = 1; i < k - 1 && temp->next != *head; i++)
+        temp = temp->next;
+    
+    newNode->next = temp->next;
+    temp->next = newNode;
+}
+```
+
+**Time Complexity:**
+- Insert at beginning: O(n) - need to find last node
+- Insert at position k: O(k)
+- Insert after a given node: O(1)
+
+#### **2. Deletion from Position k**
+
+```c
+void deleteFromK(struct Node **head, int k) {
+    if (*head == NULL) return;
+    
+    struct Node *temp = *head;
+    
+    // Delete first node (k <= 1)
+    if (k <= 1) {
+        // Only one node
+        if (temp->next == temp) {
+            free(temp);
+            *head = NULL;
+            return;
+        }
+        
+        // Find last node
+        struct Node *last = *head;
+        while (last->next != *head)
+            last = last->next;
+        
+        last->next = temp->next;
+        *head = temp->next;
+        free(temp);
+        return;
+    }
+    
+    // Find node before kth position
+    for (int i = 1; i < k - 1 && temp->next != *head; i++)
+        temp = temp->next;
+    
+    if (temp->next == *head) return;  // Position out of bounds
+    
+    struct Node *del = temp->next;
+    temp->next = del->next;
+    free(del);
+}
+```
+
+#### **3. Display and Search**
+
+```c
+// Display all nodes
+void display(struct Node *head) {
+    if (!head) return;
+    struct Node *temp = head;
+    do {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+    printf("(back to head)\n");
+}
+
+// Search for a value
+void search(struct Node *head, int value) {
+    if (!head) return;
+    struct Node *temp = head;
+    int pos = 1;
+    do {
+        if (temp->data == value) {
+            printf("Found at position %d\n", pos);
+            return;
+        }
+        temp = temp->next;
+        pos++;
+    } while (temp != head);
+    printf("Not found\n");
+}
+```
+
+### Advantages of Circular Linked List
+
+1. ✅ **Round-Robin Scheduling**: Natural fit for circular operations
+2. ✅ **Efficient Queue Implementation**: Can access both ends quickly
+3. ✅ **No NULL Checks**: No need to check for NULL in traversal
+4. ✅ **Symmetric Structure**: Any node can be starting point
+5. ✅ **Continuous Traversal**: Can cycle through list indefinitely
+
+### Disadvantages
+
+1. ❌ **Infinite Loop Risk**: Must be careful with termination conditions
+2. ❌ **Complex Implementation**: More care needed than simple linked list
+3. ❌ **Beginning Insertion Cost**: O(n) to find last node
+
+## Doubly Linked List
+
+### Structure and Properties
+
+A doubly linked list allows bidirectional traversal:
+- Each node has **prev** and **next** pointers
+- Can traverse forward and backward
+- Easier deletion (don't need to track previous node)
+
+```c
+struct Node {
+    int data;
+    struct Node *prev;
+    struct Node *next;
+};
+```
+
+### Visual Representation
+
+```
+NULL ← [prev|10|next] ⇄ [prev|20|next] ⇄ [prev|30|next] → NULL
+       ↑
+      head
+```
+
+### Key Operations
+
+#### **1. Insertion at Position k**
+
+```c
+void insertAtK(struct Node **head, int value, int k) {
+    struct Node *newNode = malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->prev = newNode->next = NULL;
+    
+    // Insert at beginning or empty list
+    if (k <= 1 || *head == NULL) {
+        newNode->next = *head;
+        if (*head) 
+            (*head)->prev = newNode;
+        *head = newNode;
+        return;
+    }
+    
+    // Find position
+    struct Node *temp = *head;
+    for (int i = 1; i < k - 1 && temp->next; i++)
+        temp = temp->next;
+    
+    // Insert after temp
+    newNode->next = temp->next;
+    newNode->prev = temp;
+    if (temp->next) 
+        temp->next->prev = newNode;
+    temp->next = newNode;
+}
+```
+
+**Time Complexity:** O(k) to reach position k
+
+#### **2. Deletion from Position k**
+
+```c
+void deleteFromK(struct Node **head, int k) {
+    if (*head == NULL) return;
+    
+    struct Node *temp = *head;
+    
+    // Delete first node
+    if (k <= 1) {
+        *head = temp->next;
+        if (*head) 
+            (*head)->prev = NULL;
+        free(temp);
+        return;
+    }
+    
+    // Find kth node
+    for (int i = 1; i < k && temp; i++)
+        temp = temp->next;
+    
+    if (!temp) return;  // Position out of bounds
+    
+    // Adjust pointers
+    if (temp->prev) 
+        temp->prev->next = temp->next;
+    if (temp->next) 
+        temp->next->prev = temp->prev;
+    free(temp);
+}
+```
+
+**Time Complexity:** O(k) to reach position k
+
+#### **3. Display and Search**
+
+```c
+// Display forward
+void displayForward(struct Node *head) {
+    while (head) {
+        printf("%d", head->data);
+        if (head->next) printf(" ⇄ ");
+        head = head->next;
+    }
+    printf("\n");
+}
+
+// Display backward
+void displayReverse(struct Node *head) {
+    if (!head) return;
+    
+    // Go to end
+    while (head->next)
+        head = head->next;
+    
+    // Print backward
+    while (head) {
+        printf("%d", head->data);
+        if (head->prev) printf(" ⇄ ");
+        head = head->prev;
+    }
+    printf("\n");
+}
+
+// Search
+void searchDoubly(struct Node *head, int value) {
+    int pos = 1;
+    while (head) {
+        if (head->data == value) {
+            printf("Found at position %d\n", pos);
+            return;
+        }
+        head = head->next;
+        pos++;
+    }
+    printf("Not found\n");
+}
+```
+
+### Advantages of Doubly Linked List
+
+1. ✅ **Bidirectional Traversal**: Can move forward and backward
+2. ✅ **Easier Deletion**: Don't need to track previous node
+3. ✅ **Efficient Reverse Operations**: Natural backward movement
+4. ✅ **Better for Complex Operations**: Easier to implement certain algorithms
+5. ✅ **No Need for Previous Pointer**: Already have prev reference
+
+### Disadvantages
+
+1. ❌ **Extra Memory**: Requires additional pointer per node
+2. ❌ **Complex Operations**: More pointer manipulation needed
+3. ❌ **Maintenance Overhead**: Must update both prev and next pointers
+
 ## Memory Management
 
 ### Dynamic Memory Allocation
@@ -746,6 +1099,33 @@ Linked List: Scattered Memory
 - No need for random access
 - Memory fragmentation is acceptable
 - Implementing stacks, queues, or graphs
+
+### **Operations Complexity Comparison**
+
+| Operation | Singly | Doubly | Circular | Array |
+|-----------|--------|--------|----------|-------|
+| **Access by Index** | O(n) | O(n) | O(n) | O(1) |
+| **Search** | O(n) | O(n) | O(n) | O(n) |
+| **Insert at Beginning** | O(1) | O(1) | O(n)* | O(n) |
+| **Insert at End** | O(n) | O(n) | O(1)† | O(1) |
+| **Insert at Position k** | O(k) | O(k) | O(k) | O(n) |
+| **Delete from Beginning** | O(1) | O(1) | O(n)* | O(n) |
+| **Delete from End** | O(n) | O(n) | O(n) | O(1) |
+| **Delete from Position k** | O(k) | O(k) | O(k) | O(n) |
+| **Reverse** | O(n) | O(n) | O(n) | O(n) |
+
+\* O(n) if maintaining pointer to head only; O(1) if maintaining tail pointer  
+† O(1) if maintaining pointer to last node
+
+### **Type Comparison Summary**
+
+| Aspect | Singly | Doubly | Circular |
+|--------|--------|--------|----------|
+| **Memory/Node** | 1 pointer | 2 pointers | 1 pointer |
+| **Traversal** | Forward only | Both directions | Forward (circular) |
+| **Deletion** | Need previous | Easy (have prev) | Need previous |
+| **Complexity** | Low | High | Medium |
+| **Use Cases** | Simple lists | Navigation | Round-robin |
 
 ## Advanced Linked List Concepts
 
@@ -911,30 +1291,74 @@ void removeDuplicates(struct Node *head) {
 
 ## Applications
 
-### System Programming
-- **Memory Management**: Free list management in allocators
-- **Operating Systems**: Process scheduling queues
-- **File Systems**: Directory structure implementation
-- **Undo Functionality**: Maintaining operation history
+### Singly Linked List Applications
 
-### Data Structure Foundation
-- **Stack Implementation**: Using linked list for dynamic stack
-- **Queue Implementation**: Efficient enqueue/dequeue operations
-- **Hash Table Chaining**: Collision resolution
-- **Graph Representation**: Adjacency lists
+1. **System Programming**
+   - Memory Management: Free list management in allocators
+   - Operating Systems: Process scheduling queues
+   - File Systems: Directory structure implementation
+   - Undo Functionality: Maintaining operation history
 
-### Real-World Applications
-- **Music Playlists**: Next/previous song navigation
-- **Browser History**: Forward/backward navigation
-- **Image Viewer**: Next/previous image
-- **Text Editors**: Undo/redo functionality
-- **GPS Navigation**: Route linked nodes
+2. **Data Structure Foundation**
+   - Stack Implementation: Using linked list for dynamic stack
+   - Queue Implementation: Efficient enqueue/dequeue operations
+   - Hash Table Chaining: Collision resolution
+   - Graph Representation: Adjacency lists
+
+3. **Real-World Applications**
+   - Music Playlists: Next song navigation
+   - Image Viewer: Next image
+   - Text Editors: Basic undo functionality
+   - Symbol Tables: Compiler design
+
+### Circular Linked List Applications
+
+1. **Operating Systems**
+   - Round-robin CPU scheduling
+   - Process queue management
+   - Resource allocation
+
+2. **Multiplayer Games**
+   - Turn management
+   - Player rotation
+   - Game state cycling
+
+3. **Media Players**
+   - Playlist looping
+   - Continuous playback
+   - Shuffle mode
+
+4. **Network Systems**
+   - Token ring network
+   - Circular buffers
+   - Load balancing
+
+### Doubly Linked List Applications
+
+1. **Browser History**
+   - Forward and backward navigation
+   - Tab management
+   - Undo/redo functionality
+
+2. **Text Editors**
+   - Cursor movement
+   - Line navigation
+   - Advanced undo/redo stack
+
+3. **Operating Systems**
+   - Process scheduling
+   - Memory management (LRU cache)
+   - Thread management
+
+4. **Music Players**
+   - Previous/next track
+   - Playlist navigation
+   - History tracking
 
 ### Algorithm Implementation
 - **Polynomial Arithmetic**: Representing and manipulating polynomials
 - **Large Number Arithmetic**: Representing numbers larger than native types
 - **Sparse Matrix**: Efficient storage of sparse data
-- **Symbol Tables**: Compiler design
 
 ## When to Use Linked Lists
 
@@ -947,6 +1371,29 @@ void removeDuplicates(struct Node *head) {
 - **Memory Flexibility**: Can tolerate scattered allocation
 - **Unknown Size**: Cannot predict maximum size in advance
 - **Implementing Other Structures**: Building stacks, queues, graphs
+
+### **Specific Type Selection**
+
+#### **Use Singly Linked List When:**
+- Only forward traversal needed
+- Memory is constrained
+- Simple implementation sufficient
+- Stack/queue implementation
+- Basic list operations
+
+#### **Use Doubly Linked List When:**
+- Bidirectional traversal needed
+- Frequent deletion operations
+- Need to move backward efficiently
+- Implementing complex data structures (LRU cache, browser history)
+- Undo/redo functionality required
+
+#### **Use Circular Linked List When:**
+- Round-robin operations needed
+- No natural end point
+- Continuous cycling required
+- Queue implementation with quick access to both ends
+- Multiplayer game turn management
 
 ### **Specific Scenarios**
 
@@ -963,6 +1410,12 @@ void removeDuplicates(struct Node *head) {
 3. **Memory Overhead Matters**: Tight memory constraints
 4. **Binary Search Required**: Need O(log n) search
 5. **Small Fixed-Size Data**: Array is simpler and faster
+
+#### **Prefer Arrays When:**
+- Frequent random access needed
+- Size is known and fixed
+- Cache performance critical
+- Simple operations only
 
 ## Best Practices
 
@@ -1057,7 +1510,40 @@ printf("Error!\n");
 
 #### **1. Free All Nodes on Exit**
 ```c
-void cleanup(struct Node **head) {
+// Free singly linked list
+void freeList(struct Node **head) {
+    while (*head != NULL) {
+        struct Node *temp = *head;
+        *head = (*head)->next;
+        free(temp);
+    }
+}
+
+// Free circular linked list
+void freeCList(struct Node **head) {
+    if (*head == NULL) return;
+    
+    struct Node *current = *head;
+    struct Node *next;
+    
+    // Break the circular link first
+    struct Node *last = *head;
+    while (last->next != *head)
+        last = last->next;
+    last->next = NULL;
+    
+    // Now free like a regular list
+    while (current != NULL) {
+        next = current->next;
+        free(current);
+        current = next;
+    }
+    
+    *head = NULL;
+}
+
+// Free doubly linked list
+void freeDList(struct Node **head) {
     while (*head != NULL) {
         struct Node *temp = *head;
         *head = (*head)->next;
