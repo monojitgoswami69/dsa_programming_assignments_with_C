@@ -30,59 +30,49 @@ Write a menu driven program to perform the following operations on an array.
 - (d) search an element x from the array using binary search (check no. of comparison).
 - (e) display the array.
 
+
 ### Algorithm
 
-1. **Start**
-2. **Initialize**:
-   - Declare a static array `arr[MAX_SIZE]` (MAX_SIZE = 100).
-   - Set `n = 0` (current size of the array).
-3. **Display Menu**:
-   - Present the user with the following options:
-     1. Read Array
-     2. Insert Element at Position
-     3. Remove Element by Value
-     4. Search Element (Linear Search)
-     5. Search Element (Binary Search)
-     6. Display Array
-     7. Quit
-4. **Perform Operations Based on User Choice**:
-   - **Read Array**:
-     - Accept the size of the array from the user.
-     - Validate the size: `1 <= size <= MAX_SIZE`.
-     - Read `size` elements into `arr`.
-     - Update `n = size`.
-   - **Insert Element at Position**:
-     - Validate the position: `1 <= position <= n + 1`.
-     - Shift elements from `position-1` to `n-1` one position to the right.
-     - Insert the new element at `arr[position-1]`.
-     - Increment `n`.
-   - **Remove Element by Value**:
-     - Search for the element in the array.
-     - If found, shift all elements after the element one position to the left.
-     - Decrement `n`.
-     - If not found, display an appropriate message.
-   - **Search Element (Linear Search)**:
-     - Traverse the array and compare each element with the target.
-     - Count the number of comparisons.
-     - If found, display the position and the number of comparisons.
-     - If not found, display an appropriate message.
-   - **Search Element (Binary Search)**:
-     - Sort the array using Bubble Sort.
-     - Perform binary search on the sorted array:
-       - Initialize `left = 0`, `right = n-1`.
-       - While `left <= right`:
-         - Compute `mid = left + (right - left) / 2`.
-         - Compare the middle element with the target.
-         - Adjust `left` or `right` based on the comparison.
-         - Count the number of comparisons.
-       - If found, display the position and the number of comparisons.
-       - If not found, display an appropriate message.
-   - **Display Array**:
-     - Traverse the array and print each element.
-   - **Quit**:
-     - Exit the program.
-5. **Repeat** until the user chooses to quit.
-6. **Stop**
+1. START
+2. Declare static array: `int arr[MAX_SIZE]` where MAX_SIZE = 100
+3. Initialize variable `n = 0` (current array size)
+4. Display menu with operations and accept user choice
+5. **For Read Array operation:**
+    - Accept array size from user and store in `size`
+    - Validate: `0 < size <= MAX_SIZE`
+    - For `i = 0` to `size - 1`, accept elements and store in `arr[i]`
+    - Set `n = size`
+6. **For Insert operation:**
+    - Accept element `x` and position `k` from user
+    - Validate: `1 <= k <= n + 1` and `n < MAX_SIZE`
+    - Shift elements from `arr[n-1]` to `arr[k-1]` one position right
+    - Insert `x` at `arr[k-1]`
+    - Increment `n`
+7. **For Remove operation:**
+    - Accept element `x` from user
+    - Search for `x` in array
+    - If found, shift elements left to overwrite `x`, decrement `n`
+    - If not found, display message
+8. **For Linear Search operation:**
+    - Accept element `x` from user
+    - Traverse array from `arr[0]` to `arr[n-1]`, count comparisons
+    - If found, display position and number of comparisons
+    - If not found, display message and comparisons
+9. **For Binary Search operation:**
+    - Accept element `x` from user
+    - Sort array in ascending order
+    - Initialize `left = 0`, `right = n - 1`, `comparisons = 0`
+    - While `left <= right`:
+      * Compute `mid = left + (right - left) / 2`
+      * Increment `comparisons`
+      * If `arr[mid] == x`, display position and comparisons, exit
+      * If `arr[mid] < x`, set `left = mid + 1`
+      * Else, set `right = mid - 1`
+    - If not found, display message and comparisons
+10. **For Display operation:**
+     - Print all elements from `arr[0]` to `arr[n-1]`
+11. Repeat menu until user chooses to quit
+12. STOP
 
 ### Source Code
 
@@ -344,90 +334,51 @@ Write a menu driven program to perform the following operations on an array usin
 - (d) search an element x from the array using binary search (check no. of comparison).
 - (e) display the array.
 
+
 ### Algorithm
 
-1. **Start**
-2. **Initialize**:
-   - Declare a dynamic array pointer: `int *arr = NULL`.
-   - Set `n = 0` (current size of the array).
-3. **Display Menu**:
-   - Present the user with the following options:
-     1. Read Array
-     2. Insert Element at Position
-     3. Remove Element by Value
-     4. Search Element (Linear Search)
-     5. Search Element (Binary Search)
-     6. Display Array
-     7. Quit
-4. **Perform Operations Based on User Choice**:
-   - **Read Array**:
-     - If `arr != NULL`, free existing memory.
-     - Accept the size of the array from the user.
-     - Validate the size: `size > 0`.
-     - Allocate memory: `arr = (int *) malloc(size * sizeof(int))`.
-     - Check if allocation was successful.
-     - If successful:
-       - Set `n = size`.
-       - Read `n` elements into `arr`.
-   - **Insert Element at Position**:
-     - Check if the array is empty.
-     - Validate the position: `1 <= position <= n + 1`.
-     - Reallocate memory to increase the size: `temp = (int *) realloc(arr, (n + 1) * sizeof(int))`.
-     - Check if reallocation was successful.
-     - If successful:
-       - Update `arr = temp`, `n = n + 1`.
-       - Shift elements from `position-1` to `n-1` one position to the right.
-       - Insert the new element at `arr[position-1]`.
-   - **Remove Element by Value**:
-     - Check if the array is empty.
-     - Search for the element in the array.
-     - If found:
-       - Shift all elements after the element one position to the left.
-       - Reallocate memory to decrease the size.
-     - If not found, display an appropriate message.
-   - **Remove Element by Position**:
-     - Check if the array is empty.
-     - Validate the position: `1 <= position <= n`.
-     - Store the element to be deleted.
-     - Shift all elements after the position one position to the left.
-     - Reallocate memory to decrease the size.
-     - Display the deleted element.
-   - **Search Element (Linear Search)**:
-     - Check if the array is empty.
-     - Initialize `comparisons = 0`.
-     - Traverse the array and compare each element with the target.
-     - Count the number of comparisons.
-     - If found, display the position and the number of comparisons.
-     - If not found, display an appropriate message.
-   - **Sort Array (Bubble Sort)**:
-     - Check if the array is empty.
-     - For `i = 0` to `n-2`:
-       - Set `swapped = 0`.
-       - For `j = 0` to `n-i-2`:
-         - If `*(arr + j) > *(arr + j + 1)`:
-           - Swap using pointer arithmetic.
-           - Set `swapped = 1`.
-       - If `swapped == 0`, break.
-     - Display "Array sorted successfully".
-   - **Search Element (Binary Search)**:
-     - Check if the array is empty.
-     - Sort the array first.
-     - Display the sorted array.
-     - Initialize `left = 0`, `right = n-1`, `comparisons = 0`.
-     - While `left <= right`:
-       - Calculate `mid = left + (right - left) / 2`.
-       - Increment comparisons.
-       - If `*(arr + mid) == element`:
-         - Display the position and the number of comparisons.
-         - Return.
-       - Else if `*(arr + mid) < element`: `left = mid + 1`.
-       - Else: `right = mid - 1`.
-     - If not found, display an appropriate message.
-5. **Quit**:
-    - Free allocated memory: `free(arr)`.
-    - Set `arr = NULL`.
-6. **Repeat** until the user chooses to quit.
-7. **Stop**
+1. START
+2. Declare pointer: `int *arr = NULL`
+3. Initialize variable `n = 0` (current array size)
+4. Display menu with operations and accept user choice
+5. **For Read Array operation:**
+    - Accept array size from user and store in `size`
+    - Validate: `size > 0`
+    - Allocate memory: `arr = (int*)malloc(size * sizeof(int))`
+    - For `i = 0` to `size - 1`, accept elements and store in `arr[i]`
+    - Set `n = size`
+6. **For Insert operation:**
+    - Accept element `x` and position `k` from user
+    - Validate: `1 <= k <= n + 1`
+    - Reallocate memory for `n + 1` elements
+    - Shift elements from `arr[n-1]` to `arr[k-1]` one position right
+    - Insert `x` at `arr[k-1]`
+    - Increment `n`
+7. **For Remove operation:**
+    - Accept element `x` from user
+    - Search for `x` in array
+    - If found, shift elements left to overwrite `x`, reallocate memory for `n - 1` elements, decrement `n`
+    - If not found, display message
+8. **For Linear Search operation:**
+    - Accept element `x` from user
+    - Traverse array from `arr[0]` to `arr[n-1]`, count comparisons
+    - If found, display position and number of comparisons
+    - If not found, display message and comparisons
+9. **For Binary Search operation:**
+    - Accept element `x` from user
+    - Sort array in ascending order
+    - Initialize `left = 0`, `right = n - 1`, `comparisons = 0`
+    - While `left <= right`:
+      * Compute `mid = left + (right - left) / 2`
+      * Increment `comparisons`
+      * If `arr[mid] == x`, display position and comparisons, exit
+      * If `arr[mid] < x`, set `left = mid + 1`
+      * Else, set `right = mid - 1`
+    - If not found, display message and comparisons
+10. **For Display operation:**
+     - Print all elements from `arr[0]` to `arr[n-1]`
+11. Repeat menu until user chooses to quit
+12. STOP
 
 ### Source Code
 

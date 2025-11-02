@@ -212,129 +212,57 @@ Selection: 1
 Enter element to enqueue: 10
 Enqueued: 10
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 20
 Enqueued: 20
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 30
 Enqueued: 30
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 3
 
 Queue contents: Front -> 10 20 30 <- Rear
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 4
 
 Front: 10
 Rear: 30
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 2
 
 Dequeued: 10
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 3
 
 Queue contents: Front -> 20 30 <- Rear
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 40
 Enqueued: 40
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 50
 Enqueued: 50
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 60
 Enqueued: 60
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 70
 Queue Overflow - cannot enqueue 70
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 3
 
 Queue contents: Front -> 20 30 40 50 60 <- Rear
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 5
 ```
 
@@ -583,117 +511,51 @@ Selection: 1
 Enter element to enqueue: 5
 Enqueued: 5
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 15
 Enqueued: 15
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 25
 Enqueued: 25
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 3
 
 Queue contents: Front -> 5 15 25 <- Rear
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 4
 
 Front: 5
 Rear: 25
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 35
 Enqueued: 35
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 45
 Queue Overflow - cannot enqueue 45
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 3
 
 Queue contents: Front -> 5 15 25 35 <- Rear
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 2
 
 Dequeued: 5
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 2
 
 Dequeued: 15
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 3
 
 Queue contents: Front -> 25 35 <- Rear
 
-=== Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 5
 ```
 

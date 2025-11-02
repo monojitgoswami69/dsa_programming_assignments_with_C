@@ -31,57 +31,39 @@ Write a menu driven program in C to implement a Stack using array and perform th
 - (e) `pop()` function to read and remove an element from the Stack.
 - (f) `display()` function to display the entire stack.
 
+
 ### Algorithm
 
-1. **Start**
-2. **Initialize**:
-   - Declare a dynamic array `stack` for storing elements.
-   - Set `top = -1` (indicating an empty stack).
-   - Accept the stack size from the user and store it in `size`.
-3. **Define Helper Functions**:
-   - **isEmpty()**:
-     - Check if `top == -1`.
-     - If true, return `true` (stack is empty).
-     - Otherwise, return `false` (stack has elements).
-   - **isFull()**:
-     - Check if `top == size - 1`.
-     - If true, return `true` (stack is full).
-     - Otherwise, return `false` (stack has space).
-4. **Display Menu**:
-   - Present the user with the following options:
-     1. View Stack
-     2. Push Element
-     3. Pop Element
-     4. Peek Top Element
-     5. Exit
-5. **Perform Operations Based on User Choice**:
-   - **View Stack**:
-     - Check if the stack is empty using `isEmpty()`.
-     - If empty, display "Stack is empty."
-     - Otherwise, display all elements from `top` to `0`.
-   - **Push Element**:
-     - Check if the stack is full using `isFull()`.
-     - If full, display "Stack Overflow."
-     - Otherwise:
-       - Increment `top`.
-       - Insert the new element at `stack[top]`.
-       - Display a success message.
-   - **Pop Element**:
-     - Check if the stack is empty using `isEmpty()`.
-     - If empty, display "Stack Underflow."
-     - Otherwise:
-       - Retrieve the element at `stack[top]`.
-       - Decrement `top`.
-       - Display the popped element.
-   - **Peek Top Element**:
-     - Check if the stack is empty using `isEmpty()`.
-     - If empty, display "Stack is empty."
-     - Otherwise, display the element at `stack[top]`.
-   - **Exit**:
-     - Free the allocated memory for the stack.
-     - Terminate the program.
-6. **Repeat** until the user chooses to exit.
-7. **Stop**
+1. START
+2. Declare static array: `int stack[MAX_SIZE]` where MAX_SIZE = 100
+3. Initialize variable `top = -1` (indicates empty stack)
+4. Display menu with operations and accept user choice
+5. **For isEmpty() function:**
+    - Check condition: `top == -1`
+    - If true, return 1 (stack is empty)
+    - Else, return 0 (stack has elements)
+6. **For isFull() function:**
+    - Check condition: `top == MAX_SIZE - 1`
+    - If true, return 1 (stack is full)
+    - Else, return 0 (stack has space)
+7. **For push(item) operation:**
+    - Call `isFull()` to check stack status
+    - If full, display "Stack Overflow" and return
+    - Else, increment `top`, set `stack[top] = item`, display success message
+8. **For pop() operation:**
+    - Call `isEmpty()` to check stack status
+    - If empty, display "Stack Underflow" and return
+    - Else, display `stack[top]`, decrement `top`
+9. **For peek() operation:**
+    - Call `isEmpty()` to check stack status
+    - If empty, display message
+    - Else, display `stack[top]`
+10. **For display() operation:**
+     - Call `isEmpty()` to check stack status
+     - If empty, display message
+     - Else, print all elements from `stack[top]` to `stack[0]`
+11. Repeat menu until user chooses to quit
+12. STOP
 
 ### Source Code
 
@@ -100,26 +82,27 @@ Problem Statement: Write a menu driven program in C to implement a Stack using a
 #include <stdio.h>
 #include <stdlib.h>
 
-int *stack;
+#define MAX_SIZE 100
+
+int stack[MAX_SIZE];
 int top = -1;
-int size;
 
 int isEmpty(){
     return top == -1;
 }
 
 int isFull(){
-    return top == size - 1;
+    return top == MAX_SIZE - 1;
 }
 
-void viewStack() {
+void display() {
     if (isEmpty()) {
         printf("Stack is empty\n");
         return;
     }
-    printf("Stack -\n%d <- Top\n", *(stack + top));
+    printf("Stack -\n%d <- Top\n", stack[top]);
     for (int i = top - 1; i >= 0; i--)
-        printf("%d\n", *(stack + i));
+        printf("%d\n", stack[i]);
     printf("\n");
 }
 
@@ -129,7 +112,7 @@ void push(int x) {
         return;
     }
     top++;
-    *(stack + top) = x;
+    stack[top] = x;
     printf("Element %d pushed\n", x);
 }
 
@@ -138,7 +121,7 @@ void pop() {
         printf("Stack Underflow\n");
         return;
     }
-    printf("Popped: %d\n", *(stack + top));
+    printf("Popped: %d\n", stack[top]);
     top--;
 }
 
@@ -147,40 +130,28 @@ void peek() {
         printf("Stack is empty\n");
         return;
     }
-    printf("%d <- Top\n", *(stack + top));
+    printf("%d <- Top\n", stack[top]);
 }
 
 int main() {
     int choice;
-    printf("Enter stack size(n): ");
-    scanf("%d", &size);
-    if (size <= 0) {
-        printf("Invalid stack size. Must be positive.\n");
-        return 1;
-    }
-    stack = (int *) malloc(size * sizeof(int));
-    if (stack == NULL) {
-        printf("Memory allocation failed.\n");
-        return 1;
-    }
+    
     while (1) {
         printf("\nSelect operation to perform:\n");
-        printf("1. View stack\n2. Push\n3. Pop\n4. Peek\n5. Exit\nSelection: ");
+        printf("1. Push\n2. Pop\n3. Peek\n4. Display stack\n5. Quit\nSelection: ");
         scanf("%d", &choice);
         switch (choice) {
-            case 1: viewStack(); break;
-            case 2: {
+            case 1: {
                 int data;
                 printf("Enter element to push: ");
                 scanf("%d", &data);
                 push(data);
                 break;
             }
-            case 3: pop(); break;
-            case 4: peek(); break;
-            case 5: 
-                free(stack);
-                return 0;
+            case 2: pop(); break;
+            case 3: peek(); break;
+            case 4: display(); break;
+            case 5: return 0;
             default:
                 printf("Invalid selection\n");
                 break;
@@ -212,22 +183,14 @@ Selection: 2
 Enter element to push: 30
 Element 30 pushed
 
-Selection: 1
-Stack -
-30 <- Top
-20
-10
-
 Selection: 4
 30 <- Top
 
 Selection: 3
 Popped: 30
 
-Selection: 1
-Stack -
+Selection: 4
 20 <- Top
-10
 
 Selection: 2
 Enter element to push: 40
@@ -245,13 +208,8 @@ Selection: 2
 Enter element to push: 70
 Stack Overflow
 
-Selection: 1
-Stack -
+Selection: 4
 60 <- Top
-50
-40
-20
-10
 
 Selection: 5
 ```
@@ -270,57 +228,47 @@ Write a menu driven program in C to implement a Stack using array encapsulated i
 - (e) `pop()` function to read and remove an element from the Stack.
 - (f) `display()` function to display the entire stack.
 
+
 ### Algorithm
 
-1. **Start**
-2. **Define Structure**:
-   - Create a structure `StackStruct` with the following members:
-     - `int *arr`: A dynamic array pointer for stack elements.
-     - `int top`: An index indicating the top element.
-     - `int size`: The maximum capacity of the stack.
-3. **Declare Global Variable**:
-   - Declare a variable `stack` of type `StackStruct`.
-4. **Initialize**:
-   - Accept the stack size from the user.
-   - Validate the size: `stack.size > 0`.
-   - Allocate memory for the stack array: `stack.arr = (int *) malloc(stack.size * sizeof(int))`.
-   - Check if memory allocation was successful.
-   - Set `stack.top = -1` (indicating an empty stack).
-5. **Display Menu**:
-   - Present the user with the following options:
-     1. View Stack
-     2. Push Element
-     3. Pop Element
-     4. Peek Top Element
-     5. Exit
-6. **Perform Operations Based on User Choice**:
-   - **View Stack**:
-     - Check if the stack is empty using `isEmpty()`.
-     - If empty, display "Stack is empty."
-     - Otherwise, display all elements from `top` to `0`.
-   - **Push Element**:
-     - Check if the stack is full using `isFull()`.
-     - If full, display "Stack Overflow."
-     - Otherwise:
-       - Increment `stack.top`.
-       - Insert the new element at `stack.arr[stack.top]`.
-       - Display a success message.
-   - **Pop Element**:
-     - Check if the stack is empty using `isEmpty()`.
-     - If empty, display "Stack Underflow."
-     - Otherwise:
-       - Retrieve the element at `stack.arr[stack.top]`.
-       - Decrement `stack.top`.
-       - Display the popped element.
-   - **Peek Top Element**:
-     - Check if the stack is empty using `isEmpty()`.
-     - If empty, display "Stack is empty."
-     - Otherwise, display the element at `stack.arr[stack.top]`.
-   - **Exit**:
-     - Free the allocated memory for the stack.
-     - Terminate the program.
-7. **Repeat** until the user chooses to exit.
-8. **Stop**
+1. START
+2. Define structure `StackStruct` with members:
+   - `int *arr` (dynamic array pointer for stack elements)
+   - `int top` (index of top element)
+   - `int size` (maximum stack size)
+3. Declare global variable: `Stack stack`
+4. Accept stack size from user and store in `stack.size`
+5. Validate: `stack.size > 0`
+6. Allocate memory for stack array: `stack.arr = (int*)malloc(stack.size * sizeof(int))`
+7. Initialize `stack.top = -1`
+8. Display menu with operations and accept user choice
+9. **For isEmpty() function:**
+   - Check condition: `stack.top == -1`
+   - If true, return 1 (stack is empty)
+   - Else, return 0 (stack has elements)
+10. **For isFull() function:**
+    - Check condition: `stack.top == stack.size - 1`
+    - If true, return 1 (stack is full)
+    - Else, return 0 (stack has space)
+11. **For push(item) operation:**
+    - Call `isFull()` to check stack status
+    - If full, display "Stack Overflow" and return
+    - Else, increment `stack.top`, set `stack.arr[stack.top] = item`, display success message
+12. **For pop() operation:**
+    - Call `isEmpty()` to check stack status
+    - If empty, display "Stack Underflow" and return
+    - Else, display `stack.arr[stack.top]`, decrement `stack.top`
+13. **For peek() operation:**
+    - Call `isEmpty()` to check stack status
+    - If empty, display message
+    - Else, display `stack.arr[stack.top]`
+14. **For display() operation:**
+    - Call `isEmpty()` to check stack status
+    - If empty, display message
+    - Else, print all elements from `stack.arr[stack.top]` to `stack.arr[0]`
+15. Repeat menu until user chooses to exit
+16. Free allocated memory: `free(stack.arr)`
+17. STOP
 
 ### Source Code
 
