@@ -6,7 +6,6 @@
 - [BST Operations](#bst-operations)
 - [Tree Traversals](#tree-traversals)
 - [Complexity Analysis](#complexity-analysis)
-- [Implementation in this Repository](#implementation-in-this-repository)
 - [Applications](#applications)
 - [Best Practices](#best-practices)
 
@@ -341,30 +340,6 @@ Postorder: 20 40 30 60 80 70 50
 - **Recursion Stack**: O(h) where h = height
   - Balanced: O(log n)
   - Skewed: O(n)
-
-## Implementation in this Repository
-
-### File: `bst_operations.c`
-
-**Operations:**
-1. ✅ Insert node
-2. ✅ Inorder traversal (sorted output)
-3. ✅ Preorder traversal
-4. ✅ Postorder traversal
-5. ✅ Search for key
-6. ✅ Find smallest element
-7. ✅ Find largest element
-8. ✅ Count total nodes
-9. ✅ Calculate tree height
-10. ✅ Count leaf nodes
-11. ✅ Free tree memory
-
-**Features:**
-- Menu-driven interface
-- Duplicate rejection
-- Recursive implementations
-- Memory cleanup
-- Complete error handling
 
 ## Applications
 

@@ -5,7 +5,6 @@ Show the number of comparison required for a given input.
 */
 
 #include<stdio.h>
-#include<stdlib.h>
 
 int compCount = 0;
 
@@ -47,8 +46,7 @@ void quickSort(int arr[], int low, int high){
 void merge(int arr[], int left, int mid, int right){
     int n1 = mid - left + 1;
     int n2 = right - mid;
-    int *L = malloc(n1 * sizeof(int));
-    int *R = malloc(n2 * sizeof(int));
+    int L[n1], R[n2];
     
     for (int i = 0; i < n1; i++) L[i] = arr[left + i];
     for (int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
@@ -75,9 +73,6 @@ void merge(int arr[], int left, int mid, int right){
         arr[k] = R[j];
         j++; k++;
     }
-    
-    free(L);
-    free(R);
 }
 
 void mergeSort(int arr[], int left, int right){
@@ -90,66 +85,35 @@ void mergeSort(int arr[], int left, int right){
 }
 
 int main(){
-    int n, choice;
+    int n;
     printf("Enter number of elements: ");
     scanf("%d", &n);
-    
-    int *orig = malloc(n * sizeof(int));
-    int *arr = malloc(n * sizeof(int));
+
+    int orig[n], arr1[n], arr2[n];
     
     printf("Enter elements: ");
     for (int i = 0; i < n; i++) scanf("%d", &orig[i]);
     
+    copyArray(orig, arr1, n);
+    copyArray(orig, arr2, n);
+    
     printf("\nOriginal: ");
     printArray(orig, n);
     
-    while (1){
-        printf("\n1. Quick Sort\n2. Merge Sort\n3. Compare Both\n4. Exit\nChoice: ");
-        scanf("%d", &choice);
-        
-        switch (choice){
-            case 1:
-                copyArray(orig, arr, n);
-                compCount = 0;
-                printf("\nQuick Sort:\n");
-                quickSort(arr, 0, n - 1);
-                printf("Sorted: ");
-                printArray(arr, n);
-                printf("Comparisons: %d\n", compCount);
-                break;
-            case 2:
-                copyArray(orig, arr, n);
-                compCount = 0;
-                printf("\nMerge Sort:\n");
-                mergeSort(arr, 0, n - 1);
-                printf("Sorted: ");
-                printArray(arr, n);
-                printf("Comparisons: %d\n", compCount);
-                break;
-            case 3:
-                copyArray(orig, arr, n);
-                compCount = 0;
-                printf("\nQuick Sort:\n");
-                quickSort(arr, 0, n - 1);
-                printf("Sorted: ");
-                printArray(arr, n);
-                printf("Comparisons: %d\n", compCount);
-                
-                copyArray(orig, arr, n);
-                compCount = 0;
-                printf("\nMerge Sort:\n");
-                mergeSort(arr, 0, n - 1);
-                printf("Sorted: ");
-                printArray(arr, n);
-                printf("Comparisons: %d\n", compCount);
-                break;
-            case 4:
-                free(orig);
-                free(arr);
-                return 0;
-            default:
-                printf("Invalid choice\n");
-        }
-    }
+    compCount = 0;
+    
+    printf("\nQuick Sort:\n");
+    quickSort(arr1, 0, n - 1);
+    printf("Sorted: ");
+    printArray(arr1, n);
+    printf("Comparisons: %d\n", compCount);
+    
+    compCount = 0;
+    printf("\nMerge Sort:\n");
+    mergeSort(arr2, 0, n - 1);
+    printf("Sorted: ");
+    printArray(arr2, n);
+    printf("Comparisons: %d\n", compCount);
+    
     return 0;
 }

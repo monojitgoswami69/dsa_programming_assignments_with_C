@@ -5,7 +5,6 @@ Show the number of comparison required for a given input.
 */
 
 #include<stdio.h>
-#include<stdlib.h>
 
 void printArray(int arr[], int n){
     for (int i = 0; i < n; i++) printf("%d ", arr[i]);
@@ -75,78 +74,39 @@ void copyArray(int src[], int dest[], int n){
 }
 
 int main(){
-    int n, choice;
+    int n;
     printf("Enter number of elements: ");
     scanf("%d", &n);
     
-    int *orig = malloc(n * sizeof(int));
-    int *arr = malloc(n * sizeof(int));
-    
+    int orig[n], arr1[n], arr2[n], arr3[n];
+
     printf("Enter elements: ");
     for (int i = 0; i < n; i++) scanf("%d", &orig[i]);
+    
+    copyArray(orig, arr1, n);
+    copyArray(orig, arr2, n);
+    copyArray(orig, arr3, n);
     
     printf("\nOriginal: ");
     printArray(orig, n);
     
-    while (1){
-        printf("\n1. Bubble Sort\n2. Selection Sort\n3. Insertion Sort\n4. Compare All\n5. Exit\nChoice: ");
-        scanf("%d", &choice);
-        
-        int comp;
-        switch (choice){
-            case 1:
-                copyArray(orig, arr, n);
-                printf("\nBubble Sort:\n");
-                comp = bubbleSort(arr, n);
-                printf("Sorted: ");
-                printArray(arr, n);
-                printf("Comparisons: %d\n", comp);
-                break;
-            case 2:
-                copyArray(orig, arr, n);
-                printf("\nSelection Sort:\n");
-                comp = selectionSort(arr, n);
-                printf("Sorted: ");
-                printArray(arr, n);
-                printf("Comparisons: %d\n", comp);
-                break;
-            case 3:
-                copyArray(orig, arr, n);
-                printf("\nInsertion Sort:\n");
-                comp = insertionSort(arr, n);
-                printf("Sorted: ");
-                printArray(arr, n);
-                printf("Comparisons: %d\n", comp);
-                break;
-            case 4:
-                copyArray(orig, arr, n);
-                printf("\nBubble Sort:\n");
-                comp = bubbleSort(arr, n);
-                printf("Sorted: ");
-                printArray(arr, n);
-                printf("Comparisons: %d\n", comp);
-                
-                copyArray(orig, arr, n);
-                printf("\nSelection Sort:\n");
-                comp = selectionSort(arr, n);
-                printf("Sorted: ");
-                printArray(arr, n);
-                printf("Comparisons: %d\n", comp);
-                
-                copyArray(orig, arr, n);
-                printf("\nInsertion Sort:\n");
-                comp = insertionSort(arr, n);
-                printf("Sorted: ");
-                printArray(arr, n);
-                printf("Comparisons: %d\n", comp);
-                break;
-            case 5:
-                free(orig);
-                free(arr);
-                return 0;
-            default:
-                printf("Invalid choice\n");
-        }
-    }
+    printf("\nBubble Sort:\n");
+    int comp1 = bubbleSort(arr1, n);
+    printf("Sorted: ");
+    printArray(arr1, n);
+    printf("Comparisons: %d\n", comp1);
+    
+    printf("\nSelection Sort:\n");
+    int comp2 = selectionSort(arr2, n);
+    printf("Sorted: ");
+    printArray(arr2, n);
+    printf("Comparisons: %d\n", comp2);
+    
+    printf("\nInsertion Sort:\n");
+    int comp3 = insertionSort(arr3, n);
+    printf("Sorted: ");
+    printArray(arr3, n);
+    printf("Comparisons: %d\n", comp3);
+    
     return 0;
 }

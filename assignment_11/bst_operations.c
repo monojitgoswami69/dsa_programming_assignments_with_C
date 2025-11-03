@@ -50,14 +50,6 @@ void preorder(struct Node* root){
     }
 }
 
-void postorder(struct Node* root){
-    if (root != NULL){
-        postorder(root->left);
-        postorder(root->right);
-        printf("%d ", root->data);
-    }
-}
-
 struct Node* search(struct Node* root, int key){
     if (root == NULL || root->data == key) return root;
     if (key < root->data) return search(root->left, key);
@@ -73,39 +65,9 @@ int findSmallest(struct Node* root){
     return root->data;
 }
 
-int findLargest(struct Node* root){
-    if (root == NULL){
-        printf("Tree is empty\n");
-        return -1;
-    }
-    while (root->right != NULL) root = root->right;
-    return root->data;
-}
-
 int countNodes(struct Node* root){
     if (root == NULL) return 0;
     return 1 + countNodes(root->left) + countNodes(root->right);
-}
-
-int height(struct Node* root){
-    if (root == NULL) return 0;
-    int lh = height(root->left);
-    int rh = height(root->right);
-    return 1 + (lh > rh ? lh : rh);
-}
-
-int countLeaf(struct Node* root){
-    if (root == NULL) return 0;
-    if (root->left == NULL && root->right == NULL) return 1;
-    return countLeaf(root->left) + countLeaf(root->right);
-}
-
-void freeTree(struct Node* root){
-    if (root != NULL){
-        freeTree(root->left);
-        freeTree(root->right);
-        free(root);
-    }
 }
 
 int main(){
@@ -114,9 +76,9 @@ int main(){
     struct Node* result;
     
     while (1){
-        printf("\n1. Insert\n2. Inorder\n3. Preorder\n4. Postorder\n5. Search\n6. Find Smallest\n7. Find Largest\n8. Count Nodes\n9. Height\n10. Count Leaf Nodes\n11. Exit\nChoice: ");
+        printf("\n1. Insert\n2. Inorder\n3. Preorder\n4. Search\n5. Find Smallest\n6. Count Nodes\n7. Exit\nChoice: ");
         scanf("%d", &choice);
-        
+
         switch (choice){
             case 1:
                 printf("Enter value: ");
@@ -137,37 +99,20 @@ int main(){
                 printf("\n");
                 break;
             case 4:
-                printf("Postorder: ");
-                if (root == NULL) printf("Tree is empty");
-                else postorder(root);
-                printf("\n");
-                break;
-            case 5:
                 printf("Enter key: ");
                 scanf("%d", &key);
                 result = search(root, key);
                 if (result != NULL) printf("Found %d\n", key);
                 else printf("%d not found\n", key);
                 break;
-            case 6:
+            case 5:
                 val = findSmallest(root);
                 if (val != -1) printf("Smallest: %d\n", val);
                 break;
-            case 7:
-                val = findLargest(root);
-                if (val != -1) printf("Largest: %d\n", val);
-                break;
-            case 8:
+            case 6:
                 printf("Total nodes: %d\n", countNodes(root));
                 break;
-            case 9:
-                printf("Height: %d\n", height(root));
-                break;
-            case 10:
-                printf("Leaf nodes: %d\n", countLeaf(root));
-                break;
-            case 11:
-                freeTree(root);
+            case 7:
                 return 0;
             default:
                 printf("Invalid choice\n");

@@ -8,7 +8,6 @@
 - [Complexity Analysis](#complexity-analysis)
 - [Comparison of Algorithms](#comparison-of-algorithms)
 - [When to Use Each Algorithm](#when-to-use-each-algorithm)
-- [Implementation in this Repository](#implementation-in-this-repository)
 - [Best Practices](#best-practices)
 
 ## Introduction to Sorting
@@ -409,31 +408,6 @@ All three algorithms are **in-place**: **O(1)** auxiliary space
 - **Nearly sorted**: Insertion Sort
 - **Production**: Use library functions (`qsort()`, `std::sort()`)
 
-## Implementation in this Repository
-
-### File: `sorting_algorithms.c`
-
-**Features:**
-- ✅ All three sorting algorithms
-- ✅ Comparison counter for each algorithm
-- ✅ Swap/shift counter
-- ✅ Menu-driven interface
-- ✅ Original array preserved for multiple sorts
-- ✅ Compare all algorithms simultaneously
-
-**Menu Options:**
-1. Bubble Sort (with optimizations)
-2. Selection Sort
-3. Insertion Sort
-4. Compare All Three
-5. Exit
-
-**Metrics Displayed:**
-- Sorted array
-- Number of comparisons
-- Number of swaps/shifts
-- Easy comparison between algorithms
-
 ## Best Practices
 
 ### 1. **Choose the Right Algorithm**
@@ -480,8 +454,3 @@ qsort(arr, n, sizeof(int), compare);  // Use standard library
 
 ---
 
-<div align="center">
-
-**💡 Tip:** These basic sorting algorithms are mainly educational. For production code, use optimized algorithms like Quick Sort, Merge Sort, or built-in library functions.
-
-</div>

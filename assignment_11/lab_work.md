@@ -11,71 +11,52 @@ Write a menu driven program in C to perform the following operations on Binary S
 - (e) Find the smallest element
 - (f) Count the total number of nodes
 
+
 ### Algorithm
 
-**INSERT:**
-1. If tree is empty (root == NULL):
-   - Create new node
-   - Return as root
-2. If data < root->data:
-   - Recursively insert in left subtree
-3. Else if data > root->data:
-   - Recursively insert in right subtree
-4. Else (data == root->data):
-   - Reject duplicate
-5. Return root
-
-**INORDER (Left-Root-Right):**
-1. If root is NULL: return
-2. Traverse left subtree
-3. Print root->data
-4. Traverse right subtree
-
-**PREORDER (Root-Left-Right):**
-1. If root is NULL: return
-2. Print root->data
-3. Traverse left subtree
-4. Traverse right subtree
-
-**POSTORDER (Left-Right-Root):**
-1. If root is NULL: return
-2. Traverse left subtree
-3. Traverse right subtree
-4. Print root->data
-
-**SEARCH:**
-1. If root is NULL or root->data == key: return root
-2. If key < root->data:
-   - Search in left subtree
-3. Else:
-   - Search in right subtree
-
-**FIND SMALLEST:**
-1. If root is NULL: return -1
-2. While root->left != NULL:
-   - Move to left child
-3. Return root->data
-
-**FIND LARGEST:**
-1. If root is NULL: return -1
-2. While root->right != NULL:
-   - Move to right child
-3. Return root->data
-
-**COUNT NODES:**
-1. If root is NULL: return 0
-2. Return 1 + countNodes(left) + countNodes(right)
-
-**HEIGHT:**
-1. If root is NULL: return 0
-2. Get left height
-3. Get right height
-4. Return 1 + max(left height, right height)
-
-**COUNT LEAF NODES:**
-1. If root is NULL: return 0
-2. If both left and right are NULL: return 1 (leaf)
-3. Return countLeaf(left) + countLeaf(right)
+1. START
+2. Define `struct Node` with:
+    - `int data`
+    - `struct Node *left`
+    - `struct Node *right`
+3. Initialize `root = NULL`
+4. Display menu with options:
+    - **Insert**
+    - **Inorder**
+    - **Preorder**
+    - **Search**
+    - **Find Smallest**
+    - **Count Nodes**
+    - **Exit**
+5. For **Insert**:
+    - Input `value`
+    - If `root == NULL`, create new node and set as `root`
+    - Else, traverse tree:
+      - If `value < node->data`, go left
+      - If `value > node->data`, go right
+      - If `value == node->data`, do not insert (no duplicates)
+      - Repeat until correct position found, insert node
+6. For **Inorder**:
+    - Recursively traverse `left` subtree
+    - Print `node->data`
+    - Recursively traverse `right` subtree
+7. For **Preorder**:
+    - Print `node->data`
+    - Recursively traverse `left` subtree
+    - Recursively traverse `right` subtree
+8. For **Search**:
+    - Input `key`
+    - Traverse tree:
+      - If `key == node->data`, found
+      - If `key < node->data`, go left
+      - If `key > node->data`, go right
+      - If `node == NULL`, not found
+9. For **Find Smallest**:
+    - Start at `root`, go left until `left == NULL`
+    - Print `node->data`
+10. For **Count Nodes**:
+     - Recursively count `left` and `right` subtrees, add `1` for current node
+11. STOP
 
 ### Source Code
 
@@ -132,14 +113,6 @@ void preorder(struct Node* root){
     }
 }
 
-void postorder(struct Node* root){
-    if (root != NULL){
-        postorder(root->left);
-        postorder(root->right);
-        printf("%d ", root->data);
-    }
-}
-
 struct Node* search(struct Node* root, int key){
     if (root == NULL || root->data == key) return root;
     if (key < root->data) return search(root->left, key);
@@ -155,39 +128,9 @@ int findSmallest(struct Node* root){
     return root->data;
 }
 
-int findLargest(struct Node* root){
-    if (root == NULL){
-        printf("Tree is empty\n");
-        return -1;
-    }
-    while (root->right != NULL) root = root->right;
-    return root->data;
-}
-
 int countNodes(struct Node* root){
     if (root == NULL) return 0;
     return 1 + countNodes(root->left) + countNodes(root->right);
-}
-
-int height(struct Node* root){
-    if (root == NULL) return 0;
-    int lh = height(root->left);
-    int rh = height(root->right);
-    return 1 + (lh > rh ? lh : rh);
-}
-
-int countLeaf(struct Node* root){
-    if (root == NULL) return 0;
-    if (root->left == NULL && root->right == NULL) return 1;
-    return countLeaf(root->left) + countLeaf(root->right);
-}
-
-void freeTree(struct Node* root){
-    if (root != NULL){
-        freeTree(root->left);
-        freeTree(root->right);
-        free(root);
-    }
 }
 
 int main(){
@@ -196,9 +139,9 @@ int main(){
     struct Node* result;
     
     while (1){
-        printf("\n1. Insert\n2. Inorder\n3. Preorder\n4. Postorder\n5. Search\n6. Find Smallest\n7. Find Largest\n8. Count Nodes\n9. Height\n10. Count Leaf Nodes\n11. Exit\nChoice: ");
+        printf("\n1. Insert\n2. Inorder\n3. Preorder\n4. Search\n5. Find Smallest\n6. Count Nodes\n7. Exit\nChoice: ");
         scanf("%d", &choice);
-        
+
         switch (choice){
             case 1:
                 printf("Enter value: ");
@@ -219,37 +162,20 @@ int main(){
                 printf("\n");
                 break;
             case 4:
-                printf("Postorder: ");
-                if (root == NULL) printf("Tree is empty");
-                else postorder(root);
-                printf("\n");
-                break;
-            case 5:
                 printf("Enter key: ");
                 scanf("%d", &key);
                 result = search(root, key);
                 if (result != NULL) printf("Found %d\n", key);
                 else printf("%d not found\n", key);
                 break;
-            case 6:
+            case 5:
                 val = findSmallest(root);
                 if (val != -1) printf("Smallest: %d\n", val);
                 break;
-            case 7:
-                val = findLargest(root);
-                if (val != -1) printf("Largest: %d\n", val);
-                break;
-            case 8:
+            case 6:
                 printf("Total nodes: %d\n", countNodes(root));
                 break;
-            case 9:
-                printf("Height: %d\n", height(root));
-                break;
-            case 10:
-                printf("Leaf nodes: %d\n", countLeaf(root));
-                break;
-            case 11:
-                freeTree(root);
+            case 7:
                 return 0;
             default:
                 printf("Invalid choice\n");
@@ -259,380 +185,65 @@ int main(){
 }
 ```
 
+
 ### Sample Output
 
 ```
 1. Insert
 2. Inorder
 3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
+4. Search
+5. Find Smallest
+6. Count Nodes
+7. Exit
 Choice: 1
 Enter value: 50
 Inserted 50
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
 Choice: 1
 Enter value: 30
 Inserted 30
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
 Choice: 1
 Enter value: 70
 Inserted 70
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
 Choice: 1
 Enter value: 20
 Inserted 20
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
 Choice: 1
 Enter value: 40
 Inserted 40
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
 Choice: 1
 Enter value: 60
 Inserted 60
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
 Choice: 1
 Enter value: 80
 Inserted 80
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
 Choice: 2
 Inorder: 20 30 40 50 60 70 80
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
 Choice: 3
 Preorder: 50 30 20 40 70 60 80
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
 Choice: 4
-Postorder: 20 40 30 60 80 70 50
-
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
-Choice: 5
 Enter key: 40
 Found 40
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
-Choice: 5
+Choice: 4
 Enter key: 100
 100 not found
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
-Choice: 6
+Choice: 5
 Smallest: 20
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
-Choice: 7
-Largest: 80
-
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
-Choice: 8
+Choice: 6
 Total nodes: 7
 
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
-Choice: 9
-Height: 3
-
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
-Choice: 10
-Leaf nodes: 4
-
-1. Insert
-2. Inorder
-3. Preorder
-4. Postorder
-5. Search
-6. Find Smallest
-7. Find Largest
-8. Count Nodes
-9. Height
-10. Count Leaf Nodes
-11. Exit
-Choice: 11
+Choice: 7
 ```
 
-**Visual Tree Structure:**
-
-```
-After all insertions: 50, 30, 70, 20, 40, 60, 80
-
-         50 (root)
-        /  \
-      30    70
-     / \   / \
-    20 40 60 80
-
-Structure:
-• Root: 50
-• Left subtree of 50: {30, 20, 40}
-• Right subtree of 50: {70, 60, 80}
-• Internal nodes: 50, 30, 70
-• Leaf nodes: 20, 40, 60, 80
-• Height: 3 (path: 50→30→20)
-• Total nodes: 7
-```
-
-**Traversal Outputs Explained:**
-
-```
-Inorder (Left-Root-Right): 20 30 40 50 60 70 80
-→ SORTED ORDER! This is the key property.
-
-Preorder (Root-Left-Right): 50 30 20 40 70 60 80
-→ Root first, then left subtree, then right subtree
-→ Useful for copying tree structure
-
-Postorder (Left-Right-Root): 20 40 30 60 80 70 50
-→ Children first, then root
-→ Useful for deleting tree safely
-```
-
-**Step-by-Step Insertion:**
-
-```
-Insert 50:
-    50
-
-Insert 30 (30 < 50, go left):
-    50
-   /
-  30
-
-Insert 70 (70 > 50, go right):
-    50
-   /  \
-  30   70
-
-Insert 20 (20 < 50, go left; 20 < 30, go left):
-    50
-   /  \
-  30   70
- /
-20
-
-Insert 40 (40 < 50, go left; 40 > 30, go right):
-    50
-   /  \
-  30   70
- / \
-20 40
-
-Insert 60 (60 > 50, go right; 60 < 70, go left):
-    50
-   /  \
-  30   70
- / \   /
-20 40 60
-
-Insert 80 (80 > 50, go right; 80 > 70, go right):
-    50
-   /  \
-  30   70
- / \   / \
-20 40 60 80
-```
-
-**Search Example (Search for 40):**
-
-```
-Step 1: Start at root (50)
-        40 < 50, go left
-
-Step 2: At node 30
-        40 > 30, go right
-
-Step 3: At node 40
-        40 == 40, FOUND!
-
-Comparisons: 3 (O(h) where h=height)
-```
-
-**Find Smallest:**
-```
-Start: 50 → left exists
-Go to: 30 → left exists
-Go to: 20 → left is NULL
-Result: 20 (leftmost node)
-```
-
-**Find Largest:**
-```
-Start: 50 → right exists
-Go to: 70 → right exists
-Go to: 80 → right is NULL
-Result: 80 (rightmost node)
-```
-
----

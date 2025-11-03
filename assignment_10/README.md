@@ -6,7 +6,6 @@
 - [Merge Sort](#merge-sort)
 - [Complexity Analysis](#complexity-analysis)
 - [Comparison](#comparison)
-- [Implementation in this Repository](#implementation-in-this-repository)
 - [Best Practices](#best-practices)
 
 ## Introduction
@@ -341,23 +340,6 @@ Work = 3 × 8 = 24 operations
 - **Java Arrays.sort()**: Dual-pivot Quick Sort (primitives), Tim Sort (objects)
 - **Python sort()**: Tim Sort (Merge + Insertion hybrid)
 - **C++ std::sort()**: Intro Sort (Quick + Heap + Insertion hybrid)
-
-## Implementation in this Repository
-
-### File: `quicksort_mergesort.c`
-
-**Features:**
-- ✅ Both Quick Sort and Merge Sort
-- ✅ Comparison counter
-- ✅ Menu-driven interface
-- ✅ Compare both algorithms
-- ✅ Original array preserved
-
-**Menu Options:**
-1. Quick Sort
-2. Merge Sort
-3. Compare Both
-4. Exit
 
 ## Best Practices
 
