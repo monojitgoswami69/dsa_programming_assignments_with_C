@@ -8,7 +8,6 @@
 - [Addition Algorithm](#addition-algorithm)
 - [Implementation Details](#implementation-details)
 - [Time and Space Complexity](#time-and-space-complexity)
-- [Implementation in this Repository](#implementation-in-this-repository)
 - [Applications](#applications)
 - [Best Practices](#best-practices)
 
@@ -324,26 +323,6 @@ Where t = number of non-zero terms
 |--------|---------|-----------|
 | **Array** | O(101) | Very wasteful |
 | **Linked List** | O(3) | Optimal |
-
-## Implementation in this Repository
-
-### File: `polynomial_addition.c`
-
-**Features:**
-- ✅ Complete polynomial input
-- ✅ Sorted term insertion
-- ✅ Handle duplicate exponents (add coefficients)
-- ✅ Skip zero coefficients
-- ✅ Addition of two polynomials
-- ✅ Formatted display output
-- ✅ Memory cleanup
-
-**Operations Supported:**
-1. Read two polynomials
-2. Display each polynomial
-3. Add polynomials
-4. Display result
-5. Free all memory
 
 ## Applications
 

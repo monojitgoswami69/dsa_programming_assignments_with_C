@@ -251,20 +251,6 @@ struct QueueStruct {
 };
 ```
 
-### Visual Representation
-
-```
-        rear
-         ↓
-    [30|•]←──┐
-     ↑       │
-     │   [20|•]
-     │    ↑
-     └─[10|•]
-        ↑
-    rear->next (front)
-```
-
 ### Key Operations
 
 #### **enqueue(data)**

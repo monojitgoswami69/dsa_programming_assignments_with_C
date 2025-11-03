@@ -29,6 +29,7 @@ Write a menu driven program in C to perform the following operations on circular
 - (c) Display the whole list
 - (d) Search an element x in the list
 
+
 ### Algorithm
 
 1. START
@@ -36,43 +37,46 @@ Write a menu driven program in C to perform the following operations on circular
    - `int data` (stores value)
    - `struct Node *next` (points to next node)
 3. Initialize `head = NULL`
-4. Display menu with operations:
-   - Insert at position k
-   - Delete from position k
-   - Display list
-   - Search element
-   - Exit
+4. Display menu with operations (same as doubly linked list)
 5. For **insertAtK(head, value, k)**:
    - Create new node with `malloc()`
-   - **Case 1: Empty List**
-     - Set `newNode->next = newNode` (points to itself)
-     - Set `head = newNode`
-   - **Case 2: Insert at Beginning (k ≤ 1)**
-     - Find last node (traverse until `last->next == head`)
-     - Set `newNode->next = head`
-     - Set `last->next = newNode`
-     - Set `head = newNode`
-   - **Case 3: Insert at Position k**
-     - Traverse to (k-1)th position
+   - Initialize `newNode->next = NULL`
+   - **Case 1: Insert at Beginning or Empty List (k ≤ 1)**
+     - If list is empty:
+       - Set `newNode->next = newNode` (points to itself)
+       - Set `head = newNode`
+     - Else:
+       - Find last node (traverse until `last->next == head`)
+       - Set `newNode->next = head`
+       - Set `last->next = newNode`
+       - Set `head = newNode`
+   - **Case 2: Insert at Position k**
+     - Traverse to (k-1)th node (stop if `temp->next == head`)
+     - If out of bounds, do not insert
      - Set `newNode->next = temp->next`
      - Set `temp->next = newNode`
 6. For **deleteFromK(head, k)**:
    - **Case 1: Empty List** - Display error
    - **Case 2: Delete First Node (k ≤ 1)**
-     - If only one node: Free it and set `head = NULL`
-     - Otherwise: Find last node, update pointers, free first node
+     - If only one node:
+       - Free node, set `head = NULL`
+     - Else:
+       - Find last node
+       - Set `last->next = head->next`
+       - Store pointer to old head, set `head = head->next`
+       - Free old head
    - **Case 3: Delete from Position k**
-     - Traverse to (k-1)th position
-     - Update pointer to skip kth node
-     - Free the deleted node
+     - Traverse to (k-1)th node (stop if `temp->next == head`)
+     - If out of bounds, do not delete
+     - Store pointer to node to delete (`del = temp->next`)
+     - Set `temp->next = del->next`
+     - Free del
 7. For **display(head)**:
-   - Use do-while loop to traverse circular list
-   - Print each node's data
-   - Stop when back to head
+   - If empty, print message
+   - Else, traverse with `temp = head`, print data, continue until back to head
 8. For **search(head, value)**:
-   - Traverse list using do-while loop
-   - Check each node's data
-   - Return position if found
+   - If empty, print message
+   - Else, traverse with `temp = head`, compare data, continue until back to head or found
 9. STOP
 
 ### Source Code
@@ -231,172 +235,53 @@ Enter your choice: 1
 Enter value and position: 10 1
 Inserted 10 at position 1
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 1
 Enter value and position: 20 2
 Inserted 20 at position 2
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 1
 Enter value and position: 30 3
 Inserted 30 at position 3
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 1
 Enter value and position: 5 1
 Inserted 5 at position 1
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 3
 List: 5 -> 10 -> 20 -> 30 (circular)
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 1
 Enter value and position: 15 3
 Inserted 15 at position 3
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 3
 List: 5 -> 10 -> 15 -> 20 -> 30 (circular)
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 4
 Enter value to search: 15
 Found 15 at position 3
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 4
 Enter value to search: 100
 100 not found
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 2
 Enter position to delete: 1
 Deleted 5 from position 1
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 3
 List: 10 -> 15 -> 20 -> 30 (circular)
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 2
 Enter position to delete: 3
 Deleted 20 from position 3
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 3
 List: 10 -> 15 -> 30 (circular)
 
-===== CIRCULAR LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 0
 ```
 
-**Visual Representation of Operations:**
-
-```
-Initial State:
-head = NULL
-
-After inserting 10 at position 1:
-   ┌─────┐
-   ↓     ↑
-[10|•]──┘
-head
-
-After inserting 20 at position 2:
-   ┌──────────┐
-   ↓          ↑
-[10|•]──>[20|•]
-head
-
-After inserting 30 at position 3:
-   ┌───────────────┐
-   ↓               ↑
-[10|•]─>[20|•]─>[30|•]
-head
-
-After inserting 5 at position 1:
-   ┌────────────────────┐
-   ↓                    ↑
-[5|•]─>[10|•]─>[20|•]─>[30|•]
-head
-
-Final circular structure:
-       head
-        ↓
-    [5 | •]────────────┐
-        ↑              ↓
-   [30 | •]      [10 | •]
-        ↑              ↓
-        └────[20 | •]──┘
-```
-
-<div align="right"><a href="#index">return to index</a></div><hr>
 
 <a id="implementation2"></a>
 ## 2. Doubly Linked List Implementation
@@ -586,188 +471,50 @@ Enter your choice: 1
 Enter value and position: 50 1
 Inserted 50 at position 1
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 1
 Enter value and position: 60 2
 Inserted 60 at position 2
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 1
 Enter value and position: 70 3
 Inserted 70 at position 3
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 3
 List: 50 <-> 60 <-> 70
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 1
 Enter value and position: 40 1
 Inserted 40 at position 1
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 1
 Enter value and position: 55 3
 Inserted 55 at position 3
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 3
 List: 40 <-> 50 <-> 55 <-> 60 <-> 70
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 4
 Enter value to search: 55
 Found 55 at position 3
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 4
 Enter value to search: 80
 80 not found
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 2
 Enter position to delete: 1
 Deleted 40 from position 1
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 3
 List: 50 <-> 55 <-> 60 <-> 70
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 2
 Enter position to delete: 3
 Deleted 60 from position 3
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 3
 List: 50 <-> 55 <-> 70
 
-===== DOUBLY LINKED LIST MENU =====
-1. Insert at position k
-2. Delete from position k
-3. Display list
-4. Search value
-0. Exit
 Enter your choice: 0
 ```
 
-**Visual Representation of Operations:**
-
-```
-Initial State:
-head = NULL
-
-After inserting 50:
-NULL ← [prev|50|next] → NULL
-       ↑
-      head
-
-After inserting 60 at position 2:
-NULL ← [prev|50|next] ⇄ [prev|60|next] → NULL
-       ↑
-      head
-
-After inserting 70 at position 3:
-NULL ← [prev|50|next] ⇄ [prev|60|next] ⇄ [prev|70|next] → NULL
-       ↑
-      head
-
-After inserting 40 at position 1:
-NULL ← [prev|40|next] ⇄ [prev|50|next] ⇄ [prev|60|next] ⇄ [prev|70|next] → NULL
-       ↑
-      head
-
-After inserting 55 at position 3:
-NULL ← [40] ⇄ [50] ⇄ [55] ⇄ [60] ⇄ [70] → NULL
-       ↑
-      head
-
-After deleting position 1:
-NULL ← [50] ⇄ [55] ⇄ [60] ⇄ [70] → NULL
-       ↑
-      head
-
-Final structure after deleting position 3:
-NULL ← [50] ⇄ [55] ⇄ [70] → NULL
-       ↑
-      head
-
-Each node maintains bidirectional links:
-[50] has: prev=NULL, next→[55]
-[55] has: prev←[50], next→[70]
-[70] has: prev←[55], next=NULL
-```
-
-**Comparison: Circular vs Doubly Linked List**
-
-| Feature | Circular | Doubly |
-|---------|----------|--------|
-| **Pointers/Node** | 1 (next) | 2 (prev, next) |
-| **Memory** | Less | More |
-| **Traversal** | Forward (circular) | Both directions |
-| **End Detection** | `temp == head` | `temp == NULL` |
-| **Backward Movement** | Must go around | Direct via prev |
-| **Deletion** | Need to find previous | Have prev pointer |
-| **Use Case** | Round-robin | Navigation |
-
-<div align="right"><a href="#index">return to index</a></div><hr>

@@ -32,40 +32,32 @@ Write a menu driven program in C to implement a stack using single linked list a
 ### Algorithm
 
 1. START
-2. Define `struct stack` with members:
-   - `int data`
-   - `struct stack *next`
-3. Declare `top = NULL` (points to top of stack)
-4. For **isEmpty()**:
-   - Return `top == NULL`
-5. For **push(value)**:
-   - Accept value parameter (passed from main)
-   - Create newNode using `malloc()`
-   - If allocation fails, display "Stack Overflow"
+2. Define `struct Node` with:
+   - `int data` (stores value)
+   - `struct Node *next` (points to next node)
+3. Initialize `top = NULL`
+4. Display menu with operations (push, pop, peek, display, isEmpty)
+5. For **push(top, value)**:
+   - Create new node with `malloc()`
    - Set `newNode->data = value`
    - Set `newNode->next = top`
-   - Update `top = newNode`
-6. For **pop()**:
-   - Check if `isEmpty()` - display "Stack Underflow"
-   - Store `temp = top`
-   - Update `top = top->next`
-   - Display popped value
-   - Free temp node
-7. For **peek()**:
-   - Check if `isEmpty()`
-   - Display `top->data`
-8. For **display()**:
-   - Start from top
-   - Traverse and print each node
-   - Mark first element as "Top"
-9. On exit, free all remaining nodes
-10. STOP
-
-**Time Complexity:**
-- push(): O(1)
-- pop(): O(1)  
-- peek(): O(1)
-- display(): O(n)
+   - Set `top = newNode`
+6. For **pop(top)**:
+   - If stack is empty, display error
+   - Else, store pointer to top node
+   - Set `top = top->next`
+   - Free old top node
+7. For **peek(top)**:
+   - If stack is empty, display error
+   - Else, print `top->data`
+8. For **isEmpty(top)**:
+   - Return true if `top == NULL`, else false
+9. For **display(top)**:
+   - If stack is empty, print message
+   - Else, traverse from top, print each node's data
+10. Repeat menu until user chooses to quit
+11. Free all nodes before exit
+12. STOP
 
 ### Source Code
 
@@ -181,7 +173,6 @@ int main() {
     }
 }
 ```
-
 ### Sample Output
 
 ```
@@ -195,133 +186,41 @@ Selection: 2
 Enter element to push: 10
 Element 10 pushed
 
-Select operation to perform:
-1. View stack
-2. Push
-3. Pop
-4. Peek
-5. Exit
 Selection: 2
 Enter element to push: 20
 Element 20 pushed
 
-Select operation to perform:
-1. View stack
-2. Push
-3. Pop
-4. Peek
-5. Exit
 Selection: 2
 Enter element to push: 30
 Element 30 pushed
 
-Select operation to perform:
-1. View stack
-2. Push
-3. Pop
-4. Peek
-5. Exit
 Selection: 1
 Stack -
 30 <- Top
 20
 10
 
-Select operation to perform:
-1. View stack
-2. Push
-3. Pop
-4. Peek
-5. Exit
 Selection: 4
 30 <- Top
 
-Select operation to perform:
-1. View stack
-2. Push
-3. Pop
-4. Peek
-5. Exit
 Selection: 3
 Popped: 30
 
-Select operation to perform:
-1. View stack
-2. Push
-3. Pop
-4. Peek
-5. Exit
 Selection: 1
 Stack -
 20 <- Top
 10
 
-Select operation to perform:
-1. View stack
-2. Push
-3. Pop
-4. Peek
-5. Exit
 Selection: 3
 Popped: 20
 
-Select operation to perform:
-1. View stack
-2. Push
-3. Pop
-4. Peek
-5. Exit
 Selection: 3
 Popped: 10
 
-Select operation to perform:
-1. View stack
-2. Push
-3. Pop
-4. Peek
-5. Exit
 Selection: 3
 Stack Underflow
 
-Select operation to perform:
-1. View stack
-2. Push
-3. Pop
-4. Peek
-5. Exit
 Selection: 5
-```
-
-**Visual Representation:**
-```
-Initial: top = NULL
-
-After push(10):
-top → [10|NULL]
-
-After push(20):
-top → [20|•] → [10|NULL]
-
-After push(30):
-top → [30|•] → [20|•] → [10|NULL]
-      ↑
-     Top
-
-After pop():
-top → [20|•] → [10|NULL]
-      ↑
-     Top
-(30 removed)
-
-After pop():
-top → [10|NULL]
-      ↑
-     Top
-(20 removed)
-
-After pop():
-top = NULL
-(10 removed, stack empty)
 ```
 
 <div align="right"><a href="#index">return to index</a></div><hr>
@@ -572,176 +471,58 @@ Selection: 1
 Enter element to enqueue: 100
 Enqueued: 100
 
-=== Circular Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 200
 Enqueued: 200
 
-=== Circular Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 300
 Enqueued: 300
 
-=== Circular Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 3
 
 Queue contents: Front -> 100 200 300 <- Rear
 
-=== Circular Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 4
 
 Front: 100
 Rear: 300
 
-=== Circular Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 2
 
 Dequeued: 100
 
-=== Circular Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 3
 
 Queue contents: Front -> 200 300 <- Rear
 
-=== Circular Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 400
 Enqueued: 400
 
-=== Circular Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 500
 Enqueued: 500
 
-=== Circular Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 600
 Enqueued: 600
 
-=== Circular Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 3
 
 Queue contents: Front -> 200 300 400 500 600 <- Rear
 
-=== Circular Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 1
 
 Enter element to enqueue: 700
 Queue Overflow - cannot enqueue 700
 
-=== Circular Queue Operations ===
-1. Enqueue(Insert)
-2. Dequeue(Remove)
-3. Display
-4. Peek
-5. Exit
 Selection: 5
-```
-
-**Visual Representation:**
-```
-Initial: rear = NULL
-
-After enqueue(100):
-    ┌────┐
-    ↓    ↑
-[100|•]──┘
-    ↑
-  rear
-(rear->next points to itself, this is the front)
-
-After enqueue(200):
-    ┌─────────┐
-    ↓         ↑
-[100|•]──>[200|•]
-  ↑         ↑
-front     rear
-
-After enqueue(300):
-    ┌──────────────┐
-    ↓              ↑
-[100|•]─>[200|•]─>[300|•]
-  ↑                 ↑
-front             rear
-
-After dequeue(): (removed 100)
-    ┌─────────┐
-    ↓         ↑
-[200|•]──>[300|•]
-  ↑         ↑
-front     rear
-
-After enqueue(400):
-    ┌──────────────┐
-    ↓              ↑
-[200|•]─>[300|•]─>[400|•]
-  ↑                 ↑
-front             rear
-
-Key: 
-- rear pointer maintained
-- rear->next gives front
-- Last node always points back to first (circular)
 ```
 
 <div align="right"><a href="#index">return to index</a></div><hr>
