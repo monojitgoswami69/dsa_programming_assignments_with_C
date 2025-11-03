@@ -3,7 +3,6 @@
 ## Table of Contents
 - [What is a Stack?](#what-is-a-stack)
 - [Stack Operations](#stack-operations)
-- [Memory Management Approaches](#memory-management-approaches)
 - [Performance Analysis](#performance-analysis)
 - [Applications](#applications)
 - [When to Use Stacks](#when-to-use-stacks)
@@ -158,42 +157,6 @@ int isFull() {
 | **Pop** | Stack Underflow | `top < 0` | Return error value, maintain state |
 | **Peek** | Empty Stack | `top < 0` | Return error value, no change |
 | **Access** | Invalid Index | Bounds checking | Prevent undefined behavior |
-
-## Memory Management Approaches
-
-### 1. **Array-Based Implementation**
-- **Memory**: Fixed-size array with dynamic allocation
-- **Advantages**: Fast O(1) operations, contiguous memory
-- **Disadvantages**: Fixed size after initialization
-
-### 2. **Linked List Implementation**
-- **Memory**: Dynamic node allocation
-- **Advantages**: No size limits, memory efficient
-- **Disadvantages**: Pointer overhead, non-contiguous memory
-
-### 3. **Structure-Based Implementation**
-- **Memory**: Organized data encapsulation
-- **Advantages**: Better code organization, reusable design
-- **Disadvantages**: Slight overhead for structure management
-
-## Performance Analysis
-
-### Time Complexity Comparison
-
-| Implementation | Push | Pop | Peek | Space |
-|----------------|------|-----|------|-------|
-| **Array-based** | O(1) | O(1) | O(1) | O(n) |
-| **Linked List** | O(1) | O(1) | O(1) | O(n) + pointer overhead |
-| **Structure-based** | O(1) | O(1) | O(1) | O(n) |
-
-### Memory Usage Analysis
-
-```c
-// Memory footprint comparison
-Array-based:     size * sizeof(int) + overhead
-Linked List:     n * (sizeof(int) + sizeof(pointer))
-Structure-based: size * sizeof(int) + struct overhead
-```
 
 ### Performance Benchmarks
 

@@ -6,7 +6,6 @@
 - [What is a Queue?](#what-is-a-queue)
 - [Types of Queue](#types-of-queue)
 - [Queue Operations](#queue-operations)
-- [Memory Management Approaches](#memory-management-approaches)
 - [Applications](#applications)
 - [When to Use Queues](#when-to-use-queues)
 - [Best Practices](#best-practices)
@@ -699,52 +698,6 @@ int isFull() {
 | **Dequeue** | Queue Underflow | `front == -1` or empty check | Return error value, maintain state |
 | **Front** | Empty Queue | `front == -1` or empty check | Return error value, no change |
 | **Access** | Invalid Index | Bounds checking | Prevent undefined behavior |
-
-## Memory Management Approaches
-
-### 1. **Array-Based Implementation**
-- **Memory**: Static or dynamic arrays with index-based access
-- **Storage**: Contiguous memory allocation for queue elements
-- **Pointer Management**: Front and rear indices to track queue boundaries
-- **Variants**: Can implement linear or circular queue logic
-- **Advantages**: 
-  - Fast O(1) access time due to cache locality
-  - Simple memory layout and pointer arithmetic
-  - Predictable memory usage
-- **Disadvantages**: 
-  - Fixed size (for static arrays)
-  - Potential space wastage (linear queues)
-  - Memory allocation overhead (dynamic arrays)
-
-### 2. **Structure-Based Implementation**
-- **Memory**: Encapsulated data within custom structures using typedef
-- **Organization**: Combines queue data, pointers, and metadata in single structure
-- **Access Pattern**: Dot notation for member access (e.g., `queue.front`, `queue.rear`)
-- **Modularity**: Better code organization and reusability
-- **Advantages**:
-  - Clean code organization and encapsulation
-  - Easy to pass queue as parameter to functions
-  - Supports multiple queue instances
-  - Better maintainability and debugging
-- **Disadvantages**:
-  - Slight memory overhead for structure metadata
-  - Additional complexity in structure design
-
-### 3. **Linked List Implementation**
-- **Memory**: Dynamic node allocation with pointer-based connections
-- **Storage**: Non-contiguous memory with each node containing data and next pointer
-- **Growth**: Dynamic size expansion limited only by available memory
-- **Pointer Management**: Front and rear pointers to first and last nodes
-- **Advantages**:
-  - No size limitations or memory wastage
-  - Efficient memory utilization (allocate only what's needed)
-  - No false overflow conditions
-  - Flexible memory management
-- **Disadvantages**:
-  - Additional memory overhead for storing pointers
-  - Potential memory fragmentation
-  - Cache performance may be lower due to non-contiguous storage
-  - More complex memory management (malloc/free)
 
 ## Applications
 

@@ -120,30 +120,3 @@ Result: 18
 Enter postfix expression: 23*54*+
 Result: 26
 ```
-
-**Step-by-step Example for "234*+":**
-```
-Input: 234*+
-
-Step 1: Read '2' → Push 2 → Stack: [2]
-Step 2: Read '3' → Push 3 → Stack: [2, 3]
-Step 3: Read '4' → Push 4 → Stack: [2, 3, 4]
-Step 4: Read '*' → Pop 4, Pop 3, Compute 3*4=12, Push 12 → Stack: [2, 12]
-Step 5: Read '+' → Pop 12, Pop 2, Compute 2+12=14, Push 14 → Stack: [14]
-Step 6: End → Pop and display 14
-
-Result: 14
-```
-
-**Step-by-step Example for "52-":**
-```
-Input: 52-
-
-Step 1: Read '5' → Push 5 → Stack: [5]
-Step 2: Read '2' → Push 2 → Stack: [5, 2]
-Step 3: Read '-' → Pop 2 (b), Pop 5 (a), Compute 5-2=3, Push 3 → Stack: [3]
-Step 4: End → Pop and display 3
-
-Result: 3
-Note: Order matters! a - b = 5 - 2 = 3 (NOT 2 - 5)
-```

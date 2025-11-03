@@ -60,7 +60,7 @@ Write a menu driven program to perform the following operations on an array.
     - If not found, display message and comparisons
 9. **For Binary Search operation:**
     - Accept element `x` from user
-    - Sort array in ascending order
+    - Call `sortArray()` to sort the array in ascending order.
     - Initialize `left = 0`, `right = n - 1`, `comparisons = 0`
     - While `left <= right`:
       * Compute `mid = left + (right - left) / 2`
@@ -77,7 +77,16 @@ Write a menu driven program to perform the following operations on an array.
 ### Source Code
 
 ```c
-// Updated Static Array Implementation
+/*
+ASSIGNMENT 1:
+Problem Statement: Write a menu driven program to perform the following operations on an array.
+(a) insert an element x at position k in the array.
+(b) remove an element x from the array.
+(c) search an element x from the array using linear search(check no. of comparison).
+(d) search an element x from the array using binary search(check no. of comparison).
+(e) display the array.
+*/
+
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -163,12 +172,7 @@ void searchElement(int element){
     printf("Linear Search - Number of comparisons: %d\n", comparisons);
 }
 
-void binarySearchElement(int element){
-    if (n == 0){
-        printf("Array is empty. Please read array first.\n");
-        return;
-    }
-    // Sort array internally
+void sortArray(){
     int swapped;
     for (int i = 0; i < n-1; i++){
         swapped = 0;
@@ -184,10 +188,19 @@ void binarySearchElement(int element){
             break;
         }
     }
+}
+
+void binarySearchElement(int element){
+    if (n == 0){
+        printf("Array is empty. Please read array first.\n");
+        return;
+    }
+    sortArray();
+    
     printf("Array sorted for binary search: ");
     for (int i = 0; i < n; i++) printf("%d ", arr[i]);
     printf("\n");
-
+    
     int comparisons = 0;
     int left = 0, right = n - 1;
     while (left <= right){
@@ -366,7 +379,7 @@ Write a menu driven program to perform the following operations on an array usin
     - If not found, display message and comparisons
 9. **For Binary Search operation:**
     - Accept element `x` from user
-    - Sort array in ascending order
+    - Call `sortArray()` to sort the array in ascending order.
     - Initialize `left = 0`, `right = n - 1`, `comparisons = 0`
     - While `left <= right`:
       * Compute `mid = left + (right - left) / 2`
@@ -485,23 +498,6 @@ void deleteElement(int element){
     printf("Element not found\n");
 }
 
-void deleteElementIndex(int position){
-    if (arr == NULL || n == 0){
-        printf("Array is empty. Nothing to delete.\n");
-        return;
-    }
-    if (!(position <= n && position >= 1)){
-        printf("Position out of bounds\n");
-        return;
-    }
-    int deletedElement = *(arr + position - 1);
-    for (int j = position - 1; j < n - 1; j++) {
-        *(arr + j) = *(arr + j + 1);
-    }
-    reAllocate(-1);
-    printf("Element %d at position %d deleted successfully.\n", deletedElement, position);
-}
-
 void searchElement(int element){
     if (arr == NULL || n == 0){
         printf("Array is empty. Please read array first.\n");
@@ -521,26 +517,21 @@ void searchElement(int element){
 }
 
 void sortArray(){
-    if (arr == NULL || n == 0){
-        printf("Array is empty. Please read array first.\n");
-        return;
-    }
     int swapped;
-    for (int i = 0; i < n - 1; i++){
-        swapped = 0;
-        for (int j = 0; j < n - i - 1; j++){
+    for (int i = 0; i < n-1; i++){
+        swapped = 0; 
+        for (int j = 0; j < n-i-1; j++){
             if (*(arr + j) > *(arr + j + 1)){
                 int temp = *(arr + j);
                 *(arr + j) = *(arr + j + 1);
                 *(arr + j + 1) = temp;
-                swapped = 1;
+                swapped = 1; 
             }
         }
         if (!swapped) {
             break;
         }
     }
-    printf("Array sorted successfully\n");
 }
 
 void binarySearchElement(int element){
@@ -549,11 +540,9 @@ void binarySearchElement(int element){
         return;
     }
     sortArray();
-    
     printf("Array sorted for binary search: ");
     for (int i = 0; i < n; i++) printf("%d ", *(arr + i));
     printf("\n");
-    
     int comparisons = 0;
     int left = 0, right = n - 1;
     while (left <= right){
@@ -576,7 +565,6 @@ void binarySearchElement(int element){
 
 int main(){
     int choice;
-    
     while (1){
         printf("\nEnter operation to perform-\n");
         printf("1. Read Array\n");
@@ -640,7 +628,7 @@ int main(){
             }
         }
     }
-}
+}   
 ```
 
 ### Sample Output
@@ -675,8 +663,8 @@ Element found at position: 4
 Linear Search - Number of comparisons: 4
 
 Selection: 3
-Enter the position of the element to delete: 3
-Element 30 at position 3 deleted successfully.
+Enter element to remove: 30
+Element 30 deleted successfully.
 
 Selection: 6
 Current array: 15 25 35 45 

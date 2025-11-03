@@ -22,7 +22,7 @@ int isEmpty() {
 
 int isFull() {
     if (isEmpty()) return 0;
-    return (rear + 1) % size == front % size;
+    return (rear + 1) % size == front;
 }
 
 void enqueue(int data) {
@@ -34,8 +34,8 @@ void enqueue(int data) {
         front = 0;
         rear = -1;
     }
-    rear++;
-    queue[rear % size] = data;
+    rear = (rear + 1) % size;
+    queue[rear] = data;
     printf("Enqueued: %d\n", data);
 }
 
@@ -44,12 +44,12 @@ void dequeue() {
         printf("Queue Underflow - cannot dequeue\n");
         return;
     }
-    printf("Dequeued: %d\n", queue[front % size]);
+    printf("Dequeued: %d\n", queue[front]);
     if (front == rear) {
         front = -1;
         rear = -1;
     } else {
-        front++;
+        front = (front + 1) % size;
     }
 }
 
@@ -59,8 +59,13 @@ void display() {
         return;
     }
     printf("Queue contents: Front -> ");
-    for (int i = front; i <= rear; i++) {
-        printf("%d ", queue[i % size]);
+    int i = front;
+    while (1) {
+        printf("%d ", queue[i]);
+        if (i == rear) {
+            break;
+        }
+        i = (i + 1) % size;
     }
     printf("<- Rear\n");
 }
@@ -70,8 +75,8 @@ void peek() {
         printf("Queue is empty - cannot peek\n");
         return;
     }
-    printf("Front: %d\n", queue[front % size]);
-    printf("Rear: %d\n", queue[rear % size]);
+    printf("Front: %d\n", queue[front]);
+    printf("Rear: %d\n", queue[rear]);
 }
 
 int main() {

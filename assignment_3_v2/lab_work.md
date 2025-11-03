@@ -1,4 +1,4 @@
-<h1 align="center">ASSIGNMENT - 3: Queue Implementation</h1>
+<h1 align="center">ASSIGNMENT - 3 (v2): Circular Queue Implementation</h1>
 
 <div align="center" id="index">
   <h2>Table of Contents</h2>
@@ -8,8 +8,8 @@
 
 | **Implementation** |
 |---|
-| [**#1** Queue using Array](#implementation1) |
-| [**#2** Queue using Structure](#implementation2) |
+| [**#1** Circular Queue using Array](#implementation1) |
+| [**#2** Circular Queue using Structure](#implementation2) |
 
 </div>
 
@@ -20,78 +20,57 @@
 ---
 
 <a id="implementation1"></a>
-## 1. Queue Implementation - Using Array
+## 1. Circular Queue Implementation - Using Array
 
 ### Problem Statement
-Write a menu driven program in C to implement a Queue using array and perform the following operations.
-- (a) `isFull()` function to check whether the Queue is full or not.
-- (b) `isEmpty()` function to check whether the Queue is empty or not.
-- (c) `insert(item)` function to insert an element item in the Queue.
-- (d) `delete()` function to read and remove an element from the Queue.
-- (e) `display()` function to display the entire Queue.
+Write a menu driven program in C to implement a **Circular Queue** using array and perform the following operations.
+- (a) `isFull()` function to check whether the Circular Queue is full or not.
+- (b) `isEmpty()` function to check whether the Circular Queue is empty or not.
+- (c) `enqueue(item)` function to insert an element item in the Circular Queue.
+- (d) `dequeue()` function to read and remove an element from the Circular Queue.
+- (e) `display()` function to display the entire Circular Queue.
 
 ### Algorithm
 
 1. START
-2. Declare static array: `int queue[MAX_SIZE]` where MAX_SIZE = 100
-3. Initialize `front = -1` (indicates empty queue)
-4. Initialize `rear = -1` (indicates empty queue)
-5. Accept queue size from user and store in `size`
-6. Validate size: `0 < size <= MAX_SIZE`
-7. Display menu with operations and accept user choice
-8. **For isEmpty() function**:
-   - Check condition: `front == -1`
-   - If true, return 1 (queue is empty)
-   - Else, return 0 (queue has elements)
-9. **For isFull() function**:
-   - Check condition: `rear == size - 1`
-   - If true, return 1 (queue is full)
-   - Else, return 0 (queue has space)
-10. **For enqueue(data) operation**:
-    - Call `isFull()` to check queue status
-    - If full, display "Queue Overflow" and return
+2. Declare static array: `int queue[MAX_SIZE]`
+3. Initialize `front = -1` and `rear = -1`
+4. Accept queue size from user and store in `size`
+5. Display menu with operations
+6. **For isEmpty() function**:
+   - Return `front == -1`
+7. **For isFull() function**:
+   - Return `(rear + 1) % size == front`
+8. **For enqueue(data) operation**:
+    - If `isFull()`, display "Queue Overflow" and return
+    - If `isEmpty()`, set `front = 0` and `rear = -1`
+    - Update rear: `rear = (rear + 1) % size`
+    - Insert element: `queue[rear] = data`
+9. **For dequeue() operation**:
+    - If `isEmpty()`, display "Queue Underflow" and return
+    - Retrieve and display element: `queue[front]`
+    - If `front == rear` (only one element), reset queue: `front = -1`, `rear = -1`
+    - Else, update front: `front = (front + 1) % size`
+10. **For display() operation**:
+    - If `isEmpty()`, display "Queue is empty"
     - Else:
-      * If queue is empty (`front == -1`):
-        - Initialize front: `front = 0`
-      * Increment rear: `rear++`
-      * Insert element: `queue[rear] = data`
-      * Display success message
-11. **For dequeue() operation**:
-    - Call `isEmpty()` to check queue status
-    - If empty, display "Queue Underflow" and return
-    - Else:
-      * Retrieve and display element: `queue[front]`
-      * Check if queue has only one element: `front == rear`
-        - If yes, reset queue: `front = -1`, `rear = -1`
-        - Else, increment front: `front++`
-12. **For display() operation**:
-    - Call `isEmpty()` to check queue status
-    - If empty, display "Queue is empty"
-    - Else:
-      * Display "Queue contents: Front -> "
-      * Traverse from `i = front` to `i = rear`:
-        - Print each element: `queue[i]`
-      * Display " <- Rear"
-13. **For peek() operation**:
-    - Call `isEmpty()` to check queue status
-    - If empty, display "Queue is empty - cannot peek"
-    - Else:
-      * Display front element: `queue[front]`
-      * Display rear element: `queue[rear]`
-14. Repeat menu until user chooses to exit
-15. STOP
+      * Traverse from `i = front` up to `rear`, handling wraparound.
+      * A simple loop from `front` to `rear` will not work if `rear < front`.
+      * Correct traversal: `for (int i = front; i != rear; i = (i + 1) % size)` then print `queue[rear]`.
+11. Repeat menu until user exits
+12. STOP
 
 ### Source Code
 
 ```c
 /*
 ASSIGNMENT 3:
-Problem Statement: Write a menu driven program in C to implement a Queue using array and perform the following operations.
-(a) isFull() function to check whether the Queue is full or not.
-(b) isEmpty() function to check whether the Queue is empty or not.
-(c) insert(item) function to insert an element item in the Queue.
-(d) delete() function to read and remove an element from the Queue.
-(e) display() function to display the entire Queue.
+Problem Statement: Write a menu driven program in C to implement a Circular Queue using array and perform the following operations.
+(a) isFull() function to check whether the Circular Queue is full or not.
+(b) isEmpty() function to check whether the Circular Queue is empty or not.
+(c) insert(item) function to insert an element item in the Circular Queue.
+(d) delete() function to read and remove an element from the Circular Queue.
+(e) display() function to display the entire Circular Queue.
 */
 
 #include <stdio.h>
@@ -100,14 +79,15 @@ Problem Statement: Write a menu driven program in C to implement a Queue using a
 int queue[MAX_SIZE];
 int front = -1;
 int rear = -1;
-int size = 0;  
+int size = 0;
 
 int isEmpty() {
     return front == -1;
 }
 
 int isFull() {
-    return rear == size - 1;
+    if (isEmpty()) return 0;
+    return (rear + 1) % size == front;
 }
 
 void enqueue(int data) {
@@ -116,9 +96,10 @@ void enqueue(int data) {
         return;
     }
     if (isEmpty()) {
-        front = 0; 
+        front = 0;
+        rear = -1;
     }
-    rear++;
+    rear = (rear + 1) % size;
     queue[rear] = data;
     printf("Enqueued: %d\n", data);
 }
@@ -132,9 +113,8 @@ void dequeue() {
     if (front == rear) {
         front = -1;
         rear = -1;
-    } 
-    else {
-        front++;
+    } else {
+        front = (front + 1) % size;
     }
 }
 
@@ -144,8 +124,13 @@ void display() {
         return;
     }
     printf("Queue contents: Front -> ");
-    for (int i = front; i <= rear; i++) {
+    int i = front;
+    while (1) {
         printf("%d ", queue[i]);
+        if (i == rear) {
+            break;
+        }
+        i = (i + 1) % size;
     }
     printf("<- Rear\n");
 }
@@ -168,7 +153,7 @@ int main() {
         return 1;
     }
     while (1) {
-        printf("\n=== Queue Operations ===\n");
+        printf("\n=== Circular Queue Operations ===\n");
         printf("1. Enqueue(Insert)\n");
         printf("2. Dequeue(Remove)\n");
         printf("3. Display\n");
@@ -199,9 +184,9 @@ int main() {
 ### Sample Output
 
 ```
-Enter queue size (max 100): 5
+Enter queue size (max 100): 4
 
-=== Queue Operations ===
+=== Circular Queue Operations ===
 1. Enqueue(Insert)
 2. Dequeue(Remove)
 3. Display
@@ -222,27 +207,31 @@ Selection: 1
 Enter element to enqueue: 30
 Enqueued: 30
 
+Selection: 1
+
+Enter element to enqueue: 40
+Enqueued: 40
+
 Selection: 3
 
-Queue contents: Front -> 10 20 30 <- Rear
+Queue contents: Front -> 10 20 30 40 <- Rear
 
-Selection: 4
+Selection: 1
 
-Front: 10
-Rear: 30
+Enter element to enqueue: 50
+Queue Overflow - cannot enqueue 50
 
 Selection: 2
 
 Dequeued: 10
 
+Selection: 2
+
+Dequeued: 20
+
 Selection: 3
 
-Queue contents: Front -> 20 30 <- Rear
-
-Selection: 1
-
-Enter element to enqueue: 40
-Enqueued: 40
+Queue contents: Front -> 30 40 <- Rear
 
 Selection: 1
 
@@ -254,14 +243,9 @@ Selection: 1
 Enter element to enqueue: 60
 Enqueued: 60
 
-Selection: 1
-
-Enter element to enqueue: 70
-Queue Overflow - cannot enqueue 70
-
 Selection: 3
 
-Queue contents: Front -> 20 30 40 50 60 <- Rear
+Queue contents: Front -> 30 40 50 60 <- Rear
 
 Selection: 5
 ```
@@ -269,95 +253,60 @@ Selection: 5
 <div align="right"><a href="#index">return to index</a></div><hr>
 
 <a id="implementation2"></a>
-## 2. Queue Implementation - Using Structure
+## 2. Circular Queue Implementation - Using Structure
 
 ### Problem Statement
-Write a menu driven program in C to implement a Queue using array encapsulated in a structure and perform the following operations.
-- (a) `isFull()` function to check whether the Queue is full or not.
-- (b) `isEmpty()` function to check whether the Queue is empty or not.
-- (c) `insert(item)` function to insert an element item in the Queue.
-- (d) `delete()` function to read and remove an element from the Queue.
-- (e) `display()` function to display the entire Queue.
+Write a menu driven program in C to implement a **Circular Queue** using an array encapsulated in a structure and perform the following operations.
+- (a) `isFull()` function to check whether the Circular Queue is full or not.
+- (b) `isEmpty()` function to check whether the Circular Queue is empty or not.
+- (c) `enqueue(item)` function to insert an element item in the Circular Queue.
+- (d) `dequeue()` function to read and remove an element from the Circular Queue.
+- (e) `display()` function to display the entire Circular Queue.
 
 ### Algorithm
 
 1. START
-2. Define structure `QueueStruct` with five members:
-   - `int *data` (dynamic array pointer for queue elements)
-   - `int front` (index of front element)
-   - `int rear` (index of rear element)
-   - `int size` (current number of elements in queue)
-   - `int capacity` (maximum capacity of queue)
-3. Create typedef: `typedef struct QueueStruct Queue`
-4. Declare global variable: `Queue queue`
-5. Accept queue capacity from user
-6. Validate capacity: `queue.capacity > 0`
-7. Allocate memory for queue array:
-   - `queue.data = (int *) malloc(queue.capacity * sizeof(int))`
-   - Check if memory allocation successful
-8. Initialize queue members:
-   - `queue.front = -1` (no front element yet)
-   - `queue.rear = -1` (no rear element yet)
-   - `queue.size = 0` (no elements in queue)
-9. Display menu with operations and accept user choice
-10. **For isEmpty() function**:
-    - Check condition: `queue.size == 0`
-    - If true, return 1 (queue is empty)
-    - Else, return 0 (queue has elements)
-11. **For isFull() function**:
-    - Check condition: `queue.size == queue.capacity`
-    - If true, return 1 (queue is full)
-    - Else, return 0 (queue has space)
-12. **For enqueue(data) operation**:
-    - Call `isFull()` to check queue status
-    - If full, display "Queue Overflow" and return
-    - Else:
-      * If queue is empty (`queue.size == 0`):
-        - Initialize: `queue.front = 0`, `queue.rear = -1`
-      * Increment rear: `queue.rear++`
-      * Insert element: `queue.data[queue.rear] = data`
-      * Increment size: `queue.size++`
-      * Display success message
-13. **For dequeue() operation**:
-    - Call `isEmpty()` to check queue status
-    - If empty, display "Queue Underflow" and return
-    - Else:
-      * Retrieve and display element: `queue.data[queue.front]`
-      * Increment front: `queue.front++`
-      * Decrement size: `queue.size--`
-      * If `queue.size == 0` (last element removed):
-        - Reset: `queue.front = -1`, `queue.rear = -1`
-14. **For display() operation**:
-    - Call `isEmpty()` to check queue status
-    - If empty, display "Queue is empty"
-    - Else:
-      * Display "Queue contents: Front -> "
-      * Traverse from `i = queue.front` to `i = queue.rear`:
-        - Print each element: `queue.data[i]`
-      * Display " <- Rear"
-15. **For peek() operation**:
-    - Call `isEmpty()` to check queue status
-    - If empty, display "Queue is empty - cannot peek"
-    - Else:
-      * Display front element: `queue.data[queue.front]`
-      * Display rear element: `queue.data[queue.rear]`
-16. **For Exit**:
-    - Free allocated memory: `free(queue.data)`
-    - Terminate program
-17. Repeat menu until user chooses to exit
-18. STOP
+2. Define structure `QueueStruct` with members: `*data`, `front`, `rear`, `capacity`.
+3. Create typedef: `typedef struct QueueStruct Queue`.
+4. Declare global variable: `Queue queue`.
+5. Accept queue capacity from user.
+6. Allocate memory for `queue.data` of size `capacity`.
+7. Initialize `queue.front = -1`, `queue.rear = -1`, `queue.capacity`.
+8. Display menu with operations.
+9. **For isEmpty() function**:
+   - Return `queue.front == -1`.
+10. **For isFull() function**:
+    - Return `(queue.rear + 1) % queue.capacity == queue.front`.
+11. **For enqueue(data) operation**:
+    - If `isFull()`, display "Queue Overflow" and return.
+    - If `isEmpty()`, set `queue.front = 0` and `queue.rear = -1`.
+    - Update rear: `queue.rear = (queue.rear + 1) % queue.capacity`.
+    - Insert element: `queue.data[queue.rear] = data`.
+12. **For dequeue() operation**:
+    - If `isEmpty()`, display "Queue Underflow" and return.
+    - Retrieve and display element: `queue.data[queue.front]`.
+    - If `queue.front == queue.rear`, reset queue: `queue.front = -1`, `queue.rear = -1`.
+    - Else, update front: `queue.front = (queue.front + 1) % queue.capacity`.
+13. **For display() operation**:
+    - If `isEmpty()`, display "Queue is empty".
+    - Else, traverse from `front` to `rear` handling wraparound and print elements.
+14. **For Exit**:
+    - Free allocated memory: `free(queue.data)`.
+    - Terminate.
+15. Repeat menu until user chooses to exit.
+16. STOP
 
 ### Source Code
 
 ```c
 /*
 ASSIGNMENT 3:
-Problem Statement: Write a menu driven program in C to implement a Queue using array and perform the following operations.
-(a) isFull() function to check whether the Queue is full or not.
-(b) isEmpty() function to check whether the Queue is empty or not.
-(c) insert(item) function to insert an element item in the Queue.
-(d) delete() function to read and remove an element from the Queue.
-(e) display() function to display the entire Queue.
+Problem Statement: Write a menu driven program in C to implement a Circular Queue using array and perform the following operations.
+(a) isFull() function to check whether the Circular Queue is full or not.
+(b) isEmpty() function to check whether the Circular Queue is empty or not.
+(c) insert(item) function to insert an element item in the Circular Queue.
+(d) delete() function to read and remove an element from the Circular Queue.
+(e) display() function to display the entire Circular Queue.
 */
 
 #include <stdio.h>
@@ -367,7 +316,6 @@ struct QueueStruct {
     int *data;
     int front;
     int rear;
-    int size;
     int capacity;
 };
 
@@ -376,11 +324,12 @@ typedef struct QueueStruct Queue;
 Queue queue;
 
 int isEmpty() {
-    return queue.size == 0;
+    return queue.front == -1;
 }
 
 int isFull() {
-    return queue.size == queue.capacity;
+    if (isEmpty()) return 0;
+    return (queue.rear + 1) % queue.capacity == queue.front;
 }
 
 void enqueue(int data) {
@@ -392,9 +341,8 @@ void enqueue(int data) {
         queue.front = 0;
         queue.rear = -1;
     }
-    queue.rear++;
+    queue.rear = (queue.rear + 1) % queue.capacity;
     queue.data[queue.rear] = data;
-    queue.size++;
     printf("Enqueued: %d\n", data);
 }
 
@@ -404,12 +352,11 @@ void dequeue() {
         return;
     }
     printf("Dequeued: %d\n", queue.data[queue.front]);
-    queue.front++;
-    queue.size--;
-    
-    if (queue.size == 0) {
+    if (queue.front == queue.rear) {
         queue.front = -1;
         queue.rear = -1;
+    } else {
+        queue.front = (queue.front + 1) % queue.capacity;
     }
 }
 
@@ -419,8 +366,13 @@ void display() {
         return;
     }
     printf("Queue contents: Front -> ");
-    for (int i = queue.front; i <= queue.rear; i++) {
+    int i = queue.front;
+    while (1) {
         printf("%d ", queue.data[i]);
+        if (i == queue.rear) {
+            break;
+        }
+        i = (i + 1) % queue.capacity;
     }
     printf("<- Rear\n");
 }
@@ -453,11 +405,10 @@ int main() {
     
     queue.front = -1;
     queue.rear = -1;
-    queue.size = 0;
     queue.capacity = capacity;
     
     while (1) {
-        printf("\n=== Queue Operations ===\n");
+        printf("\n=== Circular Queue Operations ===\n");
         printf("1. Enqueue(Insert)\n");
         printf("2. Dequeue(Remove)\n");
         printf("3. Display\n");
@@ -500,7 +451,7 @@ int main() {
 ```
 Enter queue capacity: 4
 
-=== Queue Operations ===
+=== Circular Queue Operations ===
 1. Enqueue(Insert)
 2. Dequeue(Remove)
 3. Display
@@ -521,28 +472,19 @@ Selection: 1
 Enter element to enqueue: 25
 Enqueued: 25
 
-Selection: 3
-
-Queue contents: Front -> 5 15 25 <- Rear
-
-Selection: 4
-
-Front: 5
-Rear: 25
-
 Selection: 1
 
 Enter element to enqueue: 35
 Enqueued: 35
 
+Selection: 3
+
+Queue contents: Front -> 5 15 25 35 <- Rear
+
 Selection: 1
 
 Enter element to enqueue: 45
 Queue Overflow - cannot enqueue 45
-
-Selection: 3
-
-Queue contents: Front -> 5 15 25 35 <- Rear
 
 Selection: 2
 
@@ -555,6 +497,15 @@ Dequeued: 15
 Selection: 3
 
 Queue contents: Front -> 25 35 <- Rear
+
+Selection: 1
+
+Enter element to enqueue: 45
+Enqueued: 45
+
+Selection: 3
+
+Queue contents: Front -> 25 35 45 <- Rear
 
 Selection: 5
 ```

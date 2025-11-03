@@ -35,35 +35,33 @@ Write a menu driven program in C to implement a Stack using array and perform th
 ### Algorithm
 
 1. START
-2. Declare static array: `int stack[MAX_SIZE]` where MAX_SIZE = 100
-3. Initialize variable `top = -1` (indicates empty stack)
-4. Display menu with operations and accept user choice
-5. **For isEmpty() function:**
-    - Check condition: `top == -1`
-    - If true, return 1 (stack is empty)
-    - Else, return 0 (stack has elements)
-6. **For isFull() function:**
-    - Check condition: `top == MAX_SIZE - 1`
-    - If true, return 1 (stack is full)
-    - Else, return 0 (stack has space)
-7. **For push(item) operation:**
-    - Call `isFull()` to check stack status
-    - If full, display "Stack Overflow" and return
-    - Else, increment `top`, set `stack[top] = item`, display success message
-8. **For pop() operation:**
-    - Call `isEmpty()` to check stack status
-    - If empty, display "Stack Underflow" and return
-    - Else, display `stack[top]`, decrement `top`
-9. **For peek() operation:**
-    - Call `isEmpty()` to check stack status
-    - If empty, display message
-    - Else, display `stack[top]`
-10. **For display() operation:**
-     - Call `isEmpty()` to check stack status
-     - If empty, display message
-     - Else, print all elements from `stack[top]` to `stack[0]`
-11. Repeat menu until user chooses to quit
-12. STOP
+2. Declare global pointer `int *stack = NULL`, and integers `top = -1` and `size`.
+3. In `main`, prompt user for stack size and store in `size`.
+4. Allocate memory dynamically: `stack = (int *) malloc(size * sizeof(int))`.
+5. Display menu with operations and accept user choice.
+6. **For isEmpty() function:**
+    - Check condition: `top == -1`.
+    - If true, return 1 (stack is empty).
+    - Else, return 0.
+7. **For isFull() function:**
+    - Check condition: `top == size - 1`.
+    - If true, return 1 (stack is full).
+    - Else, return 0.
+8. **For push(item) operation:**
+    - Call `isFull()`. If full, display "Stack Overflow".
+    - Else, increment `top` and set `*(stack + top) = item`.
+9. **For pop() operation:**
+    - Call `isEmpty()`. If empty, display "Stack Underflow".
+    - Else, display `*(stack + top)` and decrement `top`.
+10. **For peek() operation:**
+    - Call `isEmpty()`. If empty, display message.
+    - Else, display `*(stack + top)`.
+11. **For viewStack() operation:**
+     - Call `isEmpty()`. If empty, display message.
+     - Else, print all elements from `*(stack + top)` down to `*(stack + 0)`.
+12. Repeat menu until user chooses to quit.
+13. Before exiting, free allocated memory: `free(stack)`.
+14. STOP
 
 ### Source Code
 
@@ -82,27 +80,26 @@ Problem Statement: Write a menu driven program in C to implement a Stack using a
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 100
-
-int stack[MAX_SIZE];
+int *stack;
 int top = -1;
+int size;
 
 int isEmpty(){
     return top == -1;
 }
 
 int isFull(){
-    return top == MAX_SIZE - 1;
+    return top == size - 1;
 }
 
-void display() {
+void viewStack() {
     if (isEmpty()) {
         printf("Stack is empty\n");
         return;
     }
-    printf("Stack -\n%d <- Top\n", stack[top]);
+    printf("Stack -\n%d <- Top\n", *(stack + top));
     for (int i = top - 1; i >= 0; i--)
-        printf("%d\n", stack[i]);
+        printf("%d\n", *(stack + i));
     printf("\n");
 }
 
@@ -112,7 +109,7 @@ void push(int x) {
         return;
     }
     top++;
-    stack[top] = x;
+    *(stack + top) = x;
     printf("Element %d pushed\n", x);
 }
 
@@ -121,7 +118,7 @@ void pop() {
         printf("Stack Underflow\n");
         return;
     }
-    printf("Popped: %d\n", stack[top]);
+    printf("Popped: %d\n", *(stack + top));
     top--;
 }
 
@@ -130,28 +127,40 @@ void peek() {
         printf("Stack is empty\n");
         return;
     }
-    printf("%d <- Top\n", stack[top]);
+    printf("%d <- Top\n", *(stack + top));
 }
 
 int main() {
     int choice;
-    
+    printf("Enter stack size(n): ");
+    scanf("%d", &size);
+    if (size <= 0) {
+        printf("Invalid stack size. Must be positive.\n");
+        return 1;
+    }
+    stack = (int *) malloc(size * sizeof(int));
+    if (stack == NULL) {
+        printf("Memory allocation failed.\n");
+        return 1;
+    }
     while (1) {
         printf("\nSelect operation to perform:\n");
-        printf("1. Push\n2. Pop\n3. Peek\n4. Display stack\n5. Quit\nSelection: ");
+        printf("1. View stack\n2. Push\n3. Pop\n4. Peek\n5. Exit\nSelection: ");
         scanf("%d", &choice);
         switch (choice) {
-            case 1: {
+            case 1: viewStack(); break;
+            case 2: {
                 int data;
                 printf("Enter element to push: ");
                 scanf("%d", &data);
                 push(data);
                 break;
             }
-            case 2: pop(); break;
-            case 3: peek(); break;
-            case 4: display(); break;
-            case 5: return 0;
+            case 3: pop(); break;
+            case 4: peek(); break;
+            case 5: 
+                free(stack);
+                return 0;
             default:
                 printf("Invalid selection\n");
                 break;
@@ -189,8 +198,10 @@ Selection: 4
 Selection: 3
 Popped: 30
 
-Selection: 4
+Selection: 1
+Stack -
 20 <- Top
+10
 
 Selection: 2
 Enter element to push: 40
@@ -208,8 +219,13 @@ Selection: 2
 Enter element to push: 70
 Stack Overflow
 
-Selection: 4
+Selection: 1
+Stack -
 60 <- Top
+50
+40
+20
+10
 
 Selection: 5
 ```
@@ -226,7 +242,7 @@ Write a menu driven program in C to implement a Stack using array encapsulated i
 - (c) `peek()` function to read the stack top element without deleting it.
 - (d) `push(item)` function to insert an element item in the Stack.
 - (e) `pop()` function to read and remove an element from the Stack.
-- (f) `display()` function to display the entire stack.
+- (f) `viewStack()` function to display the entire stack.
 
 
 ### Algorithm
@@ -444,5 +460,3 @@ Stack -
 
 Selection: 5
 ```
-
-<div align="right"><a href="#index">return to index</a></div><hr>
